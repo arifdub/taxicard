@@ -2,6 +2,7 @@ import Link from 'next/link'
 import QRCode from 'qrcode'
 import type { Metadata } from 'next'
 import { siteUrl } from '@/lib/site'
+import Wordmark from '@/components/wordmark'
 
 export const metadata: Metadata = {
   title: 'TaxiCard — your own digital taxi card and booking page',
@@ -20,7 +21,7 @@ export default async function Home() {
   return (
     <div className="tc-dark-page text-white">
       <nav className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-5 py-4">
-        <span className="text-lg font-semibold">TaxiCard</span>
+        <Wordmark size="md" />
         <Link
           href="/login"
           className="rounded-xl border border-white/20 bg-white/5 px-5 py-3 text-sm font-semibold text-white"
@@ -221,7 +222,10 @@ export default async function Home() {
 
       <footer className="border-t border-white/10 py-8">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-5 text-sm text-slate-400">
-          <span>TaxiCard — built for independent drivers in Ireland.</span>
+          <span className="inline-flex items-center gap-2">
+            <Wordmark size="sm" />
+            <span className="hidden sm:inline">— built for independent drivers in Ireland.</span>
+          </span>
           <Link href="/login" className="text-brandblue">
             Driver log in
           </Link>
