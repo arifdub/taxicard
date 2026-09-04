@@ -41,12 +41,20 @@ export default async function DashboardPage() {
       ) : (
         <div className="rounded-2xl border border-slate-200 bg-white p-4">
           <p className="text-xs font-semibold text-slate-500">Your booking link</p>
-          <p className="mt-1 break-all text-base font-medium text-navy">
+          <a
+            href={`${siteUrl}/${profile?.slug}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-1 block break-all text-base font-medium text-blue-700 underline"
+          >
             {siteUrl}/{profile?.slug}
-          </p>
-          <p className="mt-2 text-sm text-slate-500">
-            The public card and QR code arrive in the next stage.
-          </p>
+          </a>
+          <Link
+            href="/dashboard/card"
+            className="mt-3 inline-block rounded-xl bg-yellow px-4 py-2.5 text-sm font-semibold text-navy"
+          >
+            My card and QR code
+          </Link>
         </div>
       )}
 

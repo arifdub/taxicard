@@ -46,14 +46,38 @@ booking link. No maps, no WhatsApp API, no verification gate yet.
 12. Signed in as Mary in the app, nothing anywhere should show John's
     details. If it does, RLS is not working and no other stage is safe.
 
+## Stage 2 and 3 — my card, QR, public card
+
+Before these work, run `0002_storage.sql` in the Supabase SQL editor.
+It creates the `driver-media` bucket for profile photos. If it errors with
+"must be owner of table objects", create the bucket by hand instead:
+Storage -> New bucket -> name `driver-media` -> tick Public.
+
+New pages:
+
+- `/dashboard/card` — preview, availability switch, QR download, photo upload
+- `/{slug}` — the public card, readable with no login at all
+
+Test:
+
+1. Open `/dashboard/card`. Your QR and link appear.
+2. Download the PNG and scan it with your phone camera.
+3. It opens your public card. **Log out first, or use a private window** —
+   that is the only way to prove a stranger can see it.
+4. Flip the availability switch. Reload the public card: the badge changes
+   and the call button stays.
+5. Upload a photo. It appears on both the preview and the public card.
+6. Visit `/nonsense`. You get the "No driver here" page, not a crash.
+
 ## Known gaps, deliberately
 
-- No profile photo upload. Stage 2, with the card preview.
-- No availability toggle in the UI. The column exists.
+- No "Book my taxi" button yet. It is deliberately hidden until the
+  booking form exists in stage 4 — a dead button on a card you might show
+  a real customer is worse than no button.
 - The dashboard is a placeholder until stage 5.
 - Changing a slug breaks printed QR codes. Needs a warning, or old-slug
   redirects, before drivers print anything.
 
 ## Next
 
-Stage 2: card preview, photo upload, QR generation and download.
+Stage 4: the booking form, and the customer's confirmation page.

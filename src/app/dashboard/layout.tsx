@@ -23,10 +23,13 @@ export default function DashboardLayout({
 
       <nav className="fixed inset-x-0 bottom-0 border-t border-slate-200 bg-white">
         <div className="mx-auto flex max-w-md">
-          <Link href="/dashboard" className="flex-1 py-3 text-center text-xs text-slate-600">
+          <Link href="/dashboard" className="flex-1 py-3.5 text-center text-xs text-slate-600">
             Dashboard
           </Link>
-          <Link href="/dashboard/settings" className="flex-1 py-3 text-center text-xs text-slate-600">
+          <Link href="/dashboard/card" className="flex-1 py-3.5 text-center text-xs text-slate-600">
+            My card
+          </Link>
+          <Link href="/dashboard/settings" className="flex-1 py-3.5 text-center text-xs text-slate-600">
             Settings
           </Link>
         </div>
