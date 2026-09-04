@@ -26,6 +26,9 @@ export default function DashboardLayout({
           <Link href="/dashboard" className="flex-1 py-3.5 text-center text-xs text-slate-600">
             Dashboard
           </Link>
+          <Link href="/dashboard/bookings" className="flex-1 py-3.5 text-center text-xs text-slate-600">
+            Bookings
+          </Link>
           <Link href="/dashboard/card" className="flex-1 py-3.5 text-center text-xs text-slate-600">
             My card
           </Link>

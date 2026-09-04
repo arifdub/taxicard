@@ -45,10 +45,26 @@ export function AvailabilitySwitch({ initial }: { initial: boolean }) {
   )
 }
 
-export function PhotoUpload({ userId }: { userId: string }) {
+export function EditablePhoto({
+  userId,
+  photoUrl,
+  name,
+}: {
+  userId: string
+  photoUrl: string | null
+  name: string
+}) {
   const input = useRef<HTMLInputElement>(null)
+  const [preview, setPreview] = useState(photoUrl)
   const [status, setStatus] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+
+  const letters = name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join('')
+    .toUpperCase()
 
   async function onPick(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -76,7 +92,7 @@ export function PhotoUpload({ userId }: { userId: string }) {
 
     if (upErr) {
       setBusy(false)
-      setStatus('Upload failed. Check the driver-media bucket exists.')
+      setStatus('Upload failed. Check the driver-media bucket exists and is public.')
       return
     }
 
@@ -84,7 +100,12 @@ export function PhotoUpload({ userId }: { userId: string }) {
     const res = await savePhotoUrl(data.publicUrl)
 
     setBusy(false)
-    setStatus(res?.error ? res.error : 'Photo updated.')
+    if (res?.error) {
+      setStatus(res.error)
+    } else {
+      setPreview(data.publicUrl)
+      setStatus(null)
+    }
     if (input.current) input.current.value = ''
   }
 
@@ -92,13 +113,39 @@ export function PhotoUpload({ userId }: { userId: string }) {
     <div>
       <input
         ref={input}
+        id="photo-input"
         type="file"
         accept="image/*"
         onChange={onPick}
         disabled={busy}
-        className="block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-navy file:px-4 file:py-2.5 file:text-sm file:font-medium file:text-white"
+        className="sr-only"
       />
-      {status ? <p className="mt-2 text-sm text-slate-600">{status}</p> : null}
+
+      <label htmlFor="photo-input" className="block cursor-pointer">
+        {preview ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={preview}
+            alt={name}
+            className="mx-auto h-24 w-24 rounded-full object-cover"
+          />
+        ) : (
+          <span className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-yellow text-2xl font-semibold text-navy">
+            {letters}
+          </span>
+        )}
+      </label>
+
+      <label
+        htmlFor="photo-input"
+        className="mt-2 block cursor-pointer text-xs font-medium text-slate-300 underline"
+      >
+        {busy ? 'Uploading…' : preview ? 'Change photo' : 'Add a photo'}
+      </label>
+
+      {status ? (
+        <p className="mt-1 text-xs text-amber-300">{status}</p>
+      ) : null}
     </div>
   )
 }

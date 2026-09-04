@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import QRCode from 'qrcode'
 import { createClient } from '@/lib/supabase/server'
 import DriverCardView, { type DriverCard } from '@/components/driver-card'
-import { AvailabilitySwitch, PhotoUpload, CopyLink } from './card-tools'
+import { AvailabilitySwitch, EditablePhoto, CopyLink } from './card-tools'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,7 +16,7 @@ export default async function MyCardPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('slug, is_available, phone')
+    .select('slug, is_available, phone, name, photo_url')
     .eq('id', user.id)
     .single()
 
@@ -60,7 +60,17 @@ export default async function MyCardPage() {
       ) : null}
 
       {card ? (
-        <DriverCardView card={card as DriverCard} bookHref={`/${profile.slug}/book`} />
+        <DriverCardView
+          card={card as DriverCard}
+          bookHref={`/${profile.slug}/book`}
+          avatar={
+            <EditablePhoto
+              userId={user.id}
+              photoUrl={profile.photo_url}
+              name={profile.name ?? 'Driver'}
+            />
+          }
+        />
       ) : null}
 
       <section className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4">
@@ -92,15 +102,6 @@ export default async function MyCardPage() {
         <p className="text-xs text-slate-400">
           Use the PNG for printing on business cards. The SVG stays sharp at
           any size, which suits large signs or window stickers.
-        </p>
-      </section>
-
-      <section className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4">
-        <h2 className="text-sm font-semibold text-slate-500">Profile photo</h2>
-        <PhotoUpload userId={user.id} />
-        <p className="text-xs text-slate-400">
-          A clear photo of your face works better than a car. Customers are
-          checking they recognise you.
         </p>
       </section>
 

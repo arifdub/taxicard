@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import type { ReactNode } from 'react'
 
 export type DriverCard = {
   slug: string
@@ -14,7 +15,7 @@ export type DriverCard = {
   welcome_message: string | null
 }
 
-function initials(name: string) {
+export function initials(name: string) {
   return name
     .split(/\s+/)
     .slice(0, 2)
@@ -35,28 +36,36 @@ export function whatsappNumber(raw: string) {
 export default function DriverCardView({
   card,
   bookHref,
+  qrSvg,
+  shareUrl,
+  avatar,
 }: {
   card: DriverCard
   bookHref?: string
+  qrSvg?: string
+  shareUrl?: string
+  avatar?: ReactNode
 }) {
   const whatsapp = card.whatsapp_phone ?? null
 
   return (
     <div className="overflow-hidden rounded-3xl bg-white shadow-sm">
       <div className="bg-navy px-6 py-8 text-center">
-        {card.photo_url ? (
-          <Image
-            src={card.photo_url}
-            alt={card.name}
-            width={96}
-            height={96}
-            unoptimized
-            className="mx-auto h-24 w-24 rounded-full object-cover"
-          />
-        ) : (
-          <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-yellow text-2xl font-semibold text-navy">
-            {initials(card.name)}
-          </div>
+        {avatar ?? (
+          card.photo_url ? (
+            <Image
+              src={card.photo_url}
+              alt={card.name}
+              width={96}
+              height={96}
+              unoptimized
+              className="mx-auto h-24 w-24 rounded-full object-cover"
+            />
+          ) : (
+            <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-yellow text-2xl font-semibold text-navy">
+              {initials(card.name)}
+            </div>
+          )
         )}
 
         <h1 className="mt-3 text-2xl font-semibold text-white">{card.name}</h1>
@@ -132,6 +141,19 @@ export default function DriverCardView({
           <p className="text-center text-xs text-slate-400">{card.vehicle}</p>
         ) : null}
       </div>
+
+      {qrSvg && shareUrl ? (
+        <div className="border-t border-slate-100 px-5 py-5 text-center">
+          <p className="text-xs font-semibold text-slate-500">
+            Pass {card.name.split(' ')[0]} on to a friend
+          </p>
+          <div
+            className="mx-auto mt-3 w-32"
+            dangerouslySetInnerHTML={{ __html: qrSvg }}
+          />
+          <p className="mt-2 break-all text-xs text-slate-400">{shareUrl}</p>
+        </div>
+      ) : null}
     </div>
   )
 }

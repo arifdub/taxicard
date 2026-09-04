@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import QRCode from 'qrcode'
 import { createClient } from '@/lib/supabase/server'
 import DriverCardView, { type DriverCard } from '@/components/driver-card'
 
@@ -43,9 +44,23 @@ export default async function PublicCardPage({
   const card = await getCard(slug)
   if (!card) notFound()
 
+  const base = (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000')
+    .replace(/\/$/, '')
+  const shareUrl = `${base}/${slug}`
+  const qrSvg = await QRCode.toString(shareUrl, {
+    type: 'svg',
+    margin: 1,
+    color: { dark: '#0F1B33', light: '#FFFFFF' },
+  })
+
   return (
     <main className="mx-auto w-full max-w-md px-4 py-8">
-      <DriverCardView card={card} bookHref={`/${slug}/book`} />
+      <DriverCardView
+        card={card}
+        bookHref={`/${slug}/book`}
+        qrSvg={qrSvg}
+        shareUrl={shareUrl}
+      />
       <p className="mt-6 text-center text-xs text-slate-400">
         Powered by TaxiCard
       </p>
