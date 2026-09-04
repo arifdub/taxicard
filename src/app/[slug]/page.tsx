@@ -45,7 +45,7 @@ export default async function PublicCardPage({
 
   return (
     <main className="mx-auto w-full max-w-md px-4 py-8">
-      <DriverCardView card={card} />
+      <DriverCardView card={card} bookHref={`/${slug}/book`} />
       <p className="mt-6 text-center text-xs text-slate-400">
         Powered by TaxiCard
       </p>

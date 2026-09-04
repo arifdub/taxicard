@@ -32,7 +32,13 @@ export function whatsappNumber(raw: string) {
   return digits
 }
 
-export default function DriverCardView({ card }: { card: DriverCard }) {
+export default function DriverCardView({
+  card,
+  bookHref,
+}: {
+  card: DriverCard
+  bookHref?: string
+}) {
   const whatsapp = card.whatsapp_phone ?? null
 
   return (
@@ -79,6 +85,15 @@ export default function DriverCardView({ card }: { card: DriverCard }) {
           <p className="text-center text-sm text-slate-600">
             {card.welcome_message}
           </p>
+        ) : null}
+
+        {card.is_available && bookHref ? (
+          <a
+            href={bookHref}
+            className="block rounded-xl bg-yellow px-4 py-4 text-center text-lg font-semibold text-navy"
+          >
+            Book my taxi
+          </a>
         ) : null}
 
         {!card.is_available ? (

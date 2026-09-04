@@ -59,7 +59,9 @@ export default async function MyCardPage() {
         </div>
       ) : null}
 
-      {card ? <DriverCardView card={card as DriverCard} /> : null}
+      {card ? (
+        <DriverCardView card={card as DriverCard} bookHref={`/${profile.slug}/book`} />
+      ) : null}
 
       <section className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4">
         <h2 className="text-sm font-semibold text-slate-500">Your QR code</h2>
