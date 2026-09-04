@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <div className="bg-white">
-      <header className="bg-navy">
+      <header className="tc-hero">
         <nav className="mx-auto flex max-w-5xl items-center justify-between px-5 py-4">
           <span className="text-lg font-semibold text-white">TaxiCard</span>
           <Link href="/login" className="text-sm font-medium text-slate-200">
@@ -19,23 +19,23 @@ export default function Home() {
         </nav>
 
         <div className="mx-auto max-w-5xl px-5 pb-16 pt-10 md:pb-24 md:pt-16">
-          <p className="text-sm font-semibold uppercase tracking-wide text-yellow">
+          <p className="tc-left text-sm font-semibold uppercase tracking-wide text-yellow">
             For independent taxi drivers
           </p>
-          <h1 className="mt-3 max-w-2xl text-3xl font-semibold leading-tight text-white md:text-5xl">
+          <h1 className="tc-left tc-d1 mt-3 max-w-2xl text-3xl font-semibold leading-tight text-white md:text-5xl">
             Your customers already know you. Make it one tap to book you.
           </h1>
-          <p className="mt-5 max-w-xl text-base text-slate-300 md:text-lg">
+          <p className="tc-left tc-d2 mt-5 max-w-xl text-base text-slate-300 md:text-lg">
             TaxiCard gives you your own booking page and QR code. Your regulars
             scan it once, save it, and book you directly — instead of ringing
             you while you are driving, or opening an app that hands the job to
             someone else.
           </p>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="tc-in tc-d3 mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/signup"
-              className="rounded-xl bg-yellow px-6 py-4 text-center text-base font-semibold text-navy"
+              className="rounded-xl bg-yellow px-6 py-4 text-center text-base font-semibold text-navy shadow-[0_12px_30px_-12px_rgba(255,199,44,0.9)] transition active:scale-[0.99]"
             >
               Create your taxi card — free
             </Link>
@@ -47,7 +47,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <p className="mt-4 text-sm text-slate-400">
+          <p className="tc-in tc-d4 mt-4 text-sm text-slate-400">
             No commission. No dispatch. No app for your customers to download.
           </p>
         </div>
@@ -76,7 +76,7 @@ export default function Home() {
         </ol>
       </section>
 
-      <section className="bg-slate-50 py-16">
+      <section className="tc-page py-16">
         <div className="mx-auto max-w-5xl px-5">
           <h2 className="text-2xl font-semibold text-navy md:text-3xl">
             This is not another taxi app
@@ -132,7 +132,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-navy py-16">
+      <section className="tc-hero py-16">
         <div className="mx-auto max-w-3xl px-5 text-center">
           <h2 className="text-2xl font-semibold text-white md:text-3xl">
             Set up your card today
@@ -163,7 +163,7 @@ export default function Home() {
 
 function Step({ n, title, body }: { n: string; title: string; body: string }) {
   return (
-    <li className="rounded-2xl border border-slate-200 p-6">
+    <li className="tc-in rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_30px_-22px_rgba(15,27,51,0.6)]">
       <span className="flex h-9 w-9 items-center justify-center rounded-full bg-yellow text-sm font-semibold text-navy">
         {n}
       </span>
@@ -175,7 +175,7 @@ function Step({ n, title, body }: { n: string; title: string; body: string }) {
 
 function Point({ title, body }: { title: string; body: string }) {
   return (
-    <div className="rounded-2xl bg-white p-6">
+    <div className="tc-in rounded-2xl bg-white p-6 shadow-[0_10px_30px_-22px_rgba(15,27,51,0.6)]">
       <h3 className="text-lg font-semibold text-navy">{title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-slate-600">{body}</p>
     </div>

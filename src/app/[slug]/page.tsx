@@ -53,16 +53,18 @@ export default async function PublicCardPage({
   })
 
   return (
-    <main className="mx-auto w-full max-w-md px-4 py-8">
+    <main className="tc-page w-full px-4 py-8">
+      <div className="mx-auto w-full max-w-md">
       <DriverCardView
         card={card}
         bookHref={`/${slug}/book`}
         qrSvg={qrSvg}
         shareUrl={prettyLink(slug)}
       />
-      <p className="mt-6 text-center text-xs text-slate-400">
-        Powered by TaxiCard
-      </p>
+        <p className="tc-in tc-d6 mt-6 text-center text-xs text-slate-500">
+          Powered by TaxiCard
+        </p>
+      </div>
     </main>
   )
 }
