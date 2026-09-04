@@ -2,8 +2,46 @@
 
 @theme {
   --color-navy: #0F1B33;
-  --color-navy-soft: #1B2A47;
+  --color-navy-soft: #16233C;
+  --color-navy-line: #2A3A5C;
   --color-yellow: #FFC72C;
+  --color-brandblue: #4C8DFF;
+}
+
+/* Dark surfaces, used on the landing and account pages. */
+.tc-dark-page {
+  background-color: #0B1425;
+  background-image:
+    radial-gradient(900px 460px at 12% -6%, #1D3053 0%, rgba(29, 48, 83, 0) 62%),
+    radial-gradient(620px 340px at 92% 10%, rgba(255, 199, 44, 0.14), rgba(255, 199, 44, 0) 64%);
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+.tc-band { background-color: #101C33; }
+
+/* Recolour the shared form controls when they sit on a dark page,
+   without touching the dashboard where they stay light. */
+.tc-dark input,
+.tc-dark textarea {
+  background-color: #16233C;
+  border-color: #2A3A5C;
+  color: #FFFFFF;
+}
+
+.tc-dark input::placeholder,
+.tc-dark textarea::placeholder {
+  color: #7C8AA5;
+}
+
+.tc-dark label > span {
+  color: #9FB0CC;
+}
+
+.tc-dark input:focus,
+.tc-dark textarea:focus {
+  border-color: var(--color-yellow);
+  box-shadow: 0 0 0 4px rgba(255, 199, 44, 0.16);
 }
 
 /* Page backgrounds: a warm navy wash at the top that the card sits into,

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="TaxiCard">
+  <rect width="512" height="512" rx="112" fill="#0F1B33"/>
+  <rect x="96" y="150" width="320" height="212" rx="28" fill="#FFC72C"/>
+  <rect x="96" y="150" width="320" height="46" rx="23" fill="#FFD75E"/>
+  <rect x="128" y="232" width="112" height="18" rx="9" fill="#0F1B33" opacity="0.55"/>
+  <rect x="128" y="272" width="72" height="18" rx="9" fill="#0F1B33" opacity="0.35"/>
+  <g fill="#0F1B33">
+    <rect x="268" y="228" width="26" height="26" rx="5"/>
+    <rect x="308" y="228" width="26" height="26" rx="5"/>
+    <rect x="348" y="228" width="26" height="26" rx="5"/>
+    <rect x="268" y="268" width="26" height="26" rx="5"/>
+    <rect x="348" y="268" width="26" height="26" rx="5"/>
+    <rect x="268" y="308" width="26" height="26" rx="5"/>
+    <rect x="308" y="308" width="26" height="26" rx="5"/>
+    <rect x="348" y="308" width="26" height="26" rx="5"/>
+  </g>
+</svg>
