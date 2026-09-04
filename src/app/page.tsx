@@ -3,6 +3,8 @@ import QRCode from 'qrcode'
 import type { Metadata } from 'next'
 import { siteUrl } from '@/lib/site'
 import Wordmark from '@/components/wordmark'
+import Reveal from '@/components/reveal'
+import type { ReactNode } from 'react'
 
 export const metadata: Metadata = {
   title: 'TaxiCard — your own digital taxi card and booking page',
@@ -66,11 +68,11 @@ export default async function Home() {
 
       <section className="tc-band py-16">
         <div className="mx-auto grid max-w-5xl items-center gap-12 px-5 md:grid-cols-2">
-          <div className="flex justify-center">
+          <Reveal from="right" className="flex justify-center">
             <PhoneMock qr={sampleQr} />
-          </div>
+          </Reveal>
 
-          <div>
+          <Reveal from="left" delay={80}>
             <p className="text-sm font-semibold uppercase tracking-wide text-yellow">
               What your customer sees
             </p>
@@ -112,71 +114,107 @@ export default async function Home() {
               And the code at the bottom is theirs to pass on. That is how a
               good driver gets the next customer.
             </p>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       <section className="py-16">
         <div className="mx-auto max-w-5xl px-5">
-          <h2 className="text-2xl font-semibold md:text-3xl">How it works</h2>
-          <ol className="mt-8 grid gap-5 md:grid-cols-3">
-            <Step
-              n="1"
-              title="Set up your card"
-              body="Your name, photo, phone, vehicle and service area. Takes a few minutes and you choose your own link, like taxicard.ie/john."
-            />
-            <Step
-              n="2"
-              title="Print your QR code"
-              body="Download it and put it on business cards, in the back of the car, on a flyer. One scan opens your page. Nothing to install."
-            />
-            <Step
-              n="3"
-              title="Take bookings directly"
-              body="A request arrives with pickup, destination and time. You accept or decline. The customer sees the confirmation and your number."
-            />
-          </ol>
+          <Reveal className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-wide text-yellow">
+              Three steps
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold md:text-3xl">
+              How it works
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-slate-300">
+              From nothing to taking bookings in an evening.
+            </p>
+          </Reveal>
+
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            <Reveal from="left">
+              <Step
+                n="1"
+                icon={<IdIcon />}
+                title="Set up your card"
+                body="Your name, photo, phone, vehicle and service area. Takes a few minutes and you choose your own link, like taxicard.ie/john."
+              />
+            </Reveal>
+            <Reveal delay={90}>
+              <Step
+                n="2"
+                icon={<PrinterIcon />}
+                title="Print your QR code"
+                body="Download it and put it on business cards, in the back of the car, on a flyer. One scan opens your page. Nothing to install."
+              />
+            </Reveal>
+            <Reveal from="right" delay={180}>
+              <Step
+                n="3"
+                icon={<BellIcon />}
+                title="Take bookings directly"
+                body="A request arrives with pickup, destination and time. You accept or decline. The customer sees the confirmation and your number."
+              />
+            </Reveal>
+          </div>
         </div>
       </section>
 
       <section className="tc-band py-16">
         <div className="mx-auto max-w-5xl px-5">
-          <h2 className="text-2xl font-semibold md:text-3xl">
-            This is not another taxi app
-          </h2>
-          <p className="mt-3 max-w-2xl text-slate-300">
-            There is no pool of drivers and no matching. A customer who opens
-            your card books you, or nobody. The work you have built up stays
-            yours.
-          </p>
+          <Reveal className="text-center">
+            <h2 className="text-2xl font-semibold md:text-3xl">
+              This is not another taxi app
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-slate-300">
+              There is no pool of drivers and no matching. A customer who opens
+              your card books you, or nobody. The work you have built up stays
+              yours.
+            </p>
+          </Reveal>
 
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
-            <Point
-              title="Your own customer list"
-              body="Every booking builds it. Sarah books you once and you have her number, her usual pickup and her history — recognised automatically the next time, even if she writes her number differently."
-            />
-            <Point
-              title="Nobody else can see it"
-              body="Every driver's customers and bookings are walled off at database level, not just hidden in the app. Another driver on TaxiCard cannot reach your list."
-            />
-            <Point
-              title="Easy for older customers"
-              body="Big buttons, no login, no download. If they can open a web page, they can book you. And the call button never goes away."
-            />
-            <Point
-              title="You stay in control"
-              body="Mark yourself unavailable and your card says so, while still letting people ring you. Accept or decline every job yourself."
-            />
+          <div className="mt-10 grid gap-4 md:grid-cols-2">
+            <Reveal from="left">
+              <Point
+                icon={<UsersIcon />}
+                title="Your own customer list"
+                body="Every booking builds it. Sarah books you once and you have her number, her usual pickup and her history — recognised automatically the next time, even if she writes her number differently."
+              />
+            </Reveal>
+            <Reveal from="right" delay={90}>
+              <Point
+                icon={<LockIcon />}
+                title="Nobody else can see it"
+                body="Every driver's customers and bookings are walled off at database level, not just hidden in the app. Another driver on TaxiCard cannot reach your list."
+              />
+            </Reveal>
+            <Reveal from="left" delay={60}>
+              <Point
+                icon={<TapIcon />}
+                title="Easy for older customers"
+                body="Big buttons, no login, no download. If they can open a web page, they can book you. And the call button never goes away."
+              />
+            </Reveal>
+            <Reveal from="right" delay={150}>
+              <Point
+                icon={<SwitchIcon />}
+                title="You stay in control"
+                body="Mark yourself unavailable and your card says so, while still letting people ring you. Accept or decline every job yourself."
+              />
+            </Reveal>
           </div>
         </div>
       </section>
 
       <section className="py-16">
         <div className="mx-auto max-w-5xl px-5">
-          <h2 className="text-2xl font-semibold md:text-3xl">
-            Common questions
-          </h2>
-          <div className="mt-8 space-y-5">
+          <Reveal>
+            <h2 className="text-center text-2xl font-semibold md:text-3xl">
+              Common questions
+            </h2>
+          </Reveal>
+          <div className="mx-auto mt-10 max-w-3xl space-y-5">
             <Faq
               q="Do my customers need an app?"
               a="No. They scan your QR code or tap your link and the booking page opens in their phone browser. They can add it to their home screen if they want it handy."
@@ -235,23 +273,49 @@ export default async function Home() {
   )
 }
 
-function Step({ n, title, body }: { n: string; title: string; body: string }) {
+function Step({
+  n,
+  title,
+  body,
+  icon,
+}: {
+  n: string
+  title: string
+  body: string
+  icon: ReactNode
+}) {
   return (
-    <li className="tc-in rounded-2xl border border-white/10 bg-navy-soft p-6">
-      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-yellow text-sm font-semibold text-navy">
-        {n}
+    <div className="h-full rounded-2xl border border-white/10 bg-navy-soft p-6 text-center">
+      <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-yellow text-navy">
+        {icon}
       </span>
-      <h3 className="mt-4 text-lg font-semibold">{title}</h3>
+      <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-yellow">
+        Step {n}
+      </p>
+      <h3 className="mt-1 text-lg font-semibold">{title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-slate-300">{body}</p>
-    </li>
+    </div>
   )
 }
 
-function Point({ title, body }: { title: string; body: string }) {
+function Point({
+  title,
+  body,
+  icon,
+}: {
+  title: string
+  body: string
+  icon: ReactNode
+}) {
   return (
-    <div className="tc-in rounded-2xl border border-white/10 bg-navy-soft p-6">
-      <h3 className="text-lg font-semibold text-yellow">{title}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-slate-300">{body}</p>
+    <div className="flex h-full gap-4 rounded-2xl border border-white/10 bg-navy-soft p-6">
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-yellow/15 text-yellow">
+        {icon}
+      </span>
+      <div>
+        <h3 className="text-lg font-semibold text-yellow">{title}</h3>
+        <p className="mt-2 text-sm leading-relaxed text-slate-300">{body}</p>
+      </div>
     </div>
   )
 }
@@ -350,6 +414,81 @@ function SampleAvatar() {
         d="M33 30a15 15 0 0130 0c0 2-2 3-5 2-6-2-14-2-20 1-3 1-5 0-5-3z"
         fill="#1B2A47"
       />
+    </svg>
+  )
+}
+
+const stroke = {
+  fill: 'none',
+  stroke: 'currentColor',
+  strokeWidth: 1.7,
+  strokeLinecap: 'round' as const,
+  strokeLinejoin: 'round' as const,
+}
+
+function IdIcon() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true" {...stroke}>
+      <rect x="2.5" y="5" width="19" height="14" rx="2.5" />
+      <circle cx="8.5" cy="11" r="2.2" />
+      <path d="M5 16.2a3.9 3.9 0 017 0M14.5 10h4M14.5 13.5h4" />
+    </svg>
+  )
+}
+
+function PrinterIcon() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true" {...stroke}>
+      <path d="M7 8V3.5h10V8" />
+      <rect x="3" y="8" width="18" height="8" rx="2" />
+      <rect x="7" y="14" width="10" height="6.5" rx="1.2" />
+      <path d="M17.5 11h.01" />
+    </svg>
+  )
+}
+
+function BellIcon() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true" {...stroke}>
+      <path d="M18 9a6 6 0 10-12 0c0 4.2-1.5 5.6-1.5 5.6h15S18 13.2 18 9z" />
+      <path d="M10.2 18.5a2 2 0 003.6 0" />
+    </svg>
+  )
+}
+
+function UsersIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" {...stroke}>
+      <circle cx="9" cy="8.5" r="3.2" />
+      <path d="M3.2 19.5a5.9 5.9 0 0111.6 0" />
+      <path d="M16 5.5a3.2 3.2 0 010 6M16.8 14.8a5.5 5.5 0 013.9 4.7" />
+    </svg>
+  )
+}
+
+function LockIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" {...stroke}>
+      <rect x="4.5" y="10.5" width="15" height="10" rx="2.5" />
+      <path d="M8 10.5V7.8a4 4 0 018 0v2.7M12 14.5v2.5" />
+    </svg>
+  )
+}
+
+function TapIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" {...stroke}>
+      <path d="M10 11V5.5a1.8 1.8 0 013.6 0V13" />
+      <path d="M13.6 10.5a1.7 1.7 0 013.4 0v1M17 11.5a1.7 1.7 0 013.4 0V16a5 5 0 01-5 5h-1.9a5 5 0 01-4.2-2.3l-2.6-4a1.7 1.7 0 012.7-2l1.6 1.8" />
+    </svg>
+  )
+}
+
+function SwitchIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" {...stroke}>
+      <rect x="2.5" y="7.5" width="19" height="9" rx="4.5" />
+      <circle cx="16.5" cy="12" r="2.6" fill="currentColor" stroke="none" />
     </svg>
   )
 }
