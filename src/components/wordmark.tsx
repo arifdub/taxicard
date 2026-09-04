@@ -8,11 +8,11 @@ export default function Wordmark({
   size?: 'sm' | 'md' | 'lg'
   className?: string
 }) {
-  const dim = { sm: 26, md: 32, lg: 40 }[size]
-  const text = { sm: 'text-base', md: 'text-lg', lg: 'text-2xl' }[size]
+  const dim = { sm: 32, md: 44, lg: 56 }[size]
+  const text = { sm: 'text-lg', md: 'text-2xl', lg: 'text-3xl' }[size]
 
   return (
-    <span className={`inline-flex items-center gap-2.5 ${className}`}>
+    <span className={`inline-flex items-center gap-3 ${className}`}>
       <svg
         width={dim}
         height={dim}
