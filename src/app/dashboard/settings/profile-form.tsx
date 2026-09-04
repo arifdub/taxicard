@@ -74,7 +74,7 @@ export default function ProfileForm({
           type="tel"
           inputMode="tel"
           defaultValue={profile.whatsapp_phone ?? ''}
-          hint="Leave blank if it is the same as above, or if you would rather not show it."
+          hint="Leave blank and we will use the number above. Your card shows a WhatsApp button either way."
         />
       </section>
 

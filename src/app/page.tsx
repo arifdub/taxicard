@@ -264,7 +264,7 @@ function Faq({ q, a }: { q: string; a: string }) {
 function PhoneMock({ qr }: { qr: string }) {
   return (
     <div className="tc-in w-[292px] rounded-[44px] bg-[#050B16] p-2.5 shadow-[0_36px_80px_-30px_rgba(0,0,0,0.85)] ring-1 ring-white/10">
-      <div className="relative overflow-hidden rounded-[36px] bg-white">
+      <div className="relative overflow-hidden rounded-[36px] bg-navy-soft">
         <div className="absolute left-1/2 top-2 z-10 h-5 w-24 -translate-x-1/2 rounded-full bg-[#050B16]" />
 
         <div className="bg-navy px-5 pb-6 pt-9 text-center">
@@ -283,8 +283,8 @@ function PhoneMock({ qr }: { qr: string }) {
           </div>
 
           <div className="grid grid-cols-2 gap-2">
-            <div className="flex flex-col items-center gap-1 rounded-xl border border-slate-200 py-3">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-navy/5 text-navy">
+            <div className="flex flex-col items-center gap-1 rounded-xl bg-[#1FA855] py-3">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path
                     d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a1 1 0 01-1.1 1A16 16 0 014 5.1 1 1 0 015 4z"
@@ -295,36 +295,30 @@ function PhoneMock({ qr }: { qr: string }) {
                   />
                 </svg>
               </span>
-              <span className="text-[10px] font-semibold text-navy">Call John</span>
+              <span className="text-[10px] font-semibold text-white">Call John</span>
             </div>
 
-            <div className="flex flex-col items-center gap-1 rounded-xl border border-emerald-200 bg-emerald-50 py-3">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-white">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path
-                    d="M20.5 11.5a7.9 7.9 0 01-11.6 7L4 20l1.6-4.6a7.9 7.9 0 1114.9-3.9z"
-                    stroke="currentColor"
-                    strokeWidth="1.9"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+            <div className="flex flex-col items-center gap-1 rounded-xl bg-[#25D366] py-3">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/30 text-[#06301A]">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.39-1.48-.89-.79-1.48-1.76-1.66-2.06-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.66-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.07c.15.2 2.1 3.2 5.08 4.49.7.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.42.25-.69.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 01-1.51-5.26c0-5.45 4.44-9.89 9.89-9.89 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.43 9.89-9.88 9.89M20.46 3.49A11.8 11.8 0 0012.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.9 11.9 0 005.69 1.45h.005c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 00-3.48-8.42" />
                 </svg>
               </span>
-              <span className="text-[10px] font-semibold text-emerald-900">
+              <span className="text-[10px] font-semibold text-[#06301A]">
                 WhatsApp
               </span>
             </div>
           </div>
 
-          <div className="border-t border-slate-100 pt-3 text-center">
+          <div className="border-t border-white/10 pt-3 text-center">
             <p className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">
               Pass John on to a friend
             </p>
             <div
-              className="mx-auto mt-2 w-20"
+              className="mx-auto mt-2 w-20 rounded-lg bg-white p-1.5"
               dangerouslySetInnerHTML={{ __html: qr }}
             />
-            <p className="mt-1.5 text-[10px] font-semibold text-navy">
+            <p className="mt-1.5 text-[10px] font-semibold text-white">
               taxicard.ie/john
             </p>
           </div>
