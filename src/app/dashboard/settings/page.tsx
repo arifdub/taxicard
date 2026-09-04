@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { prettyLink } from '@/lib/site'
 import ProfileForm from './profile-form'
 
 export default async function SettingsPage({
@@ -32,16 +33,13 @@ export default async function SettingsPage({
     )
   }
 
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'taxicard.ie').replace(
-    /^https?:\/\//,
-    ''
-  )
+  const siteUrl = prettyLink('').replace(/\/$/, '')
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold text-navy">
-          {welcome ? 'Welcome. Set up your card' : 'Settings'}
+          {welcome ? 'Welcome. Set up your card' : 'Profile'}
         </h1>
         <p className="mt-1 text-sm text-slate-500">
           {welcome

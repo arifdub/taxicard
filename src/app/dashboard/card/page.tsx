@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import QRCode from 'qrcode'
 import { createClient } from '@/lib/supabase/server'
+import { siteUrl, prettyLink } from '@/lib/site'
 import DriverCardView, { type DriverCard } from '@/components/driver-card'
 import { AvailabilitySwitch, EditablePhoto, CopyLink } from './card-tools'
 
@@ -22,9 +23,8 @@ export default async function MyCardPage() {
 
   if (!profile) redirect('/dashboard/settings')
 
-  const base = (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000')
-    .replace(/\/$/, '')
-  const url = `${base}/${profile.slug}`
+  const url = `${siteUrl()}/${profile.slug}`
+  const pretty = prettyLink(profile.slug)
 
   const { data: card } = await supabase.rpc('get_driver_card', {
     p_slug: profile.slug,
@@ -53,7 +53,7 @@ export default async function MyCardPage() {
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
           Add a phone number in{' '}
           <Link href="/dashboard/settings" className="font-medium underline">
-            Settings
+            Profile
           </Link>{' '}
           so customers can reach you.
         </div>
@@ -79,8 +79,8 @@ export default async function MyCardPage() {
           className="mx-auto w-48"
           dangerouslySetInnerHTML={{ __html: svg }}
         />
-        <p className="break-all text-center text-sm font-medium text-navy">
-          {url}
+        <p className="break-all text-center text-base font-semibold text-navy">
+          {pretty}
         </p>
         <div className="grid grid-cols-2 gap-2">
           <a

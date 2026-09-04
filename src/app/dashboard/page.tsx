@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { fetchBookings } from '@/lib/bookings'
+import { siteUrl, prettyLink } from '@/lib/site'
 import BookingCard from '@/components/booking-card'
 import { AvailabilitySwitch } from './card/card-tools'
 
@@ -42,9 +43,6 @@ export default async function DashboardPage() {
       .then((r) => r.count ?? 0),
   ])
 
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000')
-    .replace(/\/$/, '')
-
   return (
     <div className="space-y-5">
       <h1 className="text-2xl font-semibold text-navy">
@@ -72,7 +70,9 @@ export default async function DashboardPage() {
           label="Pending requests"
           tone={pending.length > 0 ? 'text-red-600' : undefined}
         />
-        <Stat value={customerCount} label="Customers" />
+        <Link href="/dashboard/customers" className="block">
+          <Stat value={customerCount} label="Customers" />
+        </Link>
         <Stat value={bookingCount} label="Total bookings" />
       </div>
 
@@ -107,12 +107,12 @@ export default async function DashboardPage() {
       <div className="rounded-2xl border border-slate-200 bg-white p-4">
         <p className="text-xs font-semibold text-slate-500">Your booking link</p>
         <a
-          href={`${siteUrl}/${profile?.slug}`}
+          href={`${siteUrl()}/${profile?.slug}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-1 block break-all text-sm font-medium text-blue-700 underline"
+          className="mt-1 block break-all text-sm font-medium text-blue-700"
         >
-          {siteUrl}/{profile?.slug}
+          {prettyLink(profile?.slug ?? '')}
         </a>
       </div>
     </div>
