@@ -10,6 +10,7 @@ const LINKS = [
   { href: '/dashboard/bookings', label: 'Bookings' },
   { href: '/dashboard/customers', label: 'Customers' },
   { href: '/dashboard/card', label: 'My card' },
+  { href: '/dashboard/print', label: 'Print' },
   { href: '/dashboard/settings', label: 'Profile' },
 ]
 

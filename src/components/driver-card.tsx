@@ -113,6 +113,16 @@ export default function DriverCardView({
 
       {/* Identity */}
       <div className="px-5 pt-4 text-center">
+        {card.photo_url ? (
+          <img
+            src={card.photo_url}
+            alt={card.name}
+            width={104}
+            height={104}
+            className="mx-auto mb-3 h-[104px] w-[104px] rounded-full object-cover ring-[3px] ring-yellow"
+          />
+        ) : null}
+
         <h1 className="tc-left text-[26px] font-bold leading-tight text-white">
           {card.name}
         </h1>

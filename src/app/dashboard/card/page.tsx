@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { siteUrl, prettyLink } from '@/lib/site'
 import DriverCardView, { type DriverCard } from '@/components/driver-card'
 import { AvailabilitySwitch, CopyLink } from './card-tools'
+import PhotoToggle from './photo-toggle'
 
 export const dynamic = 'force-dynamic'
 
@@ -25,6 +26,12 @@ export default async function MyCardPage() {
 
   const url = `${siteUrl()}/${profile.slug}`
   const pretty = prettyLink(profile.slug)
+
+  const { data: settings } = await supabase
+    .from('driver_settings')
+    .select('show_photo')
+    .eq('driver_id', user.id)
+    .maybeSingle()
 
   const { data: card } = await supabase.rpc('get_driver_card', {
     p_slug: profile.slug,
@@ -48,6 +55,8 @@ export default async function MyCardPage() {
       </div>
 
       <AvailabilitySwitch initial={profile.is_available} />
+
+      <PhotoToggle initial={settings?.show_photo ?? true} />
 
       {!profile.phone ? (
         <div className="rounded-2xl border border-amber-400/30 bg-amber-500/10 p-4 text-sm text-amber-100">
@@ -92,6 +101,12 @@ export default async function MyCardPage() {
           </a>
         </div>
         <CopyLink url={url} />
+        <Link
+          href="/dashboard/print"
+          className="block rounded-xl border border-white/10 bg-navy-soft px-4 py-3 text-center text-sm font-medium text-white"
+        >
+          Print a sign and business cards
+        </Link>
         <p className="text-xs text-slate-400">
           Use the PNG for printing on business cards. The SVG stays sharp at
           any size, which suits large signs or window stickers.

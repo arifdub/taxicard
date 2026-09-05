@@ -43,3 +43,21 @@ export async function savePhotoUrl(url: string) {
   revalidatePath('/dashboard', 'layout')
   return { ok: true }
 }
+
+export async function setShowPhoto(next: boolean) {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) return { error: 'Log in again.' }
+
+  const { error } = await supabase
+    .from('driver_settings')
+    .update({ show_photo: next })
+    .eq('driver_id', user.id)
+
+  if (error) return { error: 'Could not change that.' }
+
+  revalidatePath('/dashboard', 'layout')
+  return { ok: true }
+}
