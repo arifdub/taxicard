@@ -20,7 +20,7 @@ export function AvailabilitySwitch({ initial }: { initial: boolean }) {
   }
 
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-4 py-3.5">
+    <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-navy-soft px-4 py-3.5">
       <span className="text-sm font-medium">
         {on ? 'Online, available' : 'Offline, not taking bookings'}
       </span>
@@ -32,11 +32,11 @@ export function AvailabilitySwitch({ initial }: { initial: boolean }) {
         aria-checked={on}
         aria-label="Availability"
         className={`relative h-7 w-12 rounded-full transition-colors ${
-          on ? 'bg-emerald-600' : 'bg-slate-300'
+          on ? 'bg-emerald-600' : 'bg-white/25'
         }`}
       >
         <span
-          className={`absolute top-1 h-5 w-5 rounded-full bg-white transition-all ${
+          className={`absolute top-1 h-5 w-5 rounded-full bg-navy-soft transition-all ${
             on ? 'left-6' : 'left-1'
           }`}
         />
@@ -133,7 +133,7 @@ export function EditablePhoto({
             className="mx-auto h-24 w-24 rounded-full object-cover"
           />
         ) : (
-          <span className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-yellow text-2xl font-semibold text-navy">
+          <span className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-yellow text-2xl font-semibold text-white">
             {letters}
           </span>
         )}
@@ -142,7 +142,7 @@ export function EditablePhoto({
       <label
         htmlFor="photo-input"
         className={`mt-2 block cursor-pointer text-xs font-medium underline ${
-          tone === 'dark' ? 'text-slate-300' : 'text-blue-700'
+          tone === 'dark' ? 'text-slate-300' : 'text-brandblue'
         }`}
       >
         {busy ? 'Uploading…' : preview ? 'Change photo' : 'Add a photo'}
@@ -151,7 +151,7 @@ export function EditablePhoto({
       {status ? (
         <p
           className={`mt-1 text-xs ${
-            tone === 'dark' ? 'text-amber-300' : 'text-red-700'
+            tone === 'dark' ? 'text-amber-300' : 'text-red-300'
           }`}
         >
           {status}
@@ -176,7 +176,7 @@ export function CopyLink({ url }: { url: string }) {
           setCopied(false)
         }
       }}
-      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium"
+      className="w-full rounded-xl border border-white/10 bg-navy-soft px-4 py-3 text-sm font-medium"
     >
       {copied ? 'Link copied' : 'Copy my booking link'}
     </button>

@@ -42,7 +42,7 @@ export default function InstallPrompt() {
   if (mode === 'hidden') return null
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-navy p-4 text-white">
+    <div className="rounded-2xl border border-yellow/25 bg-yellow/10 p-4 text-white">
       <p className="font-semibold">Put TaxiCard on your home screen</p>
 
       {mode === 'ios' ? (

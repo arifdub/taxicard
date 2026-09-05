@@ -49,7 +49,7 @@ export default function ProfileForm({
       {state.message ? <Alert kind="ok">{state.message}</Alert> : null}
 
       <section className="space-y-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-yellow">
           About you
         </h2>
         <Field label="Your name" name="name" defaultValue={profile.name ?? ''} required />
@@ -79,26 +79,26 @@ export default function ProfileForm({
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-yellow">
           Your booking link
         </h2>
         <label className="block">
-          <span className="mb-1 block text-xs font-semibold text-slate-500">
+          <span className="mb-1 block text-xs font-semibold text-slate-400">
             Link
           </span>
-          <div className="flex items-center rounded-xl border border-slate-200 bg-white px-3 focus-within:border-navy focus-within:ring-4 focus-within:ring-navy/10">
+          <div className="flex items-center rounded-xl border border-white/10 bg-navy-soft px-3 focus-within:border-yellow focus-within:ring-4 focus-within:ring-yellow/15">
             <span className="shrink-0 text-sm text-slate-400">{siteUrl}/</span>
             <input
               name="slug"
               value={slug}
               onChange={(e) => setSlug(e.target.value.toLowerCase())}
               required
-              className="w-full bg-transparent py-3 text-base outline-none"
+              className="w-full bg-transparent py-3 text-base text-white outline-none"
             />
           </div>
         </label>
         {slugState ? (
-          <p className={`text-sm ${slugState.ok ? 'text-emerald-700' : 'text-red-700'}`}>
+          <p className={`text-sm ${slugState.ok ? 'text-emerald-700' : 'text-red-300'}`}>
             {slugState.reason}
           </p>
         ) : null}
@@ -109,7 +109,7 @@ export default function ProfileForm({
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-yellow">
           Your taxi
         </h2>
         <Field

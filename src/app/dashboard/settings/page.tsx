@@ -27,7 +27,7 @@ export default async function SettingsPage({
 
   if (!profile) {
     return (
-      <p className="text-sm text-red-700">
+      <p className="text-sm text-red-300">
         Your profile row is missing. Check that the handle_new_user trigger
         ran when you signed up.
       </p>
@@ -39,22 +39,22 @@ export default async function SettingsPage({
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-navy">
+        <h1 className="text-2xl font-semibold text-white">
           {welcome ? 'Welcome. Set up your card' : 'Profile'}
         </h1>
-        <p className="mt-1 text-sm text-slate-500">
+        <p className="mt-1 text-sm text-slate-400">
           {welcome
             ? 'Fill this in and your booking page goes live.'
             : 'Your details as your customers will see them.'}
         </p>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-5 text-center">
+      <div className="rounded-2xl border border-white/10 bg-navy-soft p-5 text-center">
         <EditablePhoto
           userId={user.id}
           photoUrl={profile.photo_url}
           name={profile.name ?? 'Driver'}
-          tone="light"
+          tone="dark"
         />
         <p className="mt-3 text-xs text-slate-400">
           This is the photo your customers see on your card.

@@ -41,8 +41,8 @@ export default async function MyCardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-navy">My card</h1>
-        <p className="mt-1 text-sm text-slate-500">
+        <h1 className="text-2xl font-semibold text-white">My card</h1>
+        <p className="mt-1 text-sm text-slate-400">
           This is what your customers see.
         </p>
       </div>
@@ -50,7 +50,7 @@ export default async function MyCardPage() {
       <AvailabilitySwitch initial={profile.is_available} />
 
       {!profile.phone ? (
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+        <div className="rounded-2xl border border-amber-400/30 bg-amber-500/10 p-4 text-sm text-amber-100">
           Add a phone number in{' '}
           <Link href="/dashboard/settings" className="font-medium underline">
             Profile
@@ -73,27 +73,27 @@ export default async function MyCardPage() {
         />
       ) : null}
 
-      <section className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4">
-        <h2 className="text-sm font-semibold text-slate-500">Your QR code</h2>
+      <section className="space-y-3 rounded-2xl border border-white/10 bg-navy-soft p-4">
+        <h2 className="text-sm font-semibold text-slate-400">Your QR code</h2>
         <div
           className="mx-auto w-48"
           dangerouslySetInnerHTML={{ __html: svg }}
         />
-        <p className="break-all text-center text-base font-semibold text-navy">
+        <p className="break-all text-center text-base font-semibold text-white">
           {pretty}
         </p>
         <div className="grid grid-cols-2 gap-2">
           <a
             href={png}
             download={`taxicard-${profile.slug}.png`}
-            className="rounded-xl bg-yellow px-3 py-3 text-center text-sm font-semibold text-navy"
+            className="rounded-xl bg-yellow px-3 py-3 text-center text-sm font-semibold text-white"
           >
             Download PNG
           </a>
           <a
             href={svgHref}
             download={`taxicard-${profile.slug}.svg`}
-            className="rounded-xl border border-slate-200 px-3 py-3 text-center text-sm font-medium"
+            className="rounded-xl border border-white/10 px-3 py-3 text-center text-sm font-medium"
           >
             Download SVG
           </a>
@@ -109,7 +109,7 @@ export default async function MyCardPage() {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="block rounded-xl border border-slate-200 bg-white px-4 py-3 text-center text-sm font-medium text-blue-700"
+        className="block rounded-xl border border-white/10 bg-navy-soft px-4 py-3 text-center text-sm font-medium text-brandblue"
       >
         Open my public card
       </a>

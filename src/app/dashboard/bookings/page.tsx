@@ -28,7 +28,7 @@ export default async function BookingsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold text-navy">Bookings</h1>
+      <h1 className="text-2xl font-semibold text-white">Bookings</h1>
 
       <Section title="Waiting for you" rows={pending} empty="No new requests." />
       <Section title="Upcoming" rows={upcoming} empty="Nothing booked ahead." />
@@ -48,9 +48,9 @@ function Section({
 }) {
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-semibold text-slate-500">{title}</h2>
+      <h2 className="text-sm font-semibold text-slate-400">{title}</h2>
       {rows.length === 0 ? (
-        <p className="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-500">
+        <p className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-400">
           {empty}
         </p>
       ) : (

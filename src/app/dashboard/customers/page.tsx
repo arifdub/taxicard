@@ -47,16 +47,16 @@ export default async function CustomersPage({
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-semibold text-navy">Customers</h1>
+      <h1 className="text-2xl font-semibold text-white">Customers</h1>
 
       <form className="flex gap-2">
         <input
           name="q"
           defaultValue={q ?? ''}
           placeholder="Search name or number"
-          className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-base outline-none focus:border-navy focus:ring-4 focus:ring-navy/10"
+          className="w-full rounded-xl border border-white/10 bg-navy-soft px-3 py-3 text-base text-white outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15"
         />
-        <button className="rounded-xl bg-navy px-4 text-sm font-medium text-white">
+        <button className="rounded-xl bg-yellow px-4 text-sm font-semibold text-navy">
           Search
         </button>
       </form>
@@ -64,7 +64,7 @@ export default async function CustomersPage({
       <AddCustomer />
 
       {customers.length === 0 ? (
-        <p className="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-500">
+        <p className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-400">
           {q
             ? 'Nobody matches that.'
             : 'No customers yet. Anyone who books through your card is saved here automatically.'}
@@ -74,14 +74,14 @@ export default async function CustomersPage({
           {customers.map((c) => (
             <li
               key={c.id}
-              className="rounded-2xl border border-slate-200 bg-white p-4"
+              className="rounded-2xl border border-white/10 bg-navy-soft p-4"
             >
               <div className="flex items-start justify-between gap-3">
                 <Link href={`/dashboard/customers/${c.id}`} className="min-w-0">
-                  <p className="truncate text-base font-semibold text-navy">
+                  <p className="truncate text-base font-semibold text-white">
                     {c.name}
                   </p>
-                  <p className="text-sm text-slate-500">{c.phone}</p>
+                  <p className="text-sm text-slate-400">{c.phone}</p>
                   <p className="mt-1 text-xs text-slate-400">
                     {c.bookings_count} booking{c.bookings_count === 1 ? '' : 's'}
                     {c.last_booking_at
@@ -94,7 +94,7 @@ export default async function CustomersPage({
               <div className="mt-3 grid grid-cols-2 gap-2">
                 <a
                   href={telHref(c.phone)}
-                  className="rounded-xl border border-slate-200 px-3 py-2.5 text-center text-sm font-medium"
+                  className="rounded-xl border border-white/10 px-3 py-2.5 text-center text-sm font-medium"
                 >
                   Call
                 </a>
@@ -102,7 +102,7 @@ export default async function CustomersPage({
                   href={`https://wa.me/${whatsappNumber(c.phone)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-xl border border-slate-200 px-3 py-2.5 text-center text-sm font-medium text-emerald-800"
+                  className="rounded-xl border border-white/10 px-3 py-2.5 text-center text-sm font-medium text-emerald-300"
                 >
                   WhatsApp
                 </a>

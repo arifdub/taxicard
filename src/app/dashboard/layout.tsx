@@ -8,17 +8,19 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-navy px-5 py-3">
+    <div className="tc-dark-page text-white">
+      <header className="border-b border-white/10 px-5 py-3">
         <div className="mx-auto flex max-w-md items-center justify-between">
           <Link href="/dashboard">
-            <Wordmark size="md" />
+            <Wordmark size="sm" />
           </Link>
           <NavMenu />
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-md px-5 py-6 pb-12">{children}</main>
+      <main className="tc-dark mx-auto w-full max-w-md px-5 py-6 pb-12">
+        {children}
+      </main>
     </div>
   )
 }

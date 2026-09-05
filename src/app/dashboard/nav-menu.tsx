@@ -53,17 +53,17 @@ export default function NavMenu() {
             type="button"
             aria-label="Close menu"
             onClick={() => setOpen(false)}
-            className="absolute inset-0 h-full w-full bg-navy/50"
+            className="absolute inset-0 h-full w-full bg-black/60"
           />
 
-          <nav className="absolute inset-y-0 right-0 flex w-72 max-w-[85%] flex-col bg-white shadow-xl">
-            <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
-              <span className="text-base font-semibold text-navy">Menu</span>
+          <nav className="absolute inset-y-0 right-0 flex w-72 max-w-[85%] flex-col bg-navy-soft shadow-2xl">
+            <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
+              <span className="text-base font-semibold text-white">Menu</span>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Close menu"
-                className="-mr-2 flex h-9 w-9 items-center justify-center text-2xl leading-none text-slate-500"
+                className="-mr-2 flex h-9 w-9 items-center justify-center text-2xl leading-none text-slate-400"
               >
                 &times;
               </button>
@@ -82,8 +82,8 @@ export default function NavMenu() {
                     onClick={() => setOpen(false)}
                     className={`block rounded-xl px-4 py-3.5 text-base ${
                       active
-                        ? 'bg-slate-100 font-semibold text-navy'
-                        : 'font-medium text-slate-700'
+                        ? 'bg-white/10 font-semibold text-yellow'
+                        : 'font-medium text-slate-300'
                     }`}
                   >
                     {l.label}
@@ -92,9 +92,9 @@ export default function NavMenu() {
               })}
             </div>
 
-            <div className="border-t border-slate-200 p-3">
+                        <div className="border-t border-white/10 p-3">
               <form action={logOut}>
-                <button className="w-full rounded-xl px-4 py-3.5 text-left text-base font-medium text-red-700">
+                <button className="w-full rounded-xl px-4 py-3.5 text-left text-base font-medium text-red-300">
                   Log out
                 </button>
               </form>
