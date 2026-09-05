@@ -174,14 +174,14 @@ export default function DriverCardView({
         {card.is_available && bookHref ? (
           <a
             href={bookHref}
-            className="tc-in tc-d5 flex items-center justify-between gap-3 rounded-[26px] bg-yellow px-6 py-4 text-navy shadow-[0_14px_34px_-12px_rgba(255,199,44,0.85)] transition active:scale-[0.99]"
+            className="tc-in tc-d5 flex items-center justify-between gap-3 rounded-2xl bg-yellow px-6 py-4 text-navy shadow-[0_14px_34px_-12px_rgba(255,199,44,0.85)] transition active:scale-[0.99]"
           >
             <TaxiIcon size={26} />
             <span className="text-lg font-bold">Book My Taxi</span>
             <ArrowIcon />
           </a>
         ) : (
-          <p className="rounded-[22px] bg-white/5 px-4 py-3.5 text-center text-sm text-slate-300">
+          <p className="rounded-2xl bg-white/5 px-4 py-3.5 text-center text-sm text-slate-300">
             Not taking bookings right now, but you can still call.
           </p>
         )}
@@ -190,10 +190,10 @@ export default function DriverCardView({
           {card.phone ? (
             <a
               href={`tel:${card.phone.replace(/\s/g, '')}`}
-              className="flex items-center justify-center gap-2.5 rounded-[22px] border border-white/12 bg-white/5 px-3 py-3.5 text-base font-semibold text-white transition active:scale-[0.98]"
+              className="flex items-center justify-center gap-2.5 rounded-2xl border border-white/12 bg-white/5 px-3 py-3 text-base font-semibold text-white transition active:scale-[0.98]"
             >
               <PhoneIcon />
-              Call {card.name.split(' ')[0]}
+              Call
             </a>
           ) : null}
 
@@ -202,7 +202,7 @@ export default function DriverCardView({
               href={`https://wa.me/${whatsappNumber(whatsapp)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2.5 rounded-[22px] bg-[#22C55E] px-3 py-3.5 text-base font-semibold text-white transition active:scale-[0.98]"
+              className="flex items-center justify-center gap-2.5 rounded-2xl bg-[#22C55E] px-3 py-3 text-base font-semibold text-white transition active:scale-[0.98]"
             >
               <WhatsAppIcon />
               WhatsApp
