@@ -18,7 +18,7 @@ export default async function PrintPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('name, slug, phone, business_name, service_area')
+    .select('name, slug')
     .eq('id', user.id)
     .single()
 
@@ -87,8 +87,6 @@ export default async function PrintPage() {
 
           <div className="sign-foot">
             <p className="sign-name">{profile.name}</p>
-            {profile.phone ? <p className="sign-phone">{profile.phone}</p> : null}
-            <p className="sign-note">No app. No account. Two taps.</p>
           </div>
         </div>
       </div>
