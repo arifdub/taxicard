@@ -96,7 +96,7 @@ export default function DriverCardView({
           <img
             src={LOGO_MARK}
             alt="TaxiCard"
-            style={{ height: 44, width: 'auto' }}
+            style={{ height: 44, width: 44 }}
             className="shrink-0"
           />
           <div className="pt-0.5 text-right text-navy">

@@ -24,8 +24,9 @@ export default function Wordmark({
       <img
         src={LOGO_MARK}
         alt="TaxiCard"
+        width={h}
         height={h}
-        style={{ height: h, width: 'auto' }}
+        style={{ height: h, width: h }}
         className="shrink-0"
       />
       {showText ? (

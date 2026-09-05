@@ -4,7 +4,6 @@ import type { Metadata } from 'next'
 import { siteUrl } from '@/lib/site'
 import Wordmark from '@/components/wordmark'
 import Reveal from '@/components/reveal'
-import { LOGO_FULL } from '@/lib/brand'
 import type { ReactNode } from 'react'
 
 export const metadata: Metadata = {
@@ -34,13 +33,6 @@ export default async function Home() {
       </nav>
 
       <header className="mx-auto max-w-5xl px-5 pb-16 pt-8 md:pb-24 md:pt-14">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={LOGO_FULL}
-          alt="TaxiCard — tap, book, ride"
-          className="tc-in mb-6 h-auto w-52 md:w-64"
-        />
-
         <p className="tc-left text-sm font-semibold uppercase tracking-wide text-yellow">
           For independent taxi drivers
         </p>
