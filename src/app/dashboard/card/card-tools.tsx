@@ -130,7 +130,7 @@ export function EditablePhoto({
           <img
             src={preview}
             alt={name}
-            className="mx-auto h-24 w-24 rounded-full object-cover"
+            className="mx-auto h-28 w-28 rounded-full object-cover ring-2 ring-yellow ring-offset-2 ring-offset-[#0E1116]"
           />
         ) : (
           <span className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-yellow text-2xl font-semibold text-white">
