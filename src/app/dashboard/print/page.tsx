@@ -43,8 +43,8 @@ export default async function PrintPage() {
         <div>
           <h1 className="text-2xl font-semibold text-white">Print</h1>
           <p className="mt-1 text-sm text-slate-400">
-            Two designs. Print, then choose Save as PDF if you are taking it
-            to a print shop.
+            One page with your QR code, for the back of a seat or a
+            business card. Save as PDF if a print shop is doing it.
           </p>
         </div>
 
@@ -53,9 +53,10 @@ export default async function PrintPage() {
         <div className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-300">
           <p className="font-semibold text-white">Before you print</p>
           <ul className="mt-2 space-y-1.5 text-slate-400">
-            <li>Set paper to A4 and margins to Default.</li>
-            <li>Turn on background graphics, or the yellow will vanish.</li>
-            <li>Scan your own code off the paper before ordering a hundred.</li>
+            <li>One page. Any paper size works — the design scales.</li>
+            <li>Turn on background graphics, or the yellow border vanishes.</li>
+            <li>Card or photo paper holds up better in a car.</li>
+            <li>Scan your own code off the paper before ordering a batch.</li>
           </ul>
         </div>
 
@@ -92,40 +93,6 @@ export default async function PrintPage() {
         </div>
       </div>
 
-      {/* ---------- Sheet 2: business cards, 8 per page ---------- */}
-      <div className="print-sheet">
-        <div className="bc-grid">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={`f${i}`} className="bc bc-front">
-              <div className="bc-head">
-                <img src={LOGO_MARK} alt="" className="bc-logo" />
-                <span className="bc-brand">
-                  Taxi<span className="brand-y">Card</span>
-                </span>
-              </div>
-              <p className="bc-name">{profile.name}</p>
-              <p className="bc-role">
-                {profile.business_name ?? 'Professional taxi driver'}
-              </p>
-              {profile.service_area ? (
-                <p className="bc-area">{profile.service_area}</p>
-              ) : null}
-              {profile.phone ? <p className="bc-phone">{profile.phone}</p> : null}
-            </div>
-          ))}
-
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={`b${i}`} className="bc bc-back">
-              <div
-                className="bc-qr"
-                dangerouslySetInnerHTML={{ __html: qr }}
-              />
-              <p className="bc-scan">Scan to book me</p>
-              <p className="bc-url">{pretty}</p>
-            </div>
-          ))}
-        </div>
-      </div>
     </>
   )
 }

@@ -118,20 +118,30 @@
 }
 
 /* ---------------------------------------------------------------------
-   Print sheets. Hidden on screen; the browser's print dialog is the
-   whole export step, so there is no PDF library to maintain.
+   Print. One page, on white, with none of the app's dark chrome.
    --------------------------------------------------------------------- */
 
 .print-sheet { display: none; }
 
 @media print {
   @page {
-    size: A4;
-    margin: 12mm;
+    size: auto;
+    margin: 10mm;
   }
 
-  html, body {
+  /* The app paints dark backgrounds everywhere; strip them all or the
+     printer lays down a full page of black. */
+  html,
+  body,
+  .tc-dark-page,
+  .tc-page,
+  .tc-band,
+  .tc-hero,
+  main,
+  div {
     background: #fff !important;
+    background-image: none !important;
+    box-shadow: none !important;
     color: #000 !important;
   }
 
@@ -142,144 +152,76 @@
 
   .print-sheet {
     display: block;
-    break-after: page;
-    page-break-after: always;
+    width: 100%;
   }
 
-  .print-sheet:last-of-type {
-    break-after: auto;
-    page-break-after: auto;
-  }
-
-  /* --- in-car sign --- */
   .sign {
     width: 100%;
-    border: 2px solid #0B0B0C;
-    border-radius: 10mm;
-    padding: 14mm 10mm;
+    border: 1.5mm solid #0B0B0C !important;
+    border-radius: 8mm;
+    padding: 10mm 8mm;
     text-align: center;
-    background: #fff;
+    box-sizing: border-box;
   }
 
   .sign-head {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4mm;
-    margin-bottom: 10mm;
+    gap: 3mm;
+    margin-bottom: 7mm;
   }
 
-  .sign-logo { width: 16mm; height: 16mm; }
+  .sign-logo { width: 14mm; height: 14mm; }
 
   .sign-brand {
-    font-size: 30pt;
+    font-size: 26pt;
     font-weight: 800;
     letter-spacing: -0.02em;
-    color: #0B0B0C;
+    color: #0B0B0C !important;
   }
 
-  .brand-y { color: #E0A800; }
+  .brand-y { color: #C98F00 !important; }
 
   .sign-kicker {
-    font-size: 14pt;
+    font-size: 12pt;
     font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #6B7280;
+    color: #666 !important;
     margin: 0;
   }
 
   .sign-title {
-    font-size: 34pt;
+    font-size: 30pt;
     font-weight: 800;
-    margin: 3mm 0 9mm;
-    color: #0B0B0C;
+    margin: 2mm 0 7mm;
+    color: #0B0B0C !important;
   }
 
   .sign-qr {
-    width: 95mm;
+    width: 88mm;
+    max-width: 100%;
     margin: 0 auto;
-    padding: 5mm;
-    border: 3mm solid #FFC72C;
-    border-radius: 6mm;
+    padding: 4mm;
+    border: 2.5mm solid #FFC72C !important;
+    border-radius: 5mm;
+    background: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .sign-qr svg { width: 100%; height: auto; display: block; }
 
   .sign-url {
-    font-size: 17pt;
+    font-size: 16pt;
     font-weight: 700;
-    margin: 8mm 0 0;
-    color: #0B0B0C;
+    margin: 6mm 0 0;
+    color: #0B0B0C !important;
   }
 
-  .sign-foot { margin-top: 10mm; }
-  .sign-name { font-size: 20pt; font-weight: 700; margin: 0; }
-  .sign-phone { font-size: 18pt; margin: 2mm 0 0; }
-  .sign-note { font-size: 12pt; color: #6B7280; margin: 5mm 0 0; }
-
-  /* --- business cards, 85 x 55 mm --- */
-  .bc-grid {
-    display: grid;
-    grid-template-columns: 85mm 85mm;
-    gap: 4mm;
-    justify-content: center;
-  }
-
-  .bc {
-    width: 85mm;
-    height: 55mm;
-    border-radius: 3mm;
-    padding: 5mm;
-    box-sizing: border-box;
-    overflow: hidden;
-  }
-
-  .bc-front {
-    background: #0B0B0C !important;
-    color: #fff;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  .bc-head {
-    display: flex;
-    align-items: center;
-    gap: 2.5mm;
-    margin-bottom: 4mm;
-  }
-
-  .bc-logo { width: 9mm; height: 9mm; }
-
-  .bc-brand { font-size: 13pt; font-weight: 800; color: #fff; }
-
-  .bc-name { font-size: 16pt; font-weight: 800; margin: 0; }
-
-  .bc-role {
-    font-size: 8pt;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #C9CDD6;
-    margin: 1mm 0 0;
-  }
-
-  .bc-area { font-size: 9.5pt; color: #C9CDD6; margin: 3mm 0 0; }
-
-  .bc-phone { font-size: 14pt; font-weight: 700; color: #FFC72C; margin: 3mm 0 0; }
-
-  .bc-back {
-    background: #fff !important;
-    border: 1pt solid #D8DCE3;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .bc-qr { width: 30mm; }
-  .bc-qr svg { width: 100%; height: auto; display: block; }
-
-  .bc-scan { font-size: 11pt; font-weight: 700; margin: 3mm 0 0; color: #0B0B0C; }
-  .bc-url { font-size: 9pt; color: #6B7280; margin: 1mm 0 0; }
+  .sign-foot { margin-top: 7mm; }
+  .sign-name { font-size: 18pt; font-weight: 700; margin: 0; }
+  .sign-phone { font-size: 17pt; margin: 2mm 0 0; }
+  .sign-note { font-size: 11pt; color: #666 !important; margin: 4mm 0 0; }
 }
