@@ -4,7 +4,7 @@ import QRCode from 'qrcode'
 import { createClient } from '@/lib/supabase/server'
 import { siteUrl, prettyLink } from '@/lib/site'
 import DriverCardView, { type DriverCard } from '@/components/driver-card'
-import { AvailabilitySwitch, EditablePhoto, CopyLink } from './card-tools'
+import { AvailabilitySwitch, CopyLink } from './card-tools'
 
 export const dynamic = 'force-dynamic'
 
@@ -63,13 +63,6 @@ export default async function MyCardPage() {
         <DriverCardView
           card={card as DriverCard}
           bookHref={`/${profile.slug}/book`}
-          avatar={
-            <EditablePhoto
-              userId={user.id}
-              photoUrl={profile.photo_url}
-              name={profile.name ?? 'Driver'}
-            />
-          }
         />
       ) : null}
 
