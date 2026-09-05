@@ -26,8 +26,10 @@ export default async function BookingStatusPage({
   if (!booking) notFound()
 
   return (
-    <main className="mx-auto w-full max-w-md px-5 py-8">
-      <StatusView token={token} initial={booking} />
+    <main className="tc-dark-page w-full px-5 py-8 text-white">
+      <div className="mx-auto w-full max-w-md">
+        <StatusView token={token} initial={booking} />
+      </div>
     </main>
   )
 }

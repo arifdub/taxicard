@@ -33,14 +33,14 @@ export default function BookingForm({
       {state.error ? (
         <p
           role="alert"
-          className="rounded-xl border border-red-100 bg-red-50 px-3 py-2.5 text-sm text-red-800"
+          className="rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2.5 text-sm text-red-200"
         >
           {state.error}
         </p>
       ) : null}
 
       <div>
-        <label htmlFor="pickup" className="mb-1 block text-xs font-semibold text-slate-500">
+        <label htmlFor="pickup" className="mb-1 block text-xs font-semibold text-slate-400">
           Where should {firstName} collect you?
         </label>
         <input
@@ -49,12 +49,12 @@ export default function BookingForm({
           required
           autoComplete="street-address"
           placeholder="12 Main Street, Dublin"
-          className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3.5 text-base outline-none focus:border-navy focus:ring-4 focus:ring-navy/10"
+          className="w-full rounded-xl border border-white/10 bg-navy-soft px-3 py-3.5 text-base text-white outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15"
         />
       </div>
 
       <div>
-        <label htmlFor="destination" className="mb-1 block text-xs font-semibold text-slate-500">
+        <label htmlFor="destination" className="mb-1 block text-xs font-semibold text-slate-400">
           Where are you going?
         </label>
         <input
@@ -62,12 +62,12 @@ export default function BookingForm({
           name="destination"
           required
           placeholder="Dublin Airport, T1"
-          className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3.5 text-base outline-none focus:border-navy focus:ring-4 focus:ring-navy/10"
+          className="w-full rounded-xl border border-white/10 bg-navy-soft px-3 py-3.5 text-base text-white outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15"
         />
       </div>
 
       <div>
-        <span className="mb-1 block text-xs font-semibold text-slate-500">
+        <span className="mb-1 block text-xs font-semibold text-slate-400">
           When do you need the taxi?
         </span>
         <div className="grid grid-cols-2 gap-2">
@@ -75,7 +75,9 @@ export default function BookingForm({
             type="button"
             onClick={() => setLater(false)}
             className={`rounded-xl px-4 py-3.5 text-base font-medium ${
-              later ? 'border border-slate-200 bg-white' : 'bg-yellow text-navy'
+              later
+                ? 'border border-white/15 bg-navy-soft text-slate-200'
+                : 'bg-yellow text-navy'
             }`}
           >
             Now
@@ -84,7 +86,9 @@ export default function BookingForm({
             type="button"
             onClick={() => setLater(true)}
             className={`rounded-xl px-4 py-3.5 text-base font-medium ${
-              later ? 'bg-yellow text-navy' : 'border border-slate-200 bg-white'
+              later
+                ? 'bg-yellow text-navy'
+                : 'border border-white/15 bg-navy-soft text-slate-200'
             }`}
           >
             Later
@@ -100,7 +104,7 @@ export default function BookingForm({
             value={date}
             onChange={(e) => setDate(e.target.value)}
             required
-            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3.5 text-base outline-none"
+            className="w-full rounded-xl border border-white/10 bg-navy-soft px-3 py-3.5 text-base text-white outline-none"
           />
           <input
             type="time"
@@ -108,14 +112,14 @@ export default function BookingForm({
             value={time}
             onChange={(e) => setTime(e.target.value)}
             required
-            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3.5 text-base outline-none"
+            className="w-full rounded-xl border border-white/10 bg-navy-soft px-3 py-3.5 text-base text-white outline-none"
           />
         </div>
       ) : null}
 
-      <div className="space-y-3 border-t border-slate-200 pt-5">
+      <div className="space-y-3 border-t border-white/10 pt-5">
         <div>
-          <label htmlFor="name" className="mb-1 block text-xs font-semibold text-slate-500">
+          <label htmlFor="name" className="mb-1 block text-xs font-semibold text-slate-400">
             Your name
           </label>
           <input
@@ -123,11 +127,11 @@ export default function BookingForm({
             name="name"
             required
             autoComplete="name"
-            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3.5 text-base outline-none focus:border-navy focus:ring-4 focus:ring-navy/10"
+            className="w-full rounded-xl border border-white/10 bg-navy-soft px-3 py-3.5 text-base text-white outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15"
           />
         </div>
         <div>
-          <label htmlFor="phone" className="mb-1 block text-xs font-semibold text-slate-500">
+          <label htmlFor="phone" className="mb-1 block text-xs font-semibold text-slate-400">
             Your mobile
           </label>
           <input
@@ -138,14 +142,14 @@ export default function BookingForm({
             inputMode="tel"
             autoComplete="tel"
             placeholder="087 123 4567"
-            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3.5 text-base outline-none focus:border-navy focus:ring-4 focus:ring-navy/10"
+            className="w-full rounded-xl border border-white/10 bg-navy-soft px-3 py-3.5 text-base text-white outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15"
           />
-          <p className="mt-1 text-xs text-slate-400">
+          <p className="mt-1 text-xs text-slate-500">
             {firstName} needs this to confirm and to find you.
           </p>
         </div>
         <div>
-          <label htmlFor="notes" className="mb-1 block text-xs font-semibold text-slate-500">
+          <label htmlFor="notes" className="mb-1 block text-xs font-semibold text-slate-400">
             Anything else? (optional)
           </label>
           <input
@@ -153,7 +157,7 @@ export default function BookingForm({
             name="notes"
             maxLength={280}
             placeholder="Two bags, flight at 10:30"
-            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3.5 text-base outline-none focus:border-navy focus:ring-4 focus:ring-navy/10"
+            className="w-full rounded-xl border border-white/10 bg-navy-soft px-3 py-3.5 text-base text-white outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15"
           />
         </div>
       </div>
@@ -161,12 +165,12 @@ export default function BookingForm({
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-xl bg-yellow px-4 py-4 text-lg font-semibold text-navy disabled:opacity-60"
+        className="w-full rounded-2xl bg-yellow px-4 py-4 text-lg font-semibold text-navy shadow-[0_12px_30px_-14px_rgba(255,199,44,0.9)] disabled:opacity-60"
       >
         {pending ? 'Sending…' : 'Send booking request'}
       </button>
 
-      <p className="text-center text-xs text-slate-400">
+      <p className="text-center text-xs text-slate-500">
         This sends a request. {firstName} will confirm it.
       </p>
     </form>

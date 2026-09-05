@@ -21,7 +21,7 @@ export function AvailabilitySwitch({ initial }: { initial: boolean }) {
 
   return (
     <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-navy-soft px-4 py-3.5">
-      <span className="text-sm font-medium">
+      <span className="text-sm font-medium text-white">
         {on ? 'Online, available' : 'Offline, not taking bookings'}
       </span>
       <button

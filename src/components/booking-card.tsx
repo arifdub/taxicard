@@ -17,12 +17,12 @@ export type BookingRow = {
 }
 
 const BADGE: Record<string, string> = {
-  PENDING: 'bg-amber-100 text-amber-100',
-  CONFIRMED: 'bg-emerald-100 text-emerald-100',
-  ACCEPTED: 'bg-emerald-100 text-emerald-100',
-  COMPLETED: 'bg-slate-100 text-slate-200',
+  PENDING: 'bg-amber-400/20 text-amber-200 ring-1 ring-amber-400/30',
+  CONFIRMED: 'bg-emerald-400/20 text-emerald-200 ring-1 ring-emerald-400/30',
+  ACCEPTED: 'bg-emerald-400/20 text-emerald-200 ring-1 ring-emerald-400/30',
+  COMPLETED: 'bg-white/10 text-slate-300 ring-1 ring-white/15',
   DECLINED: 'bg-red-500/20 text-red-200',
-  CANCELLED: 'bg-slate-100 text-slate-200',
+  CANCELLED: 'bg-white/10 text-slate-300 ring-1 ring-white/15',
 }
 
 export function whenLabel(b: BookingRow) {
@@ -55,17 +55,17 @@ export default function BookingCard({ booking }: { booking: BookingRow }) {
     <div className="rounded-2xl border border-white/10 bg-navy-soft p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-base font-semibold">{booking.customer_name}</p>
+          <p className="text-base font-semibold text-white">{booking.customer_name}</p>
           <a
             href={`tel:${booking.customer_phone.replace(/\s/g, '')}`}
-            className="text-sm text-brandblue"
+            className="text-sm font-medium text-brandblue"
           >
             {booking.customer_phone}
           </a>
         </div>
         <span
           className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${
-            BADGE[booking.status] ?? 'bg-slate-100 text-slate-200'
+            BADGE[booking.status] ?? 'bg-white/10 text-slate-300'
           }`}
         >
           {booking.status.toLowerCase()}

@@ -48,9 +48,9 @@ function Section({
 }) {
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-semibold text-slate-400">{title}</h2>
+      <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">{title}</h2>
       {rows.length === 0 ? (
-        <p className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-400">
+        <p className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-300">
           {empty}
         </p>
       ) : (

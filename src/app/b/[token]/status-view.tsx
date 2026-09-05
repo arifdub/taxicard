@@ -16,27 +16,27 @@ export type BookingStatus = {
 
 const LOOKS = {
   PENDING: {
-    tone: 'bg-amber-50 text-amber-900 border-amber-200',
+    tone: 'bg-amber-500/10 text-amber-100 border-amber-400/30',
     head: 'Booking request sent',
   },
   CONFIRMED: {
-    tone: 'bg-emerald-50 text-emerald-900 border-emerald-200',
+    tone: 'bg-emerald-500/10 text-emerald-100 border-emerald-400/30',
     head: 'Booking confirmed',
   },
   ACCEPTED: {
-    tone: 'bg-emerald-50 text-emerald-900 border-emerald-200',
+    tone: 'bg-emerald-500/10 text-emerald-100 border-emerald-400/30',
     head: 'Booking confirmed',
   },
   COMPLETED: {
-    tone: 'bg-slate-100 text-slate-800 border-slate-200',
+    tone: 'bg-white/5 text-slate-200 border-white/10',
     head: 'Trip completed',
   },
   DECLINED: {
-    tone: 'bg-red-50 text-red-900 border-red-200',
+    tone: 'bg-red-500/10 text-red-100 border-red-400/30',
     head: 'Not able to take this one',
   },
   CANCELLED: {
-    tone: 'bg-slate-100 text-slate-800 border-slate-200',
+    tone: 'bg-white/5 text-slate-200 border-white/10',
     head: 'Booking cancelled',
   },
 } as const
@@ -103,7 +103,7 @@ export default function StatusView({
         <p className="mt-2 text-sm">{subline(booking)}</p>
       </div>
 
-      <div className="space-y-2 rounded-2xl border border-slate-200 bg-white p-4 text-sm">
+      <div className="space-y-2 rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm">
         <Row label="Driver" value={booking.business_name ?? booking.driver_name} />
         <Row label="Pickup" value={booking.pickup_address} />
         {booking.destination_address ? (
@@ -115,13 +115,13 @@ export default function StatusView({
       {booking.driver_phone ? (
         <a
           href={`tel:${booking.driver_phone.replace(/\s/g, '')}`}
-          className="block rounded-xl bg-yellow px-4 py-4 text-center text-lg font-semibold text-navy"
+          className="block rounded-2xl bg-yellow px-4 py-4 text-center text-lg font-semibold text-navy shadow-[0_12px_30px_-14px_rgba(255,199,44,0.9)]"
         >
           Call {booking.driver_name.split(' ')[0]}
         </a>
       ) : null}
 
-      <p className="text-center text-xs text-slate-400">
+      <p className="text-center text-xs text-slate-500">
         Save this page to check your booking later.
       </p>
     </div>
@@ -131,7 +131,7 @@ export default function StatusView({
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-4 py-1">
-      <span className="shrink-0 text-slate-500">{label}</span>
+      <span className="shrink-0 text-slate-400">{label}</span>
       <span className="text-right">{value}</span>
     </div>
   )

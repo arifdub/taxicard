@@ -81,7 +81,7 @@ export default async function DashboardPage() {
 
       {pending.length > 0 ? (
         <section className="space-y-3">
-          <h2 className="text-sm font-semibold text-slate-400">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
             Waiting for you
           </h2>
           {pending.map((b) => (
@@ -92,13 +92,13 @@ export default async function DashboardPage() {
 
       <section className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-slate-400">Today</h2>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">Today</h2>
           <Link href="/dashboard/bookings" className="text-sm text-brandblue">
             All bookings
           </Link>
         </div>
         {today.length === 0 ? (
-          <p className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-400">
+          <p className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-300">
             Nothing booked for today yet. Share your link and the first one
             will land here.
           </p>
@@ -108,7 +108,7 @@ export default async function DashboardPage() {
       </section>
 
       <div className="rounded-2xl border border-white/10 bg-navy-soft p-4">
-        <p className="text-xs font-semibold text-slate-400">Your booking link</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Your booking link</p>
         <a
           href={`${siteUrl()}/${profile?.slug}`}
           target="_blank"
@@ -133,8 +133,8 @@ function Stat({
 }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-navy-soft p-4">
-      <p className={`text-2xl font-semibold ${tone ?? 'text-navy'}`}>{value}</p>
-      <p className="text-xs text-slate-400">{label}</p>
+      <p className={`text-3xl font-semibold ${tone ?? 'text-yellow'}`}>{value}</p>
+      <p className="mt-0.5 text-xs font-medium text-slate-300">{label}</p>
     </div>
   )
 }

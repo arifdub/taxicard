@@ -19,11 +19,12 @@ export default async function BookPage({
 
   if (!card.is_available) {
     return (
-      <main className="mx-auto w-full max-w-md px-5 py-10 text-center">
-        <h1 className="text-xl font-semibold text-navy">
+      <main className="tc-dark-page w-full px-5 py-10 text-center text-white">
+      <div className="mx-auto w-full max-w-md">
+        <h1 className="text-xl font-semibold text-white">
           {card.name} is not taking bookings right now
         </h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-slate-300">
           You can still ring, or check back shortly.
         </p>
         {card.phone ? (
@@ -34,26 +35,29 @@ export default async function BookPage({
             Call {card.name.split(' ')[0]}
           </a>
         ) : null}
-        <Link href={`/${slug}`} className="mt-4 block text-sm text-blue-700">
+        <Link href={`/${slug}`} className="mt-4 block text-sm text-brandblue">
           Back
         </Link>
+        </div>
       </main>
     )
   }
 
   return (
-    <main className="mx-auto w-full max-w-md px-5 py-8">
-      <Link href={`/${slug}`} className="text-sm text-slate-500">
-        Back
-      </Link>
-      <h1 className="mt-3 text-2xl font-semibold text-navy">
-        Book {card.name.split(' ')[0]}
-      </h1>
-      <p className="mb-6 mt-1 text-sm text-slate-500">
-        No account needed. Two minutes.
-      </p>
+    <main className="tc-dark-page w-full px-5 py-8 text-white">
+      <div className="tc-dark mx-auto w-full max-w-md">
+        <Link href={`/${slug}`} className="text-sm text-slate-400">
+          Back
+        </Link>
+        <h1 className="tc-left mt-3 text-2xl font-semibold text-white">
+          Book {card.name.split(' ')[0]}
+        </h1>
+        <p className="tc-left tc-d1 mb-6 mt-1 text-sm text-slate-400">
+          No account needed. Two minutes.
+        </p>
 
-      <BookingForm slug={slug} driverName={card.name} />
+        <BookingForm slug={slug} driverName={card.name} />
+      </div>
     </main>
   )
 }
