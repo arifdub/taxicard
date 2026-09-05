@@ -30,7 +30,7 @@ function isStandalone() {
   )
 }
 
-export default function PushSetup() {
+export default function PushSetup({ compact = false }: { compact?: boolean }) {
   const [state, setState] = useState<State>('checking')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -115,6 +115,11 @@ export default function PushSetup() {
   }
 
   if (state === 'checking') return null
+
+  // Nothing actionable here yet, so keep the dashboard clear.
+  if (compact && (state === 'needs-install' || state === 'unsupported')) {
+    return null
+  }
 
   return (
     <div className="rounded-2xl border border-white/10 bg-navy-soft p-4">

@@ -6,7 +6,6 @@ import { siteUrl, prettyLink } from '@/lib/site'
 import BookingCard from '@/components/booking-card'
 import { AvailabilitySwitch } from './card/card-tools'
 import PushSetup from './push-setup'
-import InstallPrompt from './install-prompt'
 
 export const dynamic = 'force-dynamic'
 
@@ -53,9 +52,7 @@ export default async function DashboardPage() {
 
       <AvailabilitySwitch initial={profile?.is_available ?? true} />
 
-      <InstallPrompt />
-
-      <PushSetup />
+      <PushSetup compact />
 
       {!profile?.phone ? (
         <div className="rounded-2xl border border-amber-400/30 bg-amber-500/10 p-4">

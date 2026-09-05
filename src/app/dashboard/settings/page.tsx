@@ -3,6 +3,8 @@ import { createClient } from '@/lib/supabase/server'
 import { prettyLink } from '@/lib/site'
 import { EditablePhoto } from '../card/card-tools'
 import ProfileForm from './profile-form'
+import InstallPrompt from '../install-prompt'
+import PushSetup from '../push-setup'
 
 export default async function SettingsPage({
   searchParams,
@@ -62,6 +64,14 @@ export default async function SettingsPage({
       </div>
 
       <ProfileForm profile={profile} siteUrl={siteUrl} />
+
+      <div className="space-y-4 border-t border-white/10 pt-6">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-yellow">
+          App and alerts
+        </h2>
+        <InstallPrompt />
+        <PushSetup />
+      </div>
     </div>
   )
 }
