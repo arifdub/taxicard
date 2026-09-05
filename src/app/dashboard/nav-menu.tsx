@@ -57,7 +57,7 @@ export default function NavMenu() {
           />
 
           <nav className="absolute inset-y-0 right-0 flex w-72 max-w-[85%] flex-col bg-navy-soft shadow-2xl">
-            <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
+            <div className="tc-safe-top flex items-center justify-between border-b border-white/10 px-5 pb-4">
               <span className="text-base font-semibold text-white">Menu</span>
               <button
                 type="button"

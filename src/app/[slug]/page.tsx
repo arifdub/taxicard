@@ -53,7 +53,7 @@ export default async function PublicCardPage({
   })
 
   return (
-    <main className="tc-dark-page w-full px-3 py-4">
+    <main className="tc-safe-top tc-safe-bottom tc-dark-page w-full px-3 pb-4">
       <div className="mx-auto w-full max-w-md">
       <DriverCardView
         card={card}

@@ -14,7 +14,7 @@ export default async function AdminLayout({
   return (
     <div className="tc-dark-page text-white">
       <header className="border-b border-white/10">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-5 py-4">
+        <div className="tc-safe-top mx-auto flex max-w-5xl items-center justify-between gap-3 px-5 pb-4">
           <Link href="/admin" className="flex items-center gap-3">
             <Wordmark size="sm" />
             <span className="rounded-full bg-yellow px-2.5 py-0.5 text-xs font-semibold text-navy">

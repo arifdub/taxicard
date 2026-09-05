@@ -16,7 +16,7 @@ export default async function DashboardLayout({
 
   return (
     <div className="tc-dark-page text-white">
-      <header className="border-b border-white/10 px-5 py-3">
+      <header className="tc-safe-top border-b border-white/10 px-5 pb-3">
         <div className="mx-auto flex max-w-md items-center justify-between">
           <Link href="/dashboard">
             <Wordmark size="sm" />
@@ -25,7 +25,7 @@ export default async function DashboardLayout({
         </div>
       </header>
 
-      <main className="tc-dark mx-auto w-full max-w-md px-5 py-6 pb-12">
+      <main className="tc-safe-bottom tc-dark mx-auto w-full max-w-md px-5 py-6">
         {children}
       </main>
 

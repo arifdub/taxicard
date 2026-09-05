@@ -24,18 +24,19 @@ export default function BookingForm({
 
   function useMyLocation() {
     if (!('geolocation' in navigator)) {
-      setLocNote('Your browser cannot share a location. Type the address instead.')
+      setLocNote('This browser cannot share a location. Type the address instead.')
       return
     }
 
     setLocating(true)
-    setLocNote(null)
+    setLocNote('Asking your phone for your location…')
 
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const lat = pos.coords.latitude
         const lng = pos.coords.longitude
         setCoords({ lat: String(lat), lng: String(lng) })
+        setLocNote('Got it. Looking up the address…')
 
         try {
           const res = await fetch(`/api/geocode/reverse?lat=${lat}&lng=${lng}`)
@@ -46,7 +47,7 @@ export default function BookingForm({
             setLocNote('Found you. Change it if that is not right.')
           } else {
             setLocNote(
-              'Location saved, but we could not name the street. Please type it.'
+              'Your location is saved and the driver will get a map pin, but we could not name the street. Please type it.'
             )
           }
 
@@ -59,11 +60,19 @@ export default function BookingForm({
 
         setLocating(false)
       },
-      () => {
+      (err) => {
         setLocating(false)
-        setLocNote('Could not get your location. Type the address instead.')
+        if (err.code === err.PERMISSION_DENIED) {
+          setLocNote(
+            'Location is blocked for this site. Allow it in your phone settings, or just type the address.'
+          )
+        } else if (err.code === err.TIMEOUT) {
+          setLocNote('That took too long. Try again, or type the address.')
+        } else {
+          setLocNote('Could not get your location. Type the address instead.')
+        }
       },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 }
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     )
   }
 
@@ -125,7 +134,9 @@ export default function BookingForm({
       </div>
 
       {locNote ? (
-        <p className="-mt-3 text-xs text-slate-400">{locNote}</p>
+        <p className="-mt-3 rounded-xl bg-white/5 px-3 py-2 text-xs text-slate-300">
+          {locNote}
+        </p>
       ) : null}
 
       <div>

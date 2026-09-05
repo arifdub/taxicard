@@ -22,7 +22,7 @@ export default async function Home() {
 
   return (
     <div className="tc-dark-page text-white">
-      <nav className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-5 py-4">
+      <nav className="tc-safe-top mx-auto flex max-w-5xl items-center justify-between gap-3 px-5 pb-4">
         <Wordmark size="md" />
         <Link
           href="/login"

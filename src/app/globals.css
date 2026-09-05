@@ -62,6 +62,16 @@
     radial-gradient(620px 340px at 92% 18%, rgba(255, 199, 44, 0.16), rgba(255, 199, 44, 0) 64%);
 }
 
+/* iPhone notch: an installed web app draws under the status bar, so
+   headers need the safe-area inset or they sit beneath the clock. */
+.tc-safe-top {
+  padding-top: calc(env(safe-area-inset-top, 0px) + 0.75rem);
+}
+
+.tc-safe-bottom {
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.75rem);
+}
+
 /* Entrance motion */
 @keyframes tc-rise {
   from { opacity: 0; transform: translateY(16px); }
