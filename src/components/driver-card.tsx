@@ -75,10 +75,10 @@ function ArrowIcon() {
 function BrandRow() {
   return (
     <div className="flex items-center justify-center gap-2.5">
-      <span className="flex h-11 w-11 -rotate-6 items-center justify-center rounded-xl bg-yellow text-navy shadow-[0_6px_18px_-6px_rgba(255,199,44,0.8)]">
-        <TaxiIcon size={24} />
+      <span className="flex h-10 w-10 -rotate-6 items-center justify-center rounded-xl bg-yellow text-navy shadow-[0_6px_18px_-6px_rgba(255,199,44,0.8)]">
+        <TaxiIcon size={22} />
       </span>
-      <span className="text-2xl font-bold tracking-tight">
+      <span className="text-[22px] font-bold tracking-tight">
         <span className="text-white">Taxi</span>
         <span className="text-yellow">Card</span>
         <span className="text-slate-400">.ie</span>
@@ -103,41 +103,41 @@ export default function DriverCardView({
   const whatsapp = card.whatsapp_phone ?? null
 
   return (
-    <div className="tc-in overflow-hidden rounded-[28px] border border-white/10 bg-[#0E1116] px-5 py-7 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.9)]">
+    <div className="tc-in overflow-hidden rounded-[28px] border border-white/10 bg-[#0E1116] px-4 py-5 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.9)]">
       <BrandRow />
 
-      <div className="mt-6 text-center">
+      <div className="mt-4 text-center">
         {avatar ?? (
           <span className="inline-block rounded-full p-[3px] ring-2 ring-yellow">
             {card.photo_url ? (
               <Image
                 src={card.photo_url}
                 alt={card.name}
-                width={116}
-                height={116}
+                width={104}
+                height={104}
                 unoptimized
-                className="h-28 w-28 rounded-full object-cover"
+                className="h-24 w-24 rounded-full object-cover"
               />
             ) : (
-              <span className="flex h-28 w-28 items-center justify-center rounded-full bg-yellow text-3xl font-bold text-navy">
+              <span className="flex h-24 w-24 items-center justify-center rounded-full bg-yellow text-3xl font-bold text-navy">
                 {initials(card.name)}
               </span>
             )}
           </span>
         )}
 
-        <h1 className="tc-left tc-d1 mt-4 text-3xl font-bold text-white">
+        <h1 className="tc-left tc-d1 mt-3 text-[26px] font-bold leading-tight text-white">
           {card.name}
         </h1>
 
         {card.business_name ? (
-          <p className="tc-left tc-d2 mt-0.5 text-base text-slate-400">
+          <p className="tc-left tc-d2 mt-0.5 text-sm text-slate-400">
             {card.business_name}
           </p>
         ) : null}
 
         {card.service_area ? (
-          <p className="tc-left tc-d3 mt-1.5 flex items-center justify-center gap-1.5 text-base text-slate-300">
+          <p className="tc-left tc-d3 mt-1 flex items-center justify-center gap-1.5 text-sm text-slate-300">
             <span className="text-yellow">
               <PinIcon />
             </span>
@@ -146,7 +146,7 @@ export default function DriverCardView({
         ) : null}
 
         <span
-          className={`tc-in tc-d4 mt-4 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold ${
+          className={`tc-in tc-d4 mt-3 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${
             card.is_available
               ? 'bg-emerald-500/15 text-white ring-1 ring-emerald-400/40'
               : 'bg-white/5 text-slate-300 ring-1 ring-white/15'
@@ -164,7 +164,7 @@ export default function DriverCardView({
         </span>
       </div>
 
-      <div className="mt-6 space-y-3">
+      <div className="mt-4 space-y-2.5">
         {card.welcome_message ? (
           <p className="text-center text-sm text-slate-400">
             {card.welcome_message}
@@ -174,14 +174,14 @@ export default function DriverCardView({
         {card.is_available && bookHref ? (
           <a
             href={bookHref}
-            className="tc-in tc-d5 flex items-center justify-between gap-3 rounded-2xl bg-yellow px-5 py-4 text-navy shadow-[0_14px_34px_-12px_rgba(255,199,44,0.85)] transition active:scale-[0.99]"
+            className="tc-in tc-d5 flex items-center justify-between gap-3 rounded-[26px] bg-yellow px-6 py-4 text-navy shadow-[0_14px_34px_-12px_rgba(255,199,44,0.85)] transition active:scale-[0.99]"
           >
-            <TaxiIcon size={28} />
-            <span className="text-xl font-bold">Book My Taxi</span>
+            <TaxiIcon size={26} />
+            <span className="text-lg font-bold">Book My Taxi</span>
             <ArrowIcon />
           </a>
         ) : (
-          <p className="rounded-2xl bg-white/5 px-4 py-3.5 text-center text-sm text-slate-300">
+          <p className="rounded-[22px] bg-white/5 px-4 py-3.5 text-center text-sm text-slate-300">
             Not taking bookings right now, but you can still call.
           </p>
         )}
@@ -190,7 +190,7 @@ export default function DriverCardView({
           {card.phone ? (
             <a
               href={`tel:${card.phone.replace(/\s/g, '')}`}
-              className="flex items-center justify-center gap-2.5 rounded-2xl border border-white/12 bg-white/5 px-3 py-4 text-base font-semibold text-white transition active:scale-[0.98]"
+              className="flex items-center justify-center gap-2.5 rounded-[22px] border border-white/12 bg-white/5 px-3 py-3.5 text-base font-semibold text-white transition active:scale-[0.98]"
             >
               <PhoneIcon />
               Call {card.name.split(' ')[0]}
@@ -202,7 +202,7 @@ export default function DriverCardView({
               href={`https://wa.me/${whatsappNumber(whatsapp)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2.5 rounded-2xl bg-[#22C55E] px-3 py-4 text-base font-semibold text-white transition active:scale-[0.98]"
+              className="flex items-center justify-center gap-2.5 rounded-[22px] bg-[#22C55E] px-3 py-3.5 text-base font-semibold text-white transition active:scale-[0.98]"
             >
               <WhatsAppIcon />
               WhatsApp
@@ -211,25 +211,25 @@ export default function DriverCardView({
         </div>
 
         {card.description ? (
-          <p className="pt-1 text-center text-sm text-slate-400">
+          <p className="text-center text-sm text-slate-400">
             {card.description}
           </p>
         ) : null}
       </div>
 
       {qrSvg && shareUrl ? (
-        <div className="mt-7 border-t border-white/10 pt-6 text-center">
+        <div className="mt-5 border-t border-white/10 pt-5 text-center">
           <div
-            className="mx-auto w-40 rounded-2xl bg-white p-3"
+            className="mx-auto w-32 rounded-2xl bg-white p-2.5"
             dangerouslySetInnerHTML={{ __html: qrSvg }}
           />
-          <p className="mt-3 text-base text-slate-300">Share code with friends</p>
-          <p className="mt-1 text-xs text-slate-500">{shareUrl}</p>
+          <p className="mt-2.5 text-sm text-slate-300">Share code with friends</p>
+          <p className="mt-0.5 text-xs text-slate-500">{shareUrl}</p>
         </div>
       ) : null}
 
       {card.vehicle ? (
-        <p className="mt-5 text-center text-xs text-slate-500">{card.vehicle}</p>
+        <p className="mt-4 text-center text-xs text-slate-500">{card.vehicle}</p>
       ) : null}
     </div>
   )
