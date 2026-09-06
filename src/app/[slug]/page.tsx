@@ -33,6 +33,13 @@ export async function generateMetadata({
     description:
       card.description ?? `Book ${card.name} directly. No app needed.`,
     openGraph: { title, images: card.photo_url ? [card.photo_url] : [] },
+    // Install this card as its own app, opening straight back to the card.
+    manifest: `/api/manifest?slug=${encodeURIComponent(slug)}`,
+    appleWebApp: {
+      capable: true,
+      title: card.business_name ?? card.name,
+      statusBarStyle: 'black-translucent',
+    },
   }
 }
 
