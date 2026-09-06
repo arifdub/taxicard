@@ -39,15 +39,39 @@ export default async function PrintPage() {
 
   return (
     <>
-      <div className="no-print space-y-4">
-        <div>
-          <h1 className="text-2xl font-semibold text-white">Print</h1>
-          <p className="mt-1 text-sm text-slate-400">
-            One page with your QR code, for the back of a seat or a
-            business card. Save as PDF if a print shop is doing it.
-          </p>
-        </div>
+      <div className="no-print">
+        <h1 className="text-2xl font-semibold text-white">Print</h1>
+        <p className="mb-4 mt-1 text-sm text-slate-400">
+          One page with your QR code, for the back of a seat or a business
+          card. This is exactly what comes out.
+        </p>
+      </div>
 
+      <div className="print-preview">
+        <div className="print-sheet">
+          <div className="sign">
+            <div className="sign-head">
+              <img src={LOGO_MARK} alt="" className="sign-logo" />
+              <span className="sign-brand">
+                Taxi<span className="brand-y">Card</span>
+              </span>
+            </div>
+
+            <p className="sign-kicker">Need me again?</p>
+            <h2 className="sign-title">Scan to book {first}</h2>
+
+            <div className="sign-qr" dangerouslySetInnerHTML={{ __html: qr }} />
+
+            <p className="sign-url">{pretty}</p>
+
+            <div className="sign-foot">
+              <p className="sign-name">{profile.name}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="no-print space-y-4 pt-4">
         <PrintButton />
 
         <div className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-300">
@@ -64,33 +88,6 @@ export default async function PrintPage() {
           Back to my card
         </Link>
       </div>
-
-      {/* ---------- Sheet 1: the sign for the back of the seat ---------- */}
-      <div className="print-sheet">
-        <div className="sign">
-          <div className="sign-head">
-            <img src={LOGO_MARK} alt="" className="sign-logo" />
-            <span className="sign-brand">
-              Taxi<span className="brand-y">Card</span>
-            </span>
-          </div>
-
-          <p className="sign-kicker">Need me again?</p>
-          <h2 className="sign-title">Scan to book {first}</h2>
-
-          <div
-            className="sign-qr"
-            dangerouslySetInnerHTML={{ __html: qr }}
-          />
-
-          <p className="sign-url">{pretty}</p>
-
-          <div className="sign-foot">
-            <p className="sign-name">{profile.name}</p>
-          </div>
-        </div>
-      </div>
-
     </>
   )
 }
