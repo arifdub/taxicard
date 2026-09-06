@@ -11,6 +11,7 @@ export type BookingStatus = {
   scheduled_at: string | null
   driver_name: string
   business_name: string | null
+  driver_slug: string | null
   driver_phone: string | null
 }
 
@@ -121,8 +122,18 @@ export default function StatusView({
         </a>
       ) : null}
 
+      {booking.driver_slug ? (
+        <a
+          href={`/${booking.driver_slug}`}
+          className="block rounded-2xl border border-white/15 bg-navy-soft px-4 py-4 text-center text-base font-semibold text-white"
+        >
+          Back to {booking.driver_name.split(' ')[0]}&apos;s card
+        </a>
+      ) : null}
+
       <p className="text-center text-xs text-slate-500">
-        Save this page to check your booking later.
+        Save this page to check your booking later, or add the card to your
+        home screen to book again in one tap.
       </p>
     </div>
   )
