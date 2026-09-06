@@ -83,3 +83,38 @@ export async function deleteDriver(driverId: string): Promise<AdminResult> {
   revalidatePath('/admin', 'layout')
   return { ok: true }
 }
+
+export async function setDriverAdmin(
+  driverId: string,
+  next: boolean
+): Promise<AdminResult> {
+  const ctx = await assertAdmin()
+  if (!ctx) return { error: 'Not allowed.' }
+
+  // Removing your own admin rights would lock you out of this panel.
+  if (driverId === ctx.user.id) {
+    return { error: 'You cannot change your own admin access.' }
+  }
+
+  if (!next) {
+    // Never leave the platform without an administrator.
+    const { count } = await ctx.supabase
+      .from('profiles')
+      .select('id', { count: 'exact', head: true })
+      .eq('is_admin', true)
+
+    if ((count ?? 0) <= 1) {
+      return { error: 'That is the last administrator. Promote someone first.' }
+    }
+  }
+
+  const { error } = await ctx.supabase
+    .from('profiles')
+    .update({ is_admin: next })
+    .eq('id', driverId)
+
+  if (error) return { error: 'Could not change admin access.' }
+
+  revalidatePath('/admin', 'layout')
+  return { ok: true }
+}

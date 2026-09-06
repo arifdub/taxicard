@@ -31,7 +31,7 @@ export default async function AdminDriverPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const { supabase } = await requireAdmin()
+  const { supabase, user } = await requireAdmin()
 
   const { data } = await supabase
     .from('profiles')
@@ -142,6 +142,8 @@ export default async function AdminDriverPage({
         driverId={driver.id}
         driverName={driver.name ?? 'this driver'}
         isActive={driver.is_active}
+        isAdmin={driver.is_admin}
+        isSelf={driver.id === user.id}
         plan={driver.plan}
       />
 
