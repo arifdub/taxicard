@@ -23,6 +23,7 @@ export async function signUp(
     name: formData.get('name'),
     email: formData.get('email'),
     password: formData.get('password'),
+    confirm: formData.get('confirm'),
   })
   if (!parsed.success) {
     return { error: parsed.error.issues[0].message }

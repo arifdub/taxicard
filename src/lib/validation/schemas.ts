@@ -19,11 +19,17 @@ export const slugSchema = z
   )
   .refine((s) => !RESERVED.has(s), 'That link is reserved')
 
-export const signupSchema = z.object({
-  name: z.string().trim().min(2, 'Enter your name'),
-  email: z.string().trim().toLowerCase().email('Enter a valid email'),
-  password: z.string().min(8, 'At least 8 characters'),
-})
+export const signupSchema = z
+  .object({
+    name: z.string().trim().min(2, 'Enter your name'),
+    email: z.string().trim().toLowerCase().email('Enter a valid email'),
+    password: z.string().min(8, 'At least 8 characters'),
+    confirm: z.string().min(1, 'Type your password again'),
+  })
+  .refine((d) => d.password === d.confirm, {
+    message: 'Those passwords do not match',
+    path: ['confirm'],
+  })
 
 export const loginSchema = z.object({
   email: z.string().trim().toLowerCase().email('Enter a valid email'),

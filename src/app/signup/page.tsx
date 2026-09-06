@@ -37,6 +37,15 @@ export default function SignUpPage() {
           minLength={8}
           hint="At least 8 characters"
         />
+        <Field
+          label="Confirm password"
+          name="confirm"
+          type="password"
+          autoComplete="new-password"
+          required
+          minLength={8}
+          hint="Type it again so a typo cannot lock you out."
+        />
 
         <Submit pending={pending}>Create account</Submit>
       </form>
