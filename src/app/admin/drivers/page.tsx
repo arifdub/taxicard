@@ -9,6 +9,7 @@ type Driver = {
   slug: string
   phone: string | null
   email: string | null
+  licence_number: string | null
   is_active: boolean
   is_available: boolean
   plan: string
@@ -25,7 +26,7 @@ export default async function AdminDrivers({
 
   let query = supabase
     .from('profiles')
-    .select('id, name, slug, phone, email, is_active, is_available, plan, created_at')
+    .select('id, name, slug, phone, email, licence_number, is_active, is_available, plan, created_at')
 
   if (q?.trim()) {
     const t = q.trim()
@@ -71,6 +72,10 @@ export default async function AdminDrivers({
                 <p className="truncate text-sm text-slate-400">
                   /{d.slug}
                   {d.phone ? ` · ${d.phone}` : ''}
+                </p>
+                <p className="truncate text-xs text-slate-500">
+                  {d.licence_number ? `Licence ${d.licence_number}` : 'No licence number'}
+                  {d.email ? ` · ${d.email}` : ''}
                 </p>
               </div>
               <div className="flex shrink-0 items-center gap-2">

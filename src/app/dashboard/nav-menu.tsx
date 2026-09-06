@@ -14,7 +14,7 @@ const LINKS = [
   { href: '/dashboard/settings', label: 'Profile' },
 ]
 
-export default function NavMenu() {
+export default function NavMenu({ isAdmin = false }: { isAdmin?: boolean }) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
 
@@ -93,7 +93,19 @@ export default function NavMenu() {
               })}
             </div>
 
-                        <div className="border-t border-white/10 p-3">
+                        {isAdmin ? (
+              <div className="border-t border-white/10 px-3 py-3">
+                <Link
+                  href="/admin"
+                  onClick={() => setOpen(false)}
+                  className="block rounded-xl bg-yellow px-4 py-3.5 text-center text-base font-semibold text-navy"
+                >
+                  Admin panel
+                </Link>
+              </div>
+            ) : null}
+
+            <div className="border-t border-white/10 p-3">
               <form action={logOut}>
                 <button className="w-full rounded-xl px-4 py-3.5 text-left text-base font-medium text-red-300">
                   Log out

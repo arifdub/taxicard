@@ -14,6 +14,16 @@ export default async function DashboardLayout({
     data: { user },
   } = await supabase.auth.getUser()
 
+  let isAdmin = false
+  if (user) {
+    const { data } = await supabase
+      .from('profiles')
+      .select('is_admin')
+      .eq('id', user.id)
+      .maybeSingle()
+    isAdmin = Boolean(data?.is_admin)
+  }
+
   return (
     <div className="tc-dark-page text-white">
       <header className="border-b border-white/10 px-5 pb-3 pt-[calc(env(safe-area-inset-top)+0.75rem)]">
@@ -21,7 +31,7 @@ export default async function DashboardLayout({
           <Link href="/dashboard">
             <Wordmark size="sm" />
           </Link>
-          <NavMenu />
+          <NavMenu isAdmin={isAdmin} />
         </div>
       </header>
 

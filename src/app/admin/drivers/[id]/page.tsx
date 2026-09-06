@@ -140,6 +140,7 @@ export default async function AdminDriverPage({
 
       <DriverControls
         driverId={driver.id}
+        driverName={driver.name ?? 'this driver'}
         isActive={driver.is_active}
         plan={driver.plan}
       />

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export type AdminResult = { error?: string; ok?: boolean }
 
@@ -56,6 +57,28 @@ export async function setDriverPlan(
     .eq('id', driverId)
 
   if (error) return { error: 'Could not change the plan.' }
+
+  revalidatePath('/admin', 'layout')
+  return { ok: true }
+}
+
+export async function deleteDriver(driverId: string): Promise<AdminResult> {
+  const ctx = await assertAdmin()
+  if (!ctx) return { error: 'Not allowed.' }
+
+  if (driverId === ctx.user.id) {
+    return { error: 'You cannot delete your own account here.' }
+  }
+
+  try {
+    // Removing the auth user cascades to their profile, customers,
+    // bookings, notifications and push subscriptions.
+    const admin = createAdminClient()
+    const { error } = await admin.auth.admin.deleteUser(driverId)
+    if (error) return { error: 'Could not delete that driver.' }
+  } catch {
+    return { error: 'Service key missing. Add SUPABASE_SERVICE_ROLE_KEY.' }
+  }
 
   revalidatePath('/admin', 'layout')
   return { ok: true }
