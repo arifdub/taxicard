@@ -83,7 +83,7 @@ export async function requestReset(
 
   const supabase = await createClient()
   await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${await siteUrl()}/auth/confirm?next=/dashboard/settings`,
+    redirectTo: `${await siteUrl()}/auth/confirm?next=/auth/update-password`,
   })
 
   // Always the same reply, whether or not the account exists.
