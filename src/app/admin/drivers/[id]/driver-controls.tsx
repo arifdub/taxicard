@@ -1,12 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import {
-  setDriverActive,
-  setDriverPlan,
-  deleteDriver,
-  setDriverAdmin,
-} from '@/app/admin/actions'
+import { setDriverActive, setDriverPlan, deleteDriver } from '@/app/admin/actions'
 
 const PLANS = ['FREE', 'PRO', 'BUSINESS'] as const
 
@@ -14,15 +9,11 @@ export default function DriverControls({
   driverId,
   driverName,
   isActive,
-  isAdmin,
-  isSelf,
   plan,
 }: {
   driverId: string
   driverName: string
   isActive: boolean
-  isAdmin: boolean
-  isSelf: boolean
   plan: string
 }) {
   const [active, setActive] = useState(isActive)
@@ -31,7 +22,6 @@ export default function DriverControls({
   const [pending, start] = useTransition()
   const [confirming, setConfirming] = useState(false)
   const [deleting, setDeleting] = useState(false)
-  const [admin, setAdmin] = useState(isAdmin)
   const [typed, setTyped] = useState('')
 
   function toggleActive() {
@@ -132,41 +122,6 @@ export default function DriverControls({
             </div>
           </div>
         )}
-      </div>
-
-      <div className="rounded-2xl border border-white/10 bg-navy-soft p-5">
-        <p className="text-sm font-semibold uppercase tracking-wide text-slate-400">
-          Admin access
-        </p>
-        <p className="mt-2 text-sm text-slate-300">
-          {isSelf
-            ? 'This is your own account. Change admin access from another admin account.'
-            : admin
-              ? 'Can see every driver, disable accounts and delete them.'
-              : 'A normal driver. Sees only their own customers and bookings.'}
-        </p>
-
-        {!isSelf ? (
-          <button
-            disabled={pending}
-            onClick={() =>
-              start(async () => {
-                setError(null)
-                const next = !admin
-                const res = await setDriverAdmin(driverId, next)
-                if (res.error) setError(res.error)
-                else setAdmin(next)
-              })
-            }
-            className={`mt-4 w-full rounded-xl px-4 py-3 text-sm font-semibold disabled:opacity-60 ${
-              admin
-                ? 'border border-white/20 text-white'
-                : 'bg-yellow text-navy'
-            }`}
-          >
-            {admin ? 'Remove admin access' : 'Make an administrator'}
-          </button>
-        ) : null}
       </div>
 
       <div className="rounded-2xl border border-red-400/30 bg-red-500/5 p-5">

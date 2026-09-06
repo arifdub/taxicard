@@ -10,7 +10,6 @@ type Driver = {
   phone: string | null
   email: string | null
   licence_number: string | null
-  is_admin: boolean
   is_active: boolean
   is_available: boolean
   plan: string
@@ -27,7 +26,7 @@ export default async function AdminDrivers({
 
   let query = supabase
     .from('profiles')
-    .select('id, name, slug, phone, email, licence_number, is_admin, is_active, is_available, plan, created_at')
+    .select('id, name, slug, phone, email, licence_number, is_active, is_available, plan, created_at')
 
   if (q?.trim()) {
     const t = q.trim()
@@ -90,11 +89,6 @@ export default async function AdminDrivers({
                   }`}
                   aria-hidden="true"
                 />
-                {d.is_admin ? (
-                  <span className="rounded-full bg-yellow px-2.5 py-1 text-xs font-bold text-navy">
-                    admin
-                  </span>
-                ) : null}
                 <span className="rounded-full bg-white/10 px-2.5 py-1 text-xs font-semibold text-slate-300">
                   {d.plan.toLowerCase()}
                 </span>
