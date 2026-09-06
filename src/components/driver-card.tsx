@@ -155,23 +155,39 @@ export default function DriverCardView({
         </p>
       ) : null}
 
-      {/* Actions */}
-      <div className="grid grid-cols-3 gap-2.5 px-4 pb-5 pt-5">
+      {!card.is_available && card.phone ? (
+        <p className="px-5 pt-3 text-center text-sm text-white/60">
+          Not taking bookings right now, but you can still call.
+        </p>
+      ) : null}
+
+      {/* Actions. The grid narrows to match how many buttons there are,
+          so hiding the phone number leaves one full-width booking button
+          rather than a lopsided row. */}
+      <div
+        className={`grid gap-2.5 px-4 pb-5 pt-5 ${
+          [card.phone, whatsapp].filter(Boolean).length === 2
+            ? 'grid-cols-3'
+            : [card.phone, whatsapp].filter(Boolean).length === 1
+              ? 'grid-cols-2'
+              : 'grid-cols-1'
+        }`}
+      >
         {card.is_available && bookHref ? (
           <a
             href={bookHref}
-            className="flex min-h-[104px] flex-col items-center justify-center gap-2 rounded-2xl bg-yellow px-1 py-3 text-navy transition active:scale-[0.98]"
+            className="flex min-h-[104px] flex-col items-center justify-center gap-2 rounded-2xl bg-yellow px-2 py-3 text-navy transition active:scale-[0.98]"
           >
-            <TaxiIcon />
-            <span className="text-[13px] font-bold leading-tight">
+            <TaxiIcon size={30} />
+            <span className="text-[15px] font-bold leading-tight">
               Book my taxi
             </span>
           </a>
         ) : (
-          <span className="flex min-h-[104px] flex-col items-center justify-center gap-2 rounded-2xl bg-white/8 px-1 py-3 text-white/50">
-            <TaxiIcon />
-            <span className="text-[13px] font-semibold leading-tight">
-              Unavailable
+          <span className="flex min-h-[104px] flex-col items-center justify-center gap-2 rounded-2xl bg-white/8 px-2 py-3 text-white/50">
+            <TaxiIcon size={30} />
+            <span className="text-[15px] font-semibold leading-tight">
+              Not available
             </span>
           </span>
         )}
