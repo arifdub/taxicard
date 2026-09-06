@@ -38,16 +38,20 @@ export default async function Home() {
           For independent taxi drivers
         </p>
         <h1 className="tc-left tc-d1 mt-3 max-w-2xl text-3xl font-semibold leading-tight md:text-5xl">
-          Create a beautiful digital card for your passengers, and build your own customer list.
+          Turn every passenger into a regular customer with your digital taxi
+          business card.
         </h1>
         <p className="tc-left tc-d2 mt-5 max-w-xl text-base text-slate-300 md:text-lg">
-          A digital taxi card with a proper booking system behind it. Your
-          passengers can call you, message you on WhatsApp, or book you in a
-          few taps. Everyone who books becomes yours, on your own customer
-          list, and nobody else can see it.
+          Display your TaxiCard QR code behind the headrest, or anywhere in
+          your taxi. Passengers scan it to save your digital business card,
+          contact you, and book you again and again.
         </p>
 
-        <div className="tc-in tc-d3 mt-8 flex flex-col gap-3 sm:flex-row">
+        <p className="tc-left tc-d3 mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-yellow">
+          Scan. Save. Book. Ride. Repeat.
+        </p>
+
+        <div className="tc-in tc-d4 mt-8 flex flex-col gap-3 sm:flex-row">
           <Link
             href="/signup"
             className="rounded-2xl bg-yellow px-7 py-4 text-center text-base font-semibold text-navy shadow-[0_14px_34px_-14px_rgba(255,199,44,0.95)] transition active:scale-[0.99]"
@@ -62,7 +66,7 @@ export default async function Home() {
           </Link>
         </div>
 
-        <p className="tc-in tc-d4 mt-4 text-sm text-slate-400">
+        <p className="tc-in tc-d5 mt-4 text-sm text-slate-400">
           No commission. No app for your passengers to download.
         </p>
       </header>
