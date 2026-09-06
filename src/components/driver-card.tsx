@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import type { ReactNode } from 'react'
 import { whatsappNumber } from '@/lib/phone'
 import { LOGO_MARK } from '@/lib/brand'
 
@@ -16,7 +17,7 @@ export type DriverCard = {
   welcome_message: string | null
 }
 
-function TaxiIcon({ size = 28 }: { size?: number }) {
+function TaxiIcon({ size = 30 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M9.2 3.2h5.6c.5 0 .9.4.9.9v1.2h-7.4V4.1c0-.5.4-.9.9-.9z" />
@@ -41,11 +42,95 @@ function WhatsAppIcon({ size = 28 }: { size?: number }) {
   )
 }
 
-function PinIcon({ size = 20 }: { size?: number }) {
+function PersonIcon({ size = 28 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <circle cx="12" cy="8" r="4.3" />
+      <path d="M3.8 21.6a8.2 8.2 0 0 1 16.4 0z" />
+    </svg>
+  )
+}
+
+function PinIcon({ size = 18 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M12 2.2A6.8 6.8 0 0 0 5.2 9c0 4.9 6 12.3 6.2 12.6a.8.8 0 0 0 1.2 0c.3-.3 6.2-7.7 6.2-12.6A6.8 6.8 0 0 0 12 2.2zm0 9.4a2.6 2.6 0 1 1 0-5.2 2.6 2.6 0 0 1 0 5.2z" />
     </svg>
+  )
+}
+
+function Chevron() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M9 5.5 15.5 12 9 18.5"
+        stroke="currentColor"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+function ShieldIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 2.3 4.6 5.2v6c0 4.5 3.1 8.7 7.4 10.5 4.3-1.8 7.4-6 7.4-10.5v-6z" />
+    </svg>
+  )
+}
+
+function StarIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3-5.8 3 1.1-6.5L2.6 9.4l6.5-.9z" />
+    </svg>
+  )
+}
+
+function SmileIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 2.4a9.6 9.6 0 1 0 0 19.2 9.6 9.6 0 0 0 0-19.2zM8.6 8.4a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6zm6.8 0a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6zM12 17.6a5.2 5.2 0 0 1-4.5-2.6h9A5.2 5.2 0 0 1 12 17.6z" />
+    </svg>
+  )
+}
+
+function ActionRow({
+  href,
+  title,
+  subtitle,
+  icon,
+  className,
+  external,
+  download,
+}: {
+  href: string
+  title: string
+  subtitle: string
+  icon: ReactNode
+  className: string
+  external?: boolean
+  download?: boolean
+}) {
+  return (
+    <a
+      href={href}
+      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      {...(download ? { download: '' } : {})}
+      className={`flex items-center gap-3 rounded-2xl px-4 py-3.5 transition active:scale-[0.99] ${className}`}
+    >
+      <span className="flex w-12 shrink-0 justify-center">{icon}</span>
+      <span className="h-9 w-px shrink-0 bg-current opacity-25" aria-hidden="true" />
+      <span className="min-w-0 flex-1 text-left">
+        <span className="block text-[17px] font-bold leading-tight">{title}</span>
+        <span className="block text-[13px] leading-tight opacity-80">
+          {subtitle}
+        </span>
+      </span>
+      <Chevron />
+    </a>
   )
 }
 
@@ -63,38 +148,47 @@ export default function DriverCardView({
   const whatsapp = card.whatsapp_phone ?? null
   const first = card.name.split(' ')[0]
   const role = card.business_name ?? 'Professional taxi driver'
-  const tagline = card.description ?? 'Safe • Reliable • Friendly'
+
+  // "Safe • Reliable • Friendly" by default; a driver's own description
+  // splits on bullets or commas into up to three badges.
+  const traits = (card.description ?? 'Safe • Reliable • Friendly')
+    .split(/[•·|,]/)
+    .map((t) => t.trim())
+    .filter(Boolean)
+    .slice(0, 3)
+
+  const traitIcons = [<ShieldIcon key="s" />, <StarIcon key="r" />, <SmileIcon key="f" />]
 
   return (
     <div className="tc-in overflow-hidden rounded-[26px] bg-[#0B0B0C] shadow-[0_30px_70px_-28px_rgba(0,0,0,0.95)] ring-1 ring-white/10">
-      {/* Header: brand on black, area on the yellow shoulder */}
+      {/* Header */}
       <div className="relative">
-        <div className="absolute right-0 top-0 h-full w-[46%] rounded-bl-[48px] bg-yellow" />
+        <div className="absolute right-0 top-0 h-full w-[45%] rounded-bl-[44px] bg-yellow" />
         <div className="relative flex items-start justify-between gap-2 px-4 py-4">
           <div className="flex items-center gap-2.5 pt-1">
             <img
               src={LOGO_MARK}
               alt="TaxiCard"
-              width={42}
-              height={42}
-              style={{ width: 42, height: 42 }}
+              width={44}
+              height={44}
+              style={{ width: 44, height: 44 }}
               className="shrink-0"
             />
             <span className="leading-none">
-              <span className="block text-[19px] font-bold tracking-tight">
+              <span className="block text-[20px] font-bold tracking-tight">
                 <span className="text-white">Taxi</span>
                 <span className="text-yellow">Card</span>
               </span>
-              <span className="mt-1 block text-[9px] font-semibold tracking-[0.18em] text-white/60">
+              <span className="mt-1 block text-[9px] font-semibold tracking-[0.2em] text-white/55">
                 TAP. BOOK. RIDE.
               </span>
             </span>
           </div>
 
-          <div className="max-w-[46%] pt-1 text-right text-navy">
+          <div className="max-w-[44%] pt-0.5 text-right text-navy">
             <p className="flex items-start justify-end gap-1 text-[13px] font-bold leading-tight">
               <span className="mt-px shrink-0">
-                <PinIcon size={15} />
+                <PinIcon size={14} />
               </span>
               <span>
                 Your local
@@ -103,144 +197,125 @@ export default function DriverCardView({
               </span>
             </p>
             {card.service_area ? (
-              <p className="mt-1 text-[12px] font-medium leading-tight">
-                {card.service_area}
-              </p>
+              <>
+                <span className="my-1.5 ml-auto block h-px w-16 bg-navy/30" />
+                <p className="text-[13px] font-medium leading-tight">
+                  {card.service_area}
+                </p>
+              </>
             ) : null}
           </div>
         </div>
       </div>
 
       {/* Identity */}
-      <div className="px-5 pt-4 text-center">
+      <div className="px-5 pt-3 text-center">
         {card.photo_url ? (
           <img
             src={card.photo_url}
             alt={card.name}
-            width={104}
-            height={104}
-            className="mx-auto mb-3 h-[104px] w-[104px] rounded-full object-cover ring-[3px] ring-yellow"
+            width={116}
+            height={116}
+            className="mx-auto h-[116px] w-[116px] rounded-full object-cover ring-4 ring-yellow"
           />
         ) : null}
 
-        <h1 className="tc-left text-[26px] font-bold leading-tight text-white">
+        <h1 className="tc-left mt-3 text-[27px] font-bold leading-tight text-white">
           {card.name}
         </h1>
         <p className="tc-left tc-d1 mt-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/70">
           {role}
         </p>
-        <span className="mx-auto mt-2.5 block h-[3px] w-14 rounded-full bg-yellow" />
-        <p className="tc-left tc-d2 mt-2.5 text-[15px] text-white/85">{tagline}</p>
+        <span className="mx-auto mt-2.5 block h-[3px] w-16 rounded-full bg-yellow" />
 
-        <span
-          className={`tc-in tc-d3 mt-4 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold ${
-            card.is_available
-              ? 'bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-400/50'
-              : 'bg-white/5 text-slate-300 ring-1 ring-white/15'
-          }`}
-        >
-          <span
-            className={`h-2.5 w-2.5 rounded-full ${
-              card.is_available ? 'bg-emerald-400' : 'bg-slate-500'
-            }`}
-            aria-hidden="true"
-          />
-          {card.is_available ? 'Available for bookings' : 'Not taking bookings'}
-        </span>
+        <div className="mt-3.5 flex items-stretch justify-center">
+          {traits.map((t, i) => (
+            <div key={t} className="flex items-center">
+              {i > 0 ? (
+                <span className="mx-3 h-6 w-px bg-white/15" aria-hidden="true" />
+              ) : null}
+              <span className="flex items-center gap-1.5 text-[13px] font-medium text-white">
+                <span className="text-yellow">{traitIcons[i]}</span>
+                {t}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {!card.is_available ? (
+          <p className="mt-3 rounded-xl bg-white/5 px-4 py-2.5 text-sm text-white/70">
+            Not taking bookings right now.
+          </p>
+        ) : null}
+
+        {card.welcome_message ? (
+          <p className="mt-3 text-sm text-white/65">{card.welcome_message}</p>
+        ) : null}
       </div>
 
-      {card.welcome_message ? (
-        <p className="px-5 pt-3 text-center text-sm text-white/65">
-          {card.welcome_message}
-        </p>
-      ) : null}
-
-      {!card.is_available && card.phone ? (
-        <p className="px-5 pt-3 text-center text-sm text-white/60">
-          Not taking bookings right now, but you can still call.
-        </p>
-      ) : null}
-
-      {/* Actions. The grid narrows to match how many buttons there are,
-          so hiding the phone number leaves one full-width booking button
-          rather than a lopsided row. */}
-      <div
-        className={`grid gap-2.5 px-4 pb-5 pt-5 ${
-          [card.phone, whatsapp].filter(Boolean).length === 2
-            ? 'grid-cols-3'
-            : [card.phone, whatsapp].filter(Boolean).length === 1
-              ? 'grid-cols-2'
-              : 'grid-cols-1'
-        }`}
-      >
+      {/* Actions, stacked */}
+      <div className="space-y-2.5 px-4 pb-4 pt-4">
         {card.is_available && bookHref ? (
-          <a
+          <ActionRow
             href={bookHref}
-            className="flex min-h-[104px] flex-col items-center justify-center gap-2 rounded-2xl bg-yellow px-2 py-3 text-navy transition active:scale-[0.98]"
-          >
-            <TaxiIcon size={30} />
-            <span className="text-[15px] font-bold leading-tight">
-              Book my taxi
-            </span>
-          </a>
-        ) : (
-          <span className="flex min-h-[104px] flex-col items-center justify-center gap-2 rounded-2xl bg-white/8 px-2 py-3 text-white/50">
-            <TaxiIcon size={30} />
-            <span className="text-[15px] font-semibold leading-tight">
-              Not available
-            </span>
-          </span>
-        )}
-
-        {card.phone ? (
-          <a
-            href={`tel:${card.phone.replace(/\s/g, '')}`}
-            className="flex min-h-[104px] flex-col items-center justify-center gap-2 rounded-2xl bg-[#16A34A] px-1 py-3 text-white transition active:scale-[0.98]"
-          >
-            <PhoneIcon />
-            <span className="text-[13px] font-bold leading-tight">
-              Call {first}
-            </span>
-          </a>
+            title="Book My Taxi"
+            subtitle="Quick and easy booking"
+            icon={<TaxiIcon />}
+            className="bg-yellow text-navy"
+          />
         ) : null}
 
         {whatsapp ? (
-          <a
+          <ActionRow
             href={`https://wa.me/${whatsappNumber(whatsapp)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex min-h-[104px] flex-col items-center justify-center gap-2 rounded-2xl bg-[#22C55E] px-1 py-3 text-white transition active:scale-[0.98]"
-          >
-            <WhatsAppIcon />
-            <span className="text-[13px] font-bold leading-tight">WhatsApp</span>
-          </a>
+            title="Chat on WhatsApp"
+            subtitle="Message me directly"
+            icon={<WhatsAppIcon />}
+            className="bg-[#22A94F] text-white"
+            external
+          />
         ) : null}
+
+        {card.phone ? (
+          <ActionRow
+            href={`tel:${card.phone.replace(/\s/g, '')}`}
+            title={`Call ${first}`}
+            subtitle="Tap to call now"
+            icon={<PhoneIcon />}
+            className="bg-[#2C7BE5] text-white"
+          />
+        ) : null}
+
+        <ActionRow
+          href={`/${card.slug}/vcard`}
+          title="Save My Contact"
+          subtitle="Add me to your phone"
+          icon={<PersonIcon />}
+          className="border border-white/12 bg-white/[0.06] text-white"
+          download
+        />
       </div>
 
-      {/* Share */}
+      {/* Small share code */}
       {qrSvg && shareUrl ? (
-        <div className="mx-4 mb-5 rounded-2xl bg-white px-4 py-5 text-center">
+        <div className="mx-4 mb-4 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-4 text-center">
           <div
-            className="mx-auto w-36 rounded-xl p-1.5 ring-2 ring-yellow"
+            className="mx-auto w-24 rounded-lg bg-white p-1.5"
             dangerouslySetInnerHTML={{ __html: qrSvg }}
           />
-          <p className="mt-3 text-[15px] font-bold text-navy">
-            Pass {first} on to a friend
-          </p>
-          <p className="mt-0.5 break-all text-[13px] font-medium text-slate-500">
-            {shareUrl}
-          </p>
+          <p className="mt-2.5 text-[15px] font-bold text-white">Scan and save</p>
+          <p className="mt-0.5 text-[12px] text-white/55">{shareUrl}</p>
         </div>
       ) : null}
 
-      <div className="bg-yellow px-5 py-3.5 text-center">
-        <p className="text-[16px] font-bold italic text-navy">
-          Get there together
+      <div className="bg-yellow px-5 py-3 text-center">
+        <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-navy">
+          Same driver · Every journey
         </p>
       </div>
 
       {card.vehicle ? (
-        <p className="bg-[#0B0B0C] px-5 py-3 text-center text-xs text-white/40">
+        <p className="bg-[#0B0B0C] px-5 py-2.5 text-center text-xs text-white/40">
           {card.vehicle}
         </p>
       ) : null}
