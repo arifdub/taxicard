@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'TaxiCard',
+    name: 'TaxiCard Driver',
     short_name: 'TaxiCard',
     description: 'Your digital taxi card and booking page.',
     start_url: '/dashboard',
