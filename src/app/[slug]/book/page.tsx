@@ -6,6 +6,18 @@ import BookingForm from './booking-form'
 
 export const dynamic = 'force-dynamic'
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params
+  return {
+    title: 'Book a taxi',
+    manifest: `/api/manifest?slug=${encodeURIComponent(slug)}`,
+  }
+}
+
 export default async function BookPage({
   params,
 }: {
