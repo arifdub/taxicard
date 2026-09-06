@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { siteUrl, prettyLink } from '@/lib/site'
 import DriverCardView, { type DriverCard } from '@/components/driver-card'
 import { AvailabilitySwitch, CopyLink } from './card-tools'
-import PhotoToggle from './photo-toggle'
+import CardToggle from './photo-toggle'
 
 export const dynamic = 'force-dynamic'
 
@@ -29,7 +29,7 @@ export default async function MyCardPage() {
 
   const { data: settings } = await supabase
     .from('driver_settings')
-    .select('show_photo')
+    .select('show_photo, show_phone')
     .eq('driver_id', user.id)
     .maybeSingle()
 
@@ -56,7 +56,9 @@ export default async function MyCardPage() {
 
       <AvailabilitySwitch initial={profile.is_available} />
 
-      <PhotoToggle initial={settings?.show_photo ?? true} />
+      <CardToggle kind="photo" initial={settings?.show_photo ?? true} />
+
+      <CardToggle kind="phone" initial={settings?.show_phone ?? true} />
 
       {!profile.phone ? (
         <div className="rounded-2xl border border-amber-400/30 bg-amber-500/10 p-4 text-sm text-amber-100">

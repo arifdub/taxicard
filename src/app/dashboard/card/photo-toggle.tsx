@@ -1,31 +1,52 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { setShowPhoto } from './actions'
+import { setShowPhoto, setShowPhone } from './actions'
 
-export default function PhotoToggle({ initial }: { initial: boolean }) {
+type Kind = 'photo' | 'phone'
+
+const COPY: Record<Kind, { label: string; hint: string }> = {
+  photo: {
+    label: 'Show my photo',
+    hint: 'Passengers use it to check they have the right car.',
+  },
+  phone: {
+    label: 'Show my phone number',
+    hint: 'Turn off to leave only the booking button on your card.',
+  },
+}
+
+export default function CardToggle({
+  kind,
+  initial,
+}: {
+  kind: Kind
+  initial: boolean
+}) {
   const [on, setOn] = useState(initial)
   const [pending, start] = useTransition()
+  const copy = COPY[kind]
 
   return (
     <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-navy-soft px-4 py-3.5">
       <div>
-        <p className="text-sm font-medium text-white">Show my photo</p>
-        <p className="mt-0.5 text-xs text-slate-400">
-          Passengers use it to check they have the right car.
-        </p>
+        <p className="text-sm font-medium text-white">{copy.label}</p>
+        <p className="mt-0.5 text-xs text-slate-400">{copy.hint}</p>
       </div>
       <button
         type="button"
         role="switch"
         aria-checked={on}
-        aria-label="Show my photo on my card"
+        aria-label={copy.label}
         disabled={pending}
         onClick={() => {
           const next = !on
           setOn(next)
           start(async () => {
-            const res = await setShowPhoto(next)
+            const res =
+              kind === 'photo'
+                ? await setShowPhoto(next)
+                : await setShowPhone(next)
             if (res?.error) setOn(!next)
           })
         }}
