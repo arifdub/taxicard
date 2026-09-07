@@ -4,6 +4,7 @@ import QRCode from 'qrcode'
 import { createClient } from '@/lib/supabase/server'
 import { siteUrl, prettyLink } from '@/lib/site'
 import DriverCardView, { type DriverCard } from '@/components/driver-card'
+import SaveHint from './save-hint'
 
 // Always fresh: a driver flipping their availability should show up
 // immediately, not after a cache expires.
@@ -68,6 +69,8 @@ export default async function PublicCardPage({
         qrSvg={qrSvg}
         shareUrl={prettyLink(slug)}
       />
+        <SaveHint name={card.name.split(' ')[0]} />
+
         <p className="tc-in tc-d6 mt-4 text-center text-xs text-slate-500">
           Powered by TaxiCard
         </p>
