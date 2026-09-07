@@ -221,6 +221,83 @@ export default async function Home() {
           </Reveal>
           <div className="mx-auto mt-10 max-w-3xl space-y-5">
             <Faq
+              q="How do I put TaxiCard on a phone's home screen?"
+              a={
+                <div className="space-y-4">
+                  <p>
+                    There is nothing to download from an app store. Both the
+                    driver dashboard and a driver&apos;s card can be saved to
+                    a home screen and then open like an app.
+                  </p>
+
+                  <div>
+                    <p className="mb-2 font-semibold text-white">
+                      For your passengers
+                    </p>
+                    <p className="mb-3">
+                      They open your card, for example taxicard.ie/john, then:
+                    </p>
+                    <div className="space-y-2.5">
+                      <Steps
+                        title="iPhone — Safari or Chrome"
+                        items={[
+                          'Tap the share button. In Safari it is at the bottom, in Chrome it is beside the address bar.',
+                          'Scroll down and tap Add to Home Screen.',
+                          'Tap Add. Your card is now an icon with your name on it.',
+                        ]}
+                      />
+                      <Steps
+                        title="Android — Chrome"
+                        items={[
+                          'Tap the three dots at the top right.',
+                          'Tap Add to Home screen, or Install app.',
+                          'Tap Install.',
+                        ]}
+                      />
+                    </div>
+                    <p className="mt-3">
+                      They can also tap Save My Contact on your card to add
+                      you straight to their phonebook.
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="mb-2 font-semibold text-white">
+                      For drivers
+                    </p>
+                    <p className="mb-3">
+                      Log in at taxicard.ie first, then install from your
+                      dashboard:
+                    </p>
+                    <div className="space-y-2.5">
+                      <Steps
+                        title="iPhone — Safari or Chrome"
+                        items={[
+                          'Open taxicard.ie and log in.',
+                          'Tap the share button, then Add to Home Screen.',
+                          'Open TaxiCard from that icon, then turn on booking alerts in Profile.',
+                        ]}
+                      />
+                      <Steps
+                        title="Android — Chrome"
+                        items={[
+                          'Open taxicard.ie and log in.',
+                          'Tap the three dots, then Install app.',
+                          'Open it from the icon and turn on booking alerts in Profile.',
+                        ]}
+                      />
+                    </div>
+                    <p className="mt-3 text-slate-400">
+                      On iPhone, booking alerts only work from the installed
+                      app, not from a browser tab. Install it once and open
+                      it from the icon from then on.
+                    </p>
+                  </div>
+                </div>
+              }
+            />
+
+            <Faq
               q="Do my customers need an app?"
               a="No. They scan your QR code or tap your link and the booking page opens in their phone browser. They can add it to their home screen if they want it handy."
             />
@@ -325,11 +402,35 @@ function Point({
   )
 }
 
-function Faq({ q, a }: { q: string; a: string }) {
+function Faq({ q, a }: { q: string; a: ReactNode }) {
   return (
     <div className="border-b border-white/10 pb-5">
       <h3 className="font-semibold">{q}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-slate-300">{a}</p>
+      {typeof a === 'string' ? (
+        <p className="mt-2 text-sm leading-relaxed text-slate-300">{a}</p>
+      ) : (
+        <div className="mt-2 text-sm leading-relaxed text-slate-300">{a}</div>
+      )}
+    </div>
+  )
+}
+
+function Steps({ title, items }: { title: string; items: string[] }) {
+  return (
+    <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-yellow">
+        {title}
+      </p>
+      <ol className="mt-2 space-y-1.5">
+        {items.map((step, i) => (
+          <li key={step} className="flex gap-2.5">
+            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/10 text-[11px] font-bold text-white">
+              {i + 1}
+            </span>
+            <span>{step}</span>
+          </li>
+        ))}
+      </ol>
     </div>
   )
 }
