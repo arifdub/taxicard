@@ -42,19 +42,22 @@ export default function InstallPrompt() {
   if (mode === 'hidden') return null
 
   return (
-    <div className="rounded-2xl border border-yellow/25 bg-yellow/10 p-4 text-white">
-      <p className="font-semibold">Put TaxiCard on your home screen</p>
+    <div className="rounded-2xl border border-yellow/25 bg-yellow/10 p-4">
+      <p className="text-sm font-semibold text-white">
+        Install TaxiCard on this phone
+      </p>
 
       {mode === 'ios' ? (
-        <p className="mt-2 text-sm text-slate-300">
-          Tap the share button at the bottom of Safari, then{' '}
+        <p className="mt-1.5 text-sm text-slate-300">
+          Tap the share button — bottom of the screen in Safari, beside the
+          address bar in Chrome — then{' '}
           <span className="font-medium text-white">Add to Home Screen</span>.
           Open it from that icon and you can turn on booking alerts.
         </p>
       ) : (
         <>
-          <p className="mt-2 text-sm text-slate-300">
-            One tap, and it opens like an app. No download, no App Store.
+          <p className="mt-1.5 text-sm text-slate-300">
+            One tap and it opens like an app, with booking alerts.
           </p>
           <button
             onClick={async () => {
@@ -65,7 +68,7 @@ export default function InstallPrompt() {
             }}
             className="mt-3 w-full rounded-xl bg-yellow px-4 py-3 font-semibold text-navy"
           >
-            Add to home screen
+            Install now
           </button>
         </>
       )}
