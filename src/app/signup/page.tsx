@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Wordmark from '@/components/wordmark'
 import { useActionState } from 'react'
 import { signUp, type FormState } from '@/app/auth/actions'
-import { Field, Alert, Submit } from '@/components/ui'
+import { Field, PasswordField, Alert, Submit } from '@/components/ui'
 
 const initial: FormState = {}
 
@@ -28,19 +28,17 @@ export default function SignUpPage() {
 
         <Field label="Your name" name="name" autoComplete="name" required placeholder="John Smith" />
         <Field label="Email" name="email" type="email" autoComplete="email" required placeholder="john@example.com" />
-        <Field
+        <PasswordField
           label="Password"
           name="password"
-          type="password"
           autoComplete="new-password"
           required
           minLength={8}
           hint="At least 8 characters"
         />
-        <Field
+        <PasswordField
           label="Confirm password"
           name="confirm"
-          type="password"
           autoComplete="new-password"
           required
           minLength={8}
