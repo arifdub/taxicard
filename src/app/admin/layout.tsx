@@ -42,6 +42,12 @@ export default async function AdminLayout({
           >
             Drivers
           </Link>
+          <Link
+            href="/admin/dispatch"
+            className="rounded-lg px-4 py-2 text-sm font-medium text-slate-300"
+          >
+            Send a job
+          </Link>
         </nav>
       </header>
 

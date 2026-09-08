@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { logOut } from '@/app/auth/actions'
 
-const LINKS = [
+const BASE_LINKS = [
   { href: '/dashboard', label: 'Dashboard' },
   { href: '/dashboard/bookings', label: 'Bookings' },
   { href: '/dashboard/customers', label: 'Customers' },
@@ -14,9 +14,24 @@ const LINKS = [
   { href: '/dashboard/settings', label: 'Profile' },
 ]
 
-export default function NavMenu({ isAdmin = false }: { isAdmin?: boolean }) {
+export default function NavMenu({
+  isAdmin = false,
+  isBusiness = false,
+}: {
+  isAdmin?: boolean
+  isBusiness?: boolean
+}) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
+
+  const LINKS = isBusiness
+    ? [
+        BASE_LINKS[0],
+        BASE_LINKS[1],
+        { href: '/dashboard/jobs', label: 'Jobs' },
+        ...BASE_LINKS.slice(2),
+      ]
+    : BASE_LINKS
 
   // Close on Escape, and stop the page behind from scrolling while open.
   useEffect(() => {

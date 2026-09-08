@@ -15,13 +15,15 @@ export default async function DashboardLayout({
   } = await supabase.auth.getUser()
 
   let isAdmin = false
+  let isBusiness = false
   if (user) {
     const { data } = await supabase
       .from('profiles')
-      .select('is_admin')
+      .select('is_admin, plan')
       .eq('id', user.id)
       .maybeSingle()
     isAdmin = Boolean(data?.is_admin)
+    isBusiness = data?.plan === 'BUSINESS'
   }
 
   return (
@@ -31,7 +33,7 @@ export default async function DashboardLayout({
           <Link href="/dashboard">
             <Wordmark size="sm" />
           </Link>
-          <NavMenu isAdmin={isAdmin} />
+          <NavMenu isAdmin={isAdmin} isBusiness={isBusiness} />
         </div>
       </header>
 
