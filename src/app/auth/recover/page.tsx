@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { type EmailOtpType } from '@supabase/supabase-js'
 import Wordmark from '@/components/wordmark'
 import { createClient } from '@/lib/supabase/server'
+import { markRecovery } from './actions'
 import HashHandler from './hash-handler'
 
 export const dynamic = 'force-dynamic'
@@ -15,24 +16,33 @@ export default async function RecoverPage({
   const params = await searchParams
   const supabase = await createClient()
 
-  if (params.token_hash && params.type) {
-    const { error } = await supabase.auth.verifyOtp({
-      type: params.type as EmailOtpType,
-      token_hash: params.token_hash,
-    })
-    if (!error) redirect('/auth/update-password')
-  }
+  const hasToken = Boolean((params.token_hash && params.type) || params.code)
 
-  if (params.code) {
-    const { error } = await supabase.auth.exchangeCodeForSession(params.code)
-    if (!error) redirect('/auth/update-password')
-  }
+  if (hasToken) {
+    // Drop whoever is signed in on this phone first. Otherwise verifying
+    // a link on a shared or borrowed device could leave the wrong account
+    // signed in at the password screen.
+    await supabase.auth.signOut()
 
-  // Already signed in from a previous step? Go straight on.
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (user) redirect('/auth/update-password')
+    if (params.token_hash && params.type) {
+      const { error } = await supabase.auth.verifyOtp({
+        type: params.type as EmailOtpType,
+        token_hash: params.token_hash,
+      })
+      if (!error) {
+        await markRecovery()
+        redirect('/auth/update-password')
+      }
+    }
+
+    if (params.code) {
+      const { error } = await supabase.auth.exchangeCodeForSession(params.code)
+      if (!error) {
+        await markRecovery()
+        redirect('/auth/update-password')
+      }
+    }
+  }
 
   return (
     <main className="tc-dark-page w-full px-5 py-10 text-white">
@@ -41,7 +51,9 @@ export default async function RecoverPage({
           <Wordmark size="sm" />
         </Link>
 
-        <h1 className="text-2xl font-semibold text-white">Reset your password</h1>
+        <h1 className="text-2xl font-semibold text-white">
+          Reset your password
+        </h1>
 
         <HashHandler />
       </div>

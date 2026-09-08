@@ -346,9 +346,17 @@ export default async function Home() {
             <Wordmark size="sm" />
             <span className="hidden sm:inline">— built for independent drivers in Ireland.</span>
           </span>
-          <Link href="/login" className="text-brandblue">
-            Driver log in
-          </Link>
+          <div className="flex flex-wrap items-center gap-4">
+            <Link href="/privacy" className="text-slate-400 hover:text-white">
+              Privacy
+            </Link>
+            <Link href="/terms" className="text-slate-400 hover:text-white">
+              Terms
+            </Link>
+            <Link href="/login" className="text-brandblue">
+              Driver log in
+            </Link>
+          </div>
         </div>
       </footer>
     </div>

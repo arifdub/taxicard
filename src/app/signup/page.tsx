@@ -46,6 +46,19 @@ export default function SignUpPage() {
         />
 
         <Submit pending={pending}>Create account</Submit>
+
+        <p className="text-center text-xs leading-relaxed text-slate-500">
+          By creating an account you agree to our{' '}
+          <Link href="/terms" className="text-brandblue">
+            terms
+          </Link>{' '}
+          and{' '}
+          <Link href="/privacy" className="text-brandblue">
+            privacy notice
+          </Link>
+          . You confirm you hold a valid SPSV licence, and that you are
+          responsible for the passenger details you store.
+        </p>
       </form>
 
       <p className="mt-6 text-center text-sm text-slate-400">

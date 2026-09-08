@@ -274,8 +274,14 @@ export default function BookingForm({
         {pending ? 'Sending…' : 'Send booking request'}
       </button>
 
-      <p className="text-center text-xs text-slate-500">
-        This sends a request. {firstName} will confirm it.
+      <p className="text-center text-xs leading-relaxed text-slate-500">
+        This sends a request. {firstName} will confirm it. Your name, number
+        and addresses go to {firstName} only, so they can collect you and
+        recognise you next time. No other driver sees them. See our{' '}
+        <a href="/privacy" className="text-brandblue underline">
+          privacy notice
+        </a>
+        .
       </p>
     </form>
   )

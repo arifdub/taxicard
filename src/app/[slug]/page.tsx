@@ -72,7 +72,10 @@ export default async function PublicCardPage({
         <SaveHint name={card.name.split(' ')[0]} />
 
         <p className="tc-in tc-d6 mt-4 text-center text-xs text-slate-500">
-          Powered by TaxiCard
+          Powered by TaxiCard ·{' '}
+          <a href="/privacy" className="underline">
+            Privacy
+          </a>
         </p>
       </div>
     </main>

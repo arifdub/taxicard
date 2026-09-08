@@ -16,7 +16,19 @@ export async function GET(request: NextRequest) {
 
   // A recovery link should land on the page where you set a new password,
   // not the dashboard — otherwise you are signed in but never asked.
-  const fallback = type === 'recovery' ? '/auth/update-password' : '/dashboard'
+  // Recovery links belong to /auth/recover, which signs out first and
+  // marks the browser. Forward them with their token intact.
+  if (type === 'recovery') {
+    const url = new URL('/auth/recover', request.url)
+    if (token_hash) {
+      url.searchParams.set('token_hash', token_hash)
+      url.searchParams.set('type', 'recovery')
+    }
+    if (code) url.searchParams.set('code', code)
+    redirect(url.pathname + url.search)
+  }
+
+  const fallback = '/dashboard'
   const next = searchParams.get('next') ?? fallback
 
   const supabase = await createClient()

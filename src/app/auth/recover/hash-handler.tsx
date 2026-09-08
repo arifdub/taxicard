@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { markRecovery } from './actions'
 
 /**
  * Supabase's default email template sends the session back in the URL
@@ -27,6 +28,12 @@ export default function HashHandler() {
       }
 
       const supabase = createClient()
+
+      // Replace any session already on this phone with the one the link
+      // carries, so the password screen can only ever act on the account
+      // that asked for the reset.
+      await supabase.auth.signOut()
+
       const { error } = await supabase.auth.setSession({
         access_token,
         refresh_token,
@@ -36,6 +43,8 @@ export default function HashHandler() {
         setState('failed')
         return
       }
+
+      await markRecovery()
 
       // Clear the tokens out of the address bar before moving on.
       window.history.replaceState(null, '', window.location.pathname)

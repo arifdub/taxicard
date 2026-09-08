@@ -2,7 +2,9 @@
 
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
+import { cookies } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
+import { RECOVERY_COOKIE } from '@/lib/recovery'
 
 export type PasswordState = { error?: string }
 
@@ -26,6 +28,11 @@ export async function updatePassword(
   })
   if (!parsed.success) return { error: parsed.error.issues[0].message }
 
+  const store = await cookies()
+  if (!store.get(RECOVERY_COOKIE)) {
+    return { error: 'That link has expired. Ask for a new one.' }
+  }
+
   const supabase = await createClient()
   const {
     data: { user },
@@ -40,6 +47,9 @@ export async function updatePassword(
   })
 
   if (error) return { error: error.message }
+
+  // One change per link.
+  store.delete(RECOVERY_COOKIE)
 
   redirect('/dashboard?password=changed')
 }

@@ -147,7 +147,7 @@ export default function JobForm() {
 
       <div>
         <label htmlFor="fare" className={label}>
-          Fixed fare (optional)
+          Set fare (optional)
         </label>
         <div className="flex items-center gap-2">
           <span className="text-lg font-semibold text-slate-400">&euro;</span>

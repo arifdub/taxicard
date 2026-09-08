@@ -1,19 +1,23 @@
 import Link from 'next/link'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import Wordmark from '@/components/wordmark'
 import { createClient } from '@/lib/supabase/server'
+import { RECOVERY_COOKIE } from '@/lib/recovery'
 import UpdatePasswordForm from './form'
 
 export const dynamic = 'force-dynamic'
 
 export default async function UpdatePasswordPage() {
+  // Only reachable straight after a reset link was verified on this
+  // browser. Without the marker, being signed in is not enough.
+  const store = await cookies()
+  if (!store.get(RECOVERY_COOKIE)) redirect('/reset-password?expired=1')
+
   const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
-
-  // Arriving here without a session means the link was used, expired, or
-  // was opened in a different browser from the one that asked.
   if (!user) redirect('/reset-password?expired=1')
 
   return (
@@ -27,7 +31,7 @@ export default async function UpdatePasswordPage() {
           Set a new password
         </h1>
         <p className="tc-left tc-d1 mt-1 text-sm text-slate-400">
-          Signed in as {user.email}.
+          For {user.email}. If that is not you, close this page.
         </p>
 
         <UpdatePasswordForm />
