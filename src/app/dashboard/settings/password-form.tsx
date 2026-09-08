@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from 'react'
 import { changePassword, type ChangeState } from './password-actions'
-import { Field, Alert, Submit } from '@/components/ui'
+import { Field, PasswordField, Alert, Submit } from '@/components/ui'
 
 const initial: ChangeState = {}
 
@@ -40,19 +40,17 @@ export default function PasswordForm() {
       {state.error ? <Alert kind="error">{state.error}</Alert> : null}
       {state.message ? <Alert kind="ok">{state.message}</Alert> : null}
 
-      <Field
+      <PasswordField
         label="New password"
         name="password"
-        type="password"
         autoComplete="new-password"
         required
         minLength={8}
         hint="At least 8 characters"
       />
-      <Field
+      <PasswordField
         label="Confirm new password"
         name="confirm"
-        type="password"
         autoComplete="new-password"
         required
         minLength={8}
