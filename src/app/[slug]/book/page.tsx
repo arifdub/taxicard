@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { type DriverCard } from '@/components/driver-card'
@@ -31,7 +30,7 @@ export default async function BookPage({
 
   if (!card.is_available) {
     return (
-      <main className="tc-dark-page w-full px-5 py-10 text-center text-white">
+      <main className="tc-dark-page w-full px-5 pb-10 text-center text-white pt-[calc(env(safe-area-inset-top)+1.5rem)]">
       <div className="mx-auto w-full max-w-md">
         <h1 className="text-xl font-semibold text-white">
           {card.name} is not taking bookings right now
@@ -47,20 +46,40 @@ export default async function BookPage({
             Call {card.name.split(' ')[0]}
           </a>
         ) : null}
-        <Link href={`/${slug}`} className="mt-4 block text-sm text-brandblue">
-          Back
-        </Link>
+        <a
+          href={`/${slug}`}
+          className="mx-auto mt-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white"
+        >
+          Back to card
+        </a>
         </div>
       </main>
     )
   }
 
   return (
-    <main className="tc-dark-page w-full px-5 py-8 text-white">
+    <main className="tc-dark-page w-full px-5 pb-8 text-white pt-[calc(env(safe-area-inset-top)+1.25rem)]">
       <div className="tc-dark mx-auto w-full max-w-md">
-        <Link href={`/${slug}`} className="text-sm text-slate-400">
-          Back
-        </Link>
+        <a
+          href={`/${slug}`}
+          className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white transition active:scale-[0.98]"
+        >
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M19 12H5" />
+            <path d="m12 19-7-7 7-7" />
+          </svg>
+          Back to card
+        </a>
         <h1 className="tc-left mt-3 text-2xl font-semibold text-white">
           Book {card.name.split(' ')[0]}
         </h1>
