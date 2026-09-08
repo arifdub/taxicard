@@ -17,21 +17,24 @@ const BASE_LINKS = [
 export default function NavMenu({
   isAdmin = false,
   isBusiness = false,
+  canDispatch = false,
 }: {
   isAdmin?: boolean
   isBusiness?: boolean
+  canDispatch?: boolean
 }) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
 
-  const LINKS = isBusiness
-    ? [
-        BASE_LINKS[0],
-        BASE_LINKS[1],
-        { href: '/dashboard/jobs', label: 'Jobs' },
-        ...BASE_LINKS.slice(2),
-      ]
-    : BASE_LINKS
+  const LINKS = [
+    BASE_LINKS[0],
+    BASE_LINKS[1],
+    ...(isBusiness ? [{ href: '/dashboard/jobs', label: 'Jobs' }] : []),
+    ...(canDispatch
+      ? [{ href: '/dashboard/dispatch', label: 'Send a job' }]
+      : []),
+    ...BASE_LINKS.slice(2),
+  ]
 
   // Close on Escape, and stop the page behind from scrolling while open.
   useEffect(() => {

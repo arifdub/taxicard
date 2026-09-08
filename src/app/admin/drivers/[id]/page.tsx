@@ -21,6 +21,7 @@ type Driver = {
   is_active: boolean
   is_available: boolean
   is_admin: boolean
+  can_dispatch: boolean
   plan: string
   created_at: string
 }
@@ -31,7 +32,7 @@ export default async function AdminDriverPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const { supabase } = await requireAdmin()
+  const { supabase, user } = await requireAdmin()
 
   const { data } = await supabase
     .from('profiles')
@@ -142,6 +143,9 @@ export default async function AdminDriverPage({
         driverId={driver.id}
         driverName={driver.name ?? 'this driver'}
         isActive={driver.is_active}
+        isAdmin={driver.is_admin}
+        isSelf={driver.id === user.id}
+        canDispatch={driver.can_dispatch}
         plan={driver.plan}
       />
 

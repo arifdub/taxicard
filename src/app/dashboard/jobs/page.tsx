@@ -14,6 +14,7 @@ type Job = {
   booking_type: string
   scheduled_at: string | null
   notes: string | null
+  fare: number | null
   status: string
   is_mine: boolean
   created_at: string
@@ -109,12 +110,19 @@ function JobCard({ job, claimable }: { job: Job; claimable?: boolean }) {
             <p className="text-sm text-slate-400">{job.customer_phone}</p>
           )}
         </div>
-        <span className="shrink-0 text-xs text-slate-500">
-          {new Date(job.created_at).toLocaleTimeString(undefined, {
-            hour: '2-digit',
-            minute: '2-digit',
-          })}
-        </span>
+        <div className="shrink-0 text-right">
+          {job.fare != null ? (
+            <span className="block rounded-lg bg-yellow px-2.5 py-1 text-base font-bold text-navy">
+              &euro;{Number(job.fare).toFixed(2)}
+            </span>
+          ) : null}
+          <span className="mt-1 block text-xs text-slate-500">
+            {new Date(job.created_at).toLocaleTimeString(undefined, {
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </span>
+        </div>
       </div>
 
       <div className="mt-3 space-y-1 rounded-xl bg-white/5 p-3 text-sm text-slate-200">

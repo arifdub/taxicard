@@ -13,6 +13,7 @@ type Job = {
   booking_type: string
   scheduled_at: string | null
   status: string
+  fare: number | null
   claimed_at: string | null
   created_at: string
   claimed_by: string | null
@@ -71,8 +72,14 @@ export default async function DispatchPage() {
                     <p className="font-semibold text-white">{j.customer_name}</p>
                     <p className="text-sm text-slate-400">{j.customer_phone}</p>
                   </div>
+                  <div className="flex shrink-0 items-center gap-2">
+                  {j.fare != null ? (
+                    <span className="rounded-lg bg-yellow px-2 py-1 text-sm font-bold text-navy">
+                      &euro;{Number(j.fare).toFixed(2)}
+                    </span>
+                  ) : null}
                   <span
-                    className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${
+                    className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
                       j.status === 'CLAIMED'
                         ? 'bg-emerald-400/20 text-emerald-200'
                         : j.status === 'OPEN'
@@ -82,6 +89,7 @@ export default async function DispatchPage() {
                   >
                     {j.status.toLowerCase()}
                   </span>
+                  </div>
                 </div>
 
                 <div className="mt-3 space-y-1 rounded-xl bg-white/5 p-3 text-sm text-slate-200">

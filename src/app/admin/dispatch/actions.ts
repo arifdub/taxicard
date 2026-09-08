@@ -19,6 +19,14 @@ const schema = z.object({
   when: z.enum(['NOW', 'LATER']),
   scheduled_at: z.string().trim().optional(),
   notes: z.string().trim().max(280).optional(),
+  fare: z
+    .string()
+    .trim()
+    .optional()
+    .refine(
+      (v) => !v || /^\d{1,5}([.,]\d{1,2})?$/.test(v),
+      'Enter a fare like 25 or 25.50'
+    ),
 })
 
 export async function createDispatchJob(
@@ -54,6 +62,7 @@ export async function createDispatchJob(
     booking_type: v.when,
     scheduled_at: v.when === 'LATER' ? v.scheduled_at : new Date().toISOString(),
     notes: v.notes || null,
+    fare: v.fare ? Number(v.fare.replace(',', '.')) : null,
   })
 
   if (error) return { error: 'Could not send that job. Try again.' }
@@ -71,7 +80,9 @@ export async function createDispatchJob(
       list.filter(Boolean).map((id) =>
         pushToDriver(id, {
           title: 'New job available',
-          body: `${v.pickup}${v.destination ? ` → ${v.destination}` : ''}`,
+          body: `${v.fare ? `€${v.fare} · ` : ''}${v.pickup}${
+            v.destination ? ` → ${v.destination}` : ''
+          }`,
           url: '/dashboard/jobs',
           tag: 'dispatch',
         })

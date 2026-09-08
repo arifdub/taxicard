@@ -1,7 +1,13 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { setDriverActive, setDriverPlan, deleteDriver } from '@/app/admin/actions'
+import {
+  setDriverActive,
+  setDriverPlan,
+  deleteDriver,
+  setDriverAdmin,
+  setCanDispatch,
+} from '@/app/admin/actions'
 
 const PLANS = ['FREE', 'PRO', 'BUSINESS'] as const
 
@@ -9,11 +15,17 @@ export default function DriverControls({
   driverId,
   driverName,
   isActive,
+  isAdmin,
+  isSelf,
+  canDispatch,
   plan,
 }: {
   driverId: string
   driverName: string
   isActive: boolean
+  isAdmin: boolean
+  isSelf: boolean
+  canDispatch: boolean
   plan: string
 }) {
   const [active, setActive] = useState(isActive)
@@ -22,6 +34,8 @@ export default function DriverControls({
   const [pending, start] = useTransition()
   const [confirming, setConfirming] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [admin, setAdmin] = useState(isAdmin)
+  const [dispatch, setDispatch] = useState(canDispatch)
   const [typed, setTyped] = useState('')
 
   function toggleActive() {
@@ -122,6 +136,87 @@ export default function DriverControls({
             </div>
           </div>
         )}
+      </div>
+
+      <div className="rounded-2xl border border-white/10 bg-navy-soft p-5">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+              Office access
+            </p>
+            <p className="mt-2 text-sm text-slate-300">
+              {dispatch
+                ? 'Can send jobs to business drivers.'
+                : 'Cannot send jobs. Off by default.'}
+            </p>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={dispatch}
+            aria-label="Can send jobs"
+            disabled={pending}
+            onClick={() => {
+              const next = !dispatch
+              setDispatch(next)
+              start(async () => {
+                const res = await setCanDispatch(driverId, next)
+                if (res.error) {
+                  setError(res.error)
+                  setDispatch(!next)
+                }
+              })
+            }}
+            className={`relative h-7 w-12 shrink-0 rounded-full transition-colors ${
+              dispatch ? 'bg-emerald-600' : 'bg-white/25'
+            }`}
+          >
+            <span
+              className={`absolute top-1 h-5 w-5 rounded-full bg-white transition-all ${
+                dispatch ? 'left-6' : 'left-1'
+              }`}
+            />
+          </button>
+        </div>
+        <p className="mt-3 text-xs text-slate-500">
+          Sending jobs only. They still cannot see other drivers&apos;
+          customers, disable accounts or delete anyone.
+        </p>
+      </div>
+
+      <div className="rounded-2xl border border-white/10 bg-navy-soft p-5">
+        <p className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+          Admin access
+        </p>
+        <p className="mt-2 text-sm text-slate-300">
+          {isSelf
+            ? 'This is your own account. Change admin access from another admin account.'
+            : admin
+              ? 'Can see every driver, disable accounts and delete them.'
+              : 'A normal driver. Sees only their own customers and bookings.'}
+        </p>
+
+        {!isSelf ? (
+          <button
+            disabled={pending}
+            onClick={() =>
+              start(async () => {
+                setError(null)
+                const next = !admin
+                const res = await setDriverAdmin(driverId, next)
+                if (res.error) setError(res.error)
+                else setAdmin(next)
+              })
+            }
+            className={`mt-4 w-full rounded-xl px-4 py-3 text-sm font-semibold disabled:opacity-60 ${
+              admin
+                ? 'border border-white/20 text-white'
+                : 'bg-yellow text-navy'
+            }`}
+          >
+            {admin ? 'Remove admin access' : 'Make an administrator'}
+          </button>
+        ) : null}
       </div>
 
       <div className="rounded-2xl border border-red-400/30 bg-red-500/5 p-5">

@@ -146,6 +146,25 @@ export default function JobForm() {
       ) : null}
 
       <div>
+        <label htmlFor="fare" className={label}>
+          Fixed fare (optional)
+        </label>
+        <div className="flex items-center gap-2">
+          <span className="text-lg font-semibold text-slate-400">&euro;</span>
+          <input
+            id="fare"
+            name="fare"
+            inputMode="decimal"
+            placeholder="25.00"
+            className={field}
+          />
+        </div>
+        <p className="mt-1 text-xs text-slate-500">
+          Leave blank for the driver to agree it with the customer.
+        </p>
+      </div>
+
+      <div>
         <label htmlFor="notes" className={label}>
           Notes (optional)
         </label>
