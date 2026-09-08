@@ -5,7 +5,7 @@ import Wordmark from '@/components/wordmark'
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useActionState } from 'react'
 import { logIn, type FormState } from '@/app/auth/actions'
-import { Field, Alert, Submit } from '@/components/ui'
+import { Field, PasswordField, Alert, Submit } from '@/components/ui'
 
 const initial: FormState = {}
 
@@ -23,7 +23,12 @@ function LoginForm() {
 
         <input type="hidden" name="next" value={next} />
         <Field label="Email" name="email" type="email" autoComplete="email" required />
-        <Field label="Password" name="password" type="password" autoComplete="current-password" required />
+        <PasswordField
+          label="Password"
+          name="password"
+          autoComplete="current-password"
+          required
+        />
 
         <Submit pending={pending}>Log in</Submit>
       </form>
