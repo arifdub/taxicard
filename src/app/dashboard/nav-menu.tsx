@@ -88,7 +88,7 @@ export default function NavMenu({
               </button>
             </div>
 
-            <div className="flex-1 px-3 py-3">
+            <div className="flex-1 overflow-y-auto overscroll-contain px-3 py-3">
               {LINKS.map((l) => {
                 const active =
                   l.href === '/dashboard'
@@ -109,27 +109,31 @@ export default function NavMenu({
                   </Link>
                 )
               })}
-            </div>
 
-                        {isAdmin ? (
-              <div className="border-t border-white/10 px-3 py-3">
-                <Link
-                  href="/admin"
-                  onClick={() => setOpen(false)}
-                  className="block rounded-xl bg-yellow px-4 py-3.5 text-center text-base font-semibold text-navy"
-                >
-                  Admin panel
-                </Link>
-              </div>
-            ) : null}
+              <div className="my-2 border-t border-white/10" />
 
-            <div className="border-t border-white/10 p-3">
               <form action={logOut}>
                 <button className="w-full rounded-xl px-4 py-3.5 text-left text-base font-medium text-red-300">
                   Log out
                 </button>
               </form>
+
+              {isAdmin ? (
+                <>
+                  <div className="my-2 border-t border-white/10" />
+                  <Link
+                    href="/admin"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-xl bg-yellow px-4 py-3.5 text-center text-base font-semibold text-navy"
+                  >
+                    Admin panel
+                  </Link>
+                </>
+              ) : null}
+
+              <div className="h-[env(safe-area-inset-bottom)]" />
             </div>
+
           </nav>
         </div>
       ) : null}

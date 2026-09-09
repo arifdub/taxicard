@@ -4,6 +4,12 @@ import JobForm from './job-form'
 
 export const dynamic = 'force-dynamic'
 
+type Person = {
+  name: string | null
+  licence_number: string | null
+  phone: string | null
+} | null
+
 type Job = {
   id: string
   customer_name: string
@@ -17,14 +23,19 @@ type Job = {
   claimed_at: string | null
   created_at: string
   claimed_by: string | null
+  creator: Person
+  taker: Person
 }
 
 export default async function DispatchPage() {
   const { supabase } = await requireAdmin()
 
+  // Who sent it and who took it. Only administrators see this page.
   const { data } = await supabase
     .from('dispatch_jobs')
-    .select('*')
+    .select(
+      '*, creator:created_by(name, licence_number, phone), taker:claimed_by(name, licence_number, phone)'
+    )
     .order('created_at', { ascending: false })
     .limit(40)
 
@@ -110,18 +121,40 @@ export default async function DispatchPage() {
                   </p>
                 </div>
 
-                <p className="mt-2 text-xs text-slate-500">
-                  Sent{' '}
-                  {new Date(j.created_at).toLocaleString(undefined, {
-                    day: 'numeric',
-                    month: 'short',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                  {j.claimed_at
-                    ? ` · taken ${new Date(j.claimed_at).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}`
-                    : ''}
-                </p>
+                <div className="mt-3 space-y-1.5 border-t border-white/10 pt-3 text-xs">
+                  <p className="text-slate-400">
+                    <span className="font-semibold text-slate-300">
+                      Created by
+                    </span>{' '}
+                    {j.creator?.name ?? 'Unknown'}
+                    {j.creator?.licence_number
+                      ? ` · licence ${j.creator.licence_number}`
+                      : ''}{' '}
+                    ·{' '}
+                    {new Date(j.created_at).toLocaleString(undefined, {
+                      day: 'numeric',
+                      month: 'short',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </p>
+
+                  {j.taker ? (
+                    <p className="text-emerald-300">
+                      <span className="font-semibold">Accepted by</span>{' '}
+                      {j.taker.name ?? 'Driver'}
+                      {j.taker.licence_number
+                        ? ` · licence ${j.taker.licence_number}`
+                        : ''}
+                      {j.taker.phone ? ` · ${j.taker.phone}` : ''}
+                      {j.claimed_at
+                        ? ` · ${new Date(j.claimed_at).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}`
+                        : ''}
+                    </p>
+                  ) : (
+                    <p className="text-amber-300">Not taken yet</p>
+                  )}
+                </div>
               </li>
             ))}
           </ul>
