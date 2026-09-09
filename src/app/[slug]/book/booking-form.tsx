@@ -1,6 +1,13 @@
 'use client'
 
-import { useActionState, useRef, useState } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
+import {
+  loadPassenger,
+  savePassenger,
+  clearPassenger,
+  hasSavedDetails,
+  type SavedPassenger,
+} from '@/lib/passenger'
 import { createBooking, type BookingState } from './actions'
 
 const initial: BookingState = {}
@@ -21,6 +28,41 @@ export default function BookingForm({
   const [coords, setCoords] = useState<{ lat: string; lng: string } | null>(null)
   const pickupRef = useRef<HTMLInputElement>(null)
   const eircodeRef = useRef<HTMLInputElement>(null)
+  const nameRef = useRef<HTMLInputElement>(null)
+  const phoneRef = useRef<HTMLInputElement>(null)
+  const destRef = useRef<HTMLInputElement>(null)
+  const formRef = useRef<HTMLFormElement>(null)
+
+  const [saved, setSaved] = useState<SavedPassenger | null>(null)
+
+  // Fill in whatever this phone remembers. Nothing has left the device.
+  useEffect(() => {
+    const p = loadPassenger()
+    if (!hasSavedDetails(p) && p.pickups.length === 0) return
+
+    setSaved(p)
+    if (nameRef.current && !nameRef.current.value) nameRef.current.value = p.name
+    if (phoneRef.current && !phoneRef.current.value) phoneRef.current.value = p.phone
+    if (eircodeRef.current && !eircodeRef.current.value) {
+      eircodeRef.current.value = p.eircode
+    }
+    if (pickupRef.current && !pickupRef.current.value && p.pickups[0]) {
+      pickupRef.current.value = p.pickups[0]
+    }
+    if (destRef.current && !destRef.current.value && p.destinations[0]) {
+      destRef.current.value = p.destinations[0]
+    }
+  }, [])
+
+  function rememberDetails() {
+    savePassenger({
+      name: nameRef.current?.value ?? '',
+      phone: phoneRef.current?.value ?? '',
+      eircode: eircodeRef.current?.value ?? '',
+      pickup: pickupRef.current?.value ?? '',
+      destination: destRef.current?.value ?? '',
+    })
+  }
 
   function useMyLocation() {
     if (!('geolocation' in navigator)) {
@@ -84,12 +126,43 @@ export default function BookingForm({
   const firstName = driverName.split(' ')[0]
 
   return (
-    <form action={action} className="space-y-5">
+    <form
+      ref={formRef}
+      action={action}
+      onSubmit={rememberDetails}
+      className="space-y-5"
+    >
       <input type="hidden" name="slug" value={slug} />
       <input type="hidden" name="when" value={later ? 'LATER' : 'NOW'} />
       <input type="hidden" name="scheduled_at" value={scheduledAt} />
       <input type="hidden" name="pickup_lat" value={coords?.lat ?? ''} />
       <input type="hidden" name="pickup_lng" value={coords?.lng ?? ''} />
+
+      {saved && hasSavedDetails(saved) && saved.pickups[0] && saved.destinations[0] ? (
+        <div className="rounded-2xl border border-yellow/30 bg-yellow/10 p-4">
+          <p className="text-sm font-semibold text-white">
+            Welcome back, {saved.name.split(' ')[0]}
+          </p>
+          <p className="mt-1 text-xs text-slate-300">
+            {saved.pickups[0]} &rarr; {saved.destinations[0]}
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              if (nameRef.current) nameRef.current.value = saved.name
+              if (phoneRef.current) phoneRef.current.value = saved.phone
+              if (eircodeRef.current) eircodeRef.current.value = saved.eircode
+              if (pickupRef.current) pickupRef.current.value = saved.pickups[0]
+              if (destRef.current) destRef.current.value = saved.destinations[0]
+              setLater(false)
+              formRef.current?.requestSubmit()
+            }}
+            className="mt-3 w-full rounded-xl bg-yellow px-4 py-3.5 text-base font-bold text-navy"
+          >
+            Same again, now
+          </button>
+        </div>
+      ) : null}
 
       {state.error ? (
         <p
@@ -162,6 +235,7 @@ export default function BookingForm({
           Where are you going?
         </label>
         <input
+          ref={destRef}
           id="destination"
           name="destination"
           required
@@ -169,6 +243,23 @@ export default function BookingForm({
           className="w-full rounded-xl border border-white/10 bg-navy-soft px-3 py-3.5 text-base text-white outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15"
         />
       </div>
+
+      {saved && saved.destinations.length > 0 ? (
+        <div className="-mt-3 flex flex-wrap gap-2">
+          {saved.destinations.map((a) => (
+            <button
+              key={a}
+              type="button"
+              onClick={() => {
+                if (destRef.current) destRef.current.value = a
+              }}
+              className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-slate-200"
+            >
+              {a}
+            </button>
+          ))}
+        </div>
+      ) : null}
 
       <div>
         <span className="mb-1 block text-xs font-semibold text-slate-400">
@@ -227,6 +318,7 @@ export default function BookingForm({
             Your name
           </label>
           <input
+            ref={nameRef}
             id="name"
             name="name"
             required
@@ -239,6 +331,7 @@ export default function BookingForm({
             Your mobile
           </label>
           <input
+            ref={phoneRef}
             id="phone"
             name="phone"
             required
@@ -273,6 +366,25 @@ export default function BookingForm({
       >
         {pending ? 'Sending…' : 'Send booking request'}
       </button>
+
+      {saved ? (
+        <p className="text-center text-xs text-slate-500">
+          Your details are saved on this phone only.{' '}
+          <button
+            type="button"
+            onClick={() => {
+              clearPassenger()
+              setSaved(null)
+              if (nameRef.current) nameRef.current.value = ''
+              if (phoneRef.current) phoneRef.current.value = ''
+              if (eircodeRef.current) eircodeRef.current.value = ''
+            }}
+            className="underline"
+          >
+            Forget them
+          </button>
+        </p>
+      ) : null}
 
       <p className="text-center text-xs leading-relaxed text-slate-500">
         This sends a request. {firstName} will confirm it. Your name, number
