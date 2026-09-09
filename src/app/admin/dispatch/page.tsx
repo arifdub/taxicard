@@ -23,6 +23,7 @@ type Job = {
   claimed_at: string | null
   created_at: string
   claimed_by: string | null
+  source: string
   creator: Person
   taker: Person
 }
@@ -126,10 +127,19 @@ export default async function DispatchPage() {
                     <span className="font-semibold text-slate-300">
                       Created by
                     </span>{' '}
-                    {j.creator?.name ?? 'Unknown'}
-                    {j.creator?.licence_number
-                      ? ` · licence ${j.creator.licence_number}`
-                      : ''}{' '}
+                    {j.source === 'PUBLIC' ? (
+                      <span className="font-semibold text-brandblue">
+                        Passenger, from the website
+                      </span>
+                    ) : (
+                      <>
+                        {j.creator?.name ?? 'Unknown'}
+                        {j.creator?.licence_number
+                          ? ` · licence ${j.creator.licence_number}`
+                          : ''}
+                        {' · back office'}
+                      </>
+                    )}{' '}
                     ·{' '}
                     {new Date(j.created_at).toLocaleString(undefined, {
                       day: 'numeric',
