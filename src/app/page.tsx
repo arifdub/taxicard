@@ -23,7 +23,7 @@ export default async function Home() {
 
   return (
     <div className="tc-dark-page text-white">
-      <nav className="tc-safe-top mx-auto flex max-w-5xl items-center justify-between gap-3 px-5 pb-4">
+      <nav className="tc-safe-top mx-auto flex max-w-5xl items-center justify-between gap-3 px-5 pb-3">
         <Wordmark size="md" />
         <Link
           href="/login"
@@ -33,8 +33,8 @@ export default async function Home() {
         </Link>
       </nav>
 
-      <header className="mx-auto max-w-5xl px-5 pb-16 pt-8 md:pb-24 md:pt-14">
-        <div className="tc-in mb-7 flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+      <header className="mx-auto max-w-5xl px-5 pb-10 pt-3 md:pb-16 md:pt-6">
+        <div className="tc-in mb-5 flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2.5">
           <p className="text-sm font-semibold text-white">
             Passenger? Need a taxi
           </p>
@@ -49,21 +49,21 @@ export default async function Home() {
         <p className="tc-left text-sm font-semibold uppercase tracking-wide text-yellow">
           For independent taxi drivers
         </p>
-        <h1 className="tc-left tc-d1 mt-3 max-w-2xl text-3xl font-semibold leading-tight md:text-5xl">
+        <h1 className="tc-left tc-d1 mt-2 max-w-2xl text-3xl font-semibold leading-tight md:text-5xl">
           Turn every passenger into a regular customer with your digital taxi
           business card.
         </h1>
-        <p className="tc-left tc-d2 mt-5 max-w-xl text-base text-slate-300 md:text-lg">
+        <p className="tc-left tc-d2 mt-4 max-w-xl text-base text-slate-300 md:text-lg">
           Display your TaxiCard QR code behind the headrest, or anywhere in
           your taxi. Passengers scan it to save your digital business card,
           contact you, and book you again and again.
         </p>
 
-        <p className="tc-left tc-d3 mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-yellow">
+        <p className="tc-left tc-d3 mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-yellow">
           Scan. Save. Book. Ride. Repeat.
         </p>
 
-        <div className="tc-in tc-d4 mt-8 flex flex-col gap-3 sm:flex-row">
+        <div className="tc-in tc-d4 mt-6 flex flex-col gap-3 sm:flex-row">
           <Link
             href="/signup"
             className="rounded-2xl bg-yellow px-7 py-4 text-center text-base font-semibold text-navy shadow-[0_14px_34px_-14px_rgba(255,199,44,0.95)] transition active:scale-[0.99]"
@@ -78,12 +78,12 @@ export default async function Home() {
           </Link>
         </div>
 
-        <p className="tc-in tc-d5 mt-4 text-sm text-slate-400">
+        <p className="tc-in tc-d5 mt-3 text-sm text-slate-400">
           No commission. No app for your passengers to download.
         </p>
       </header>
 
-      <section className="tc-band py-16">
+      <section className="tc-band py-12 md:py-16">
         <div className="mx-auto grid max-w-5xl items-center gap-12 px-5 md:grid-cols-2">
           <Reveal from="right" className="flex justify-center">
             <PhoneMock qr={sampleQr} shareUrl={prettyLink('john')} />
@@ -135,7 +135,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="py-12 md:py-16">
         <div className="mx-auto max-w-5xl px-5">
           <Reveal className="text-center">
             <p className="text-sm font-semibold uppercase tracking-wide text-yellow">
@@ -178,7 +178,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="tc-band py-16">
+      <section className="tc-band py-12 md:py-16">
         <div className="mx-auto max-w-5xl px-5">
           <Reveal className="text-center">
             <h2 className="text-2xl font-semibold md:text-3xl">
@@ -224,7 +224,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="py-12 md:py-16">
         <div className="mx-auto max-w-5xl px-5">
           <Reveal>
             <h2 className="text-center text-2xl font-semibold md:text-3xl">
@@ -329,7 +329,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="py-12 md:py-16">
         <div className="mx-auto max-w-3xl px-5 text-center">
           <h2 className="text-2xl font-semibold md:text-3xl">
             Set up your card today
