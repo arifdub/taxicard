@@ -61,8 +61,8 @@ export default function HashHandler() {
   return (
     <div className="mt-6 space-y-4">
       <p className="rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2.5 text-sm text-red-200">
-        That link has expired or was already used. Reset links work once,
-        and only in the browser you open them in.
+        That link has expired or was already used. Links last one hour and
+        work once.
       </p>
       <Link
         href="/reset-password"
