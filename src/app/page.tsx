@@ -25,23 +25,28 @@ export default async function Home() {
     <div className="tc-dark-page text-white">
       <nav className="tc-safe-top mx-auto flex max-w-5xl items-center justify-between gap-3 px-5 pb-4">
         <Wordmark size="md" />
-        <div className="flex items-center gap-2">
-          <Link
-            href="/find"
-            className="rounded-xl bg-yellow px-4 py-3 text-sm font-bold text-navy"
-          >
-            Find a driver
-          </Link>
-          <Link
-            href="/login"
-            className="rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm font-semibold text-white"
-          >
-            Driver log in
-          </Link>
-        </div>
+        <Link
+          href="/login"
+          className="shrink-0 rounded-xl border border-white/20 bg-white/5 px-5 py-3 text-sm font-semibold text-white"
+        >
+          Driver log in
+        </Link>
       </nav>
 
       <header className="mx-auto max-w-5xl px-5 pb-16 pt-8 md:pb-24 md:pt-14">
+        <div className="tc-in mb-7 flex flex-wrap items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+          <p className="text-sm text-slate-300">
+            <span className="font-semibold text-white">Passenger?</span> Need
+            a taxi right now.
+          </p>
+          <Link
+            href="/find"
+            className="ml-auto shrink-0 rounded-xl bg-yellow px-4 py-2.5 text-sm font-bold text-navy"
+          >
+            Find a driver
+          </Link>
+        </div>
+
         <p className="tc-left text-sm font-semibold uppercase tracking-wide text-yellow">
           For independent taxi drivers
         </p>
@@ -76,14 +81,6 @@ export default async function Home() {
 
         <p className="tc-in tc-d5 mt-4 text-sm text-slate-400">
           No commission. No app for your passengers to download.
-        </p>
-
-        <p className="tc-in tc-d6 mt-6 text-sm text-slate-300">
-          Looking for a taxi rather than running one?{' '}
-          <Link href="/find" className="font-semibold text-yellow underline">
-            Post your journey
-          </Link>{' '}
-          and a licensed driver will pick it up.
         </p>
       </header>
 
