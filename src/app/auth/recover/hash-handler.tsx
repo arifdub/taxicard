@@ -23,6 +23,8 @@ export default function HashHandler() {
       const refresh_token = params.get('refresh_token')
 
       if (!access_token || !refresh_token) {
+        // Nothing in the fragment. Either an old-style link, or the link
+        // was already used.
         setState('failed')
         return
       }

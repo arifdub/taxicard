@@ -1,20 +1,27 @@
-import { createBrowserClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
 
 /**
- * A browser client that uses the implicit flow rather than PKCE.
+ * A plain Supabase client used only to request password-reset emails.
  *
- * PKCE stores a verifier in the browser that made the request, so a reset
- * link only works in that same browser — ask on your phone, open on a
- * laptop, and it fails. Implicit returns the session in the URL fragment
- * instead, which works anywhere and is still never sent to a server.
+ * @supabase/ssr forces the PKCE flow, which ties a reset link to the one
+ * browser that asked for it — open it anywhere else and it fails. This
+ * client asks for the implicit flow instead, so the link carries the
+ * session in the URL fragment and works in any browser.
  *
- * Used only for password-reset requests; the rest of the app stays on the
- * default client.
+ * persistSession is off: this client only sends the email, it never signs
+ * anyone in, so it must not touch the session the rest of the app uses.
  */
 export function createImplicitClient() {
-  return createBrowserClient(
+  return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { auth: { flowType: 'implicit' } }
+    {
+      auth: {
+        flowType: 'implicit',
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+      },
+    }
   )
 }

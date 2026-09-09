@@ -26,13 +26,24 @@ function ResetForm() {
 
     // Sent from the browser so the link is not tied to one device.
     const supabase = createImplicitClient()
-    await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/recover`,
-    })
+    const { error: sendError } = await supabase.auth.resetPasswordForEmail(
+      email,
+      { redirectTo: `${window.location.origin}/auth/recover` }
+    )
 
     setPending(false)
+
+    if (sendError) {
+      setError(
+        sendError.message.toLowerCase().includes('rate')
+          ? 'Too many requests. Wait a few minutes and try again.'
+          : 'Could not send that email. Try again shortly.'
+      )
+      return
+    }
+
     setMessage(
-      'If that email has an account, a reset link is on its way. It lasts one hour.'
+      'If that email has an account, a reset link is on its way. It lasts one hour. Open it in any browser.'
     )
   }
 
