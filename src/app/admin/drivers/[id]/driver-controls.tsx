@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
+import PasswordReset from './password-reset'
 import {
   setDriverActive,
   setDriverPlan,
@@ -137,6 +138,8 @@ export default function DriverControls({
           </div>
         )}
       </div>
+
+      <PasswordReset driverId={driverId} driverName={driverName} />
 
       <div className="rounded-2xl border border-white/10 bg-navy-soft p-5">
         <div className="flex items-center justify-between gap-4">

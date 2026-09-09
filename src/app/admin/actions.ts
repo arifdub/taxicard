@@ -136,3 +136,33 @@ export async function setCanDispatch(
   revalidatePath('/admin', 'layout')
   return { ok: true }
 }
+
+/**
+ * Set a driver's password directly. Email links fail for all sorts of
+ * reasons outside our control — scanners, expiry, the wrong browser — so
+ * an administrator can always get someone back in. Uses the service role,
+ * so it never depends on the driver's session.
+ */
+export async function setDriverPassword(
+  driverId: string,
+  password: string
+): Promise<AdminResult> {
+  const ctx = await assertAdmin()
+  if (!ctx) return { error: 'Not allowed.' }
+
+  if (password.length < 8) {
+    return { error: 'Use at least 8 characters.' }
+  }
+
+  try {
+    const admin = createAdminClient()
+    const { error } = await admin.auth.admin.updateUserById(driverId, {
+      password,
+    })
+    if (error) return { error: 'Could not set that password.' }
+  } catch {
+    return { error: 'Service key missing. Add SUPABASE_SERVICE_ROLE_KEY.' }
+  }
+
+  return { ok: true }
+}
