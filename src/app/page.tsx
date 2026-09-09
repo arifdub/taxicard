@@ -34,14 +34,13 @@ export default async function Home() {
       </nav>
 
       <header className="mx-auto max-w-5xl px-5 pb-16 pt-8 md:pb-24 md:pt-14">
-        <div className="tc-in mb-7 flex flex-wrap items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
-          <p className="text-sm text-slate-300">
-            <span className="font-semibold text-white">Passenger?</span> Need
-            a taxi right now.
+        <div className="tc-in mb-7 flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+          <p className="text-sm font-semibold text-white">
+            Passenger? Need a taxi
           </p>
           <Link
             href="/find"
-            className="ml-auto shrink-0 rounded-xl bg-yellow px-4 py-2.5 text-sm font-bold text-navy"
+            className="shrink-0 rounded-xl bg-yellow px-4 py-2.5 text-sm font-bold text-navy"
           >
             Find a driver
           </Link>
