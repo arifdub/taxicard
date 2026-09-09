@@ -130,6 +130,19 @@ export default function PrivacyPage() {
           </section>
 
           <section>
+            <h2 className="text-lg font-semibold text-white">
+              Details saved on your phone
+            </h2>
+            <p className="mt-2">
+              If you book, your name, number and recent addresses are stored
+              in your own browser so you do not have to retype them. This
+              stays on your device, is not sent to us, and you can wipe it
+              with the &quot;forget them&quot; link on the booking form or by
+              clearing your browser data.
+            </p>
+          </section>
+
+          <section>
             <h2 className="text-lg font-semibold text-white">Cookies</h2>
             <p className="mt-2">
               We use one cookie, to keep a driver signed in. There is no
