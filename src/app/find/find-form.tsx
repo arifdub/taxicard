@@ -1,6 +1,12 @@
 'use client'
 
-import { useActionState, useRef, useState } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
+import {
+  loadPassenger,
+  savePassenger,
+  hasSavedDetails,
+  type SavedPassenger,
+} from '@/lib/passenger'
 import { postPublicJob, type FindState } from './actions'
 
 const initial: FindState = {}
@@ -17,6 +23,34 @@ export default function FindForm() {
   const [locNote, setLocNote] = useState<string | null>(null)
   const pickupRef = useRef<HTMLInputElement>(null)
   const eircodeRef = useRef<HTMLInputElement>(null)
+  const nameRef = useRef<HTMLInputElement>(null)
+  const phoneRef = useRef<HTMLInputElement>(null)
+  const destRef = useRef<HTMLInputElement>(null)
+  const [saved, setSaved] = useState<SavedPassenger | null>(null)
+
+  useEffect(() => {
+    const p = loadPassenger()
+    if (!hasSavedDetails(p) && p.pickups.length === 0) return
+    setSaved(p)
+    if (nameRef.current && !nameRef.current.value) nameRef.current.value = p.name
+    if (phoneRef.current && !phoneRef.current.value) phoneRef.current.value = p.phone
+    if (eircodeRef.current && !eircodeRef.current.value) {
+      eircodeRef.current.value = p.eircode
+    }
+    if (pickupRef.current && !pickupRef.current.value && p.pickups[0]) {
+      pickupRef.current.value = p.pickups[0]
+    }
+  }, [])
+
+  function rememberDetails() {
+    savePassenger({
+      name: nameRef.current?.value ?? '',
+      phone: phoneRef.current?.value ?? '',
+      eircode: eircodeRef.current?.value ?? '',
+      pickup: pickupRef.current?.value ?? '',
+      destination: destRef.current?.value ?? '',
+    })
+  }
 
   const scheduledAt =
     later && date && time ? new Date(`${date}T${time}`).toISOString() : ''
@@ -58,7 +92,7 @@ export default function FindForm() {
   }
 
   return (
-    <form action={action} className="space-y-5">
+    <form action={action} onSubmit={rememberDetails} className="space-y-5">
       <input type="hidden" name="when" value={later ? 'LATER' : 'NOW'} />
       <input type="hidden" name="scheduled_at" value={scheduledAt} />
 
@@ -92,6 +126,23 @@ export default function FindForm() {
           placeholder="12 Main Street, Dublin"
           className={field}
         />
+        {saved && saved.pickups.length > 0 ? (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {saved.pickups.map((a) => (
+              <button
+                key={a}
+                type="button"
+                onClick={() => {
+                  if (pickupRef.current) pickupRef.current.value = a
+                }}
+                className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-slate-200"
+              >
+                {a}
+              </button>
+            ))}
+          </div>
+        ) : null}
+
         {locNote ? (
           <p className="mt-2 rounded-xl bg-white/5 px-3 py-2 text-xs text-slate-300">
             {locNote}
@@ -119,6 +170,7 @@ export default function FindForm() {
           Where are you going? (optional)
         </label>
         <input
+          ref={destRef}
           id="destination"
           name="destination"
           placeholder="Dublin Airport, T1"
@@ -180,13 +232,21 @@ export default function FindForm() {
           <label htmlFor="name" className={label}>
             Your name
           </label>
-          <input id="name" name="name" required autoComplete="name" className={field} />
+          <input
+            ref={nameRef}
+            id="name"
+            name="name"
+            required
+            autoComplete="name"
+            className={field}
+          />
         </div>
         <div>
           <label htmlFor="phone" className={label}>
             Your mobile
           </label>
           <input
+            ref={phoneRef}
             id="phone"
             name="phone"
             required
