@@ -28,11 +28,26 @@ export default function SaveHint({ name }: { name: string }) {
   if (mode === 'hidden') return null
 
   return (
-    <p className="tc-in tc-d6 mt-4 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-center text-[13px] leading-relaxed text-white/70">
-      <span className="font-semibold text-white">Keep {name} handy.</span>{' '}
-      {mode === 'ios'
-        ? 'Tap the share button, then Add to Home Screen, and this card becomes an icon on your phone.'
-        : 'Tap the menu button, then Add to Home screen, and this card becomes an icon on your phone.'}
-    </p>
+    <div className="tc-in tc-d6 mt-4 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5">
+      <p className="text-center text-[13px] font-semibold text-white">
+        Keep {name} on your home screen
+      </p>
+
+      {mode === 'ios' ? (
+        <p className="mt-1.5 text-center text-[12px] leading-relaxed text-white/65">
+          Tap the <span className="font-semibold text-white">share</span>{' '}
+          button, then{' '}
+          <span className="font-semibold text-white">Add to Home Screen</span>.
+        </p>
+      ) : (
+        <p className="mt-1.5 text-center text-[12px] leading-relaxed text-white/65">
+          Tap the{' '}
+          <span className="font-semibold text-white">three dots</span> at the
+          top right, then{' '}
+          <span className="font-semibold text-white">Install</span> or{' '}
+          <span className="font-semibold text-white">Add to Home screen</span>.
+        </p>
+      )}
+    </div>
   )
 }
