@@ -140,12 +140,21 @@ export default function BookingForm({
 
       {saved && hasSavedDetails(saved) && saved.pickups[0] && saved.destinations[0] ? (
         <div className="rounded-2xl border border-yellow/30 bg-yellow/10 p-4">
-          <p className="text-sm font-semibold text-white">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-yellow">
+            One tap, book again
+          </p>
+          <p className="mt-1.5 text-sm font-semibold text-white">
             Welcome back, {saved.name.split(' ')[0]}
           </p>
-          <p className="mt-1 text-xs text-slate-300">
-            {saved.pickups[0]} &rarr; {saved.destinations[0]}
+          <p className="mt-2 text-xs leading-relaxed text-slate-300">
+            Same pickup, same destination, sent right now — nothing to type.
           </p>
+
+          <div className="mt-2.5 space-y-1 rounded-xl bg-black/20 p-3 text-xs text-slate-200">
+            <p>{saved.pickups[0]}</p>
+            <p className="text-slate-400">to {saved.destinations[0]}</p>
+          </div>
+
           <button
             type="button"
             onClick={() => {
@@ -157,10 +166,14 @@ export default function BookingForm({
               setLater(false)
               formRef.current?.requestSubmit()
             }}
-            className="mt-3 w-full rounded-xl bg-yellow px-4 py-3.5 text-base font-bold text-navy"
+            className="mt-3 w-full rounded-xl bg-yellow px-4 py-4 text-base font-bold text-navy"
           >
-            Same again, now
+            Book again in one tap
           </button>
+
+          <p className="mt-2 text-center text-[11px] text-slate-400">
+            Or change anything below and send it as usual.
+          </p>
         </div>
       ) : null}
 

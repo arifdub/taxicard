@@ -12,14 +12,12 @@ export default async function BookingsPage() {
   } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const now = new Date().toISOString()
-
-  const [pending, upcoming, past] = await Promise.all([
+  // No date filter on accepted work. A "now" booking is timestamped when
+  // it is made, so filtering by a future time hid every job the moment it
+  // was accepted — it was neither upcoming nor past.
+  const [pending, accepted, past] = await Promise.all([
     fetchBookings(supabase, { statuses: ['PENDING'] }),
-    fetchBookings(supabase, {
-      statuses: ['CONFIRMED', 'ACCEPTED'],
-      since: now,
-    }),
+    fetchBookings(supabase, { statuses: ['CONFIRMED', 'ACCEPTED'] }),
     fetchBookings(supabase, {
       statuses: ['COMPLETED', 'DECLINED', 'CANCELLED'],
       limit: 30,
@@ -30,8 +28,16 @@ export default async function BookingsPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold text-white">Bookings</h1>
 
-      <Section title="Waiting for you" rows={pending} empty="No new requests." />
-      <Section title="Upcoming" rows={upcoming} empty="Nothing booked ahead." />
+      <Section
+        title="Waiting for you"
+        rows={pending}
+        empty="No new requests."
+      />
+      <Section
+        title="Accepted"
+        rows={accepted}
+        empty="Nothing accepted right now."
+      />
       <Section title="Past" rows={past.reverse()} empty="No history yet." />
     </div>
   )
