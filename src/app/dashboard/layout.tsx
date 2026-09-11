@@ -20,11 +20,11 @@ export default async function DashboardLayout({
   if (user) {
     const { data } = await supabase
       .from('profiles')
-      .select('is_admin, plan, can_dispatch')
+      .select('is_admin, is_business, can_dispatch')
       .eq('id', user.id)
       .maybeSingle()
     isAdmin = Boolean(data?.is_admin)
-    isBusiness = data?.plan === 'BUSINESS'
+    isBusiness = Boolean(data?.is_business)
     canDispatch = Boolean(data?.can_dispatch)
   }
 

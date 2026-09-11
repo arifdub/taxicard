@@ -166,3 +166,44 @@ export async function setDriverPassword(
 
   return { ok: true }
 }
+
+export type DriverFlag = 'is_pro' | 'is_business' | 'can_dispatch' | 'is_admin'
+
+/**
+ * Turn a single capability on or off. Kept generic so the panel can show
+ * one switch per flag rather than a plan the driver has to fit into.
+ */
+export async function setDriverFlag(
+  driverId: string,
+  flag: DriverFlag,
+  next: boolean
+): Promise<AdminResult> {
+  const ctx = await assertAdmin()
+  if (!ctx) return { error: 'Not allowed.' }
+
+  if (flag === 'is_admin') {
+    if (driverId === ctx.user.id) {
+      return { error: 'You cannot change your own admin access.' }
+    }
+    if (!next) {
+      const { count } = await ctx.supabase
+        .from('profiles')
+        .select('id', { count: 'exact', head: true })
+        .eq('is_admin', true)
+
+      if ((count ?? 0) <= 1) {
+        return { error: 'That is the last administrator. Promote someone first.' }
+      }
+    }
+  }
+
+  const { error } = await ctx.supabase
+    .from('profiles')
+    .update({ [flag]: next })
+    .eq('id', driverId)
+
+  if (error) return { error: 'Could not change that.' }
+
+  revalidatePath('/admin', 'layout')
+  return { ok: true }
+}

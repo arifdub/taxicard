@@ -234,7 +234,7 @@ export default function JobForm({ job }: { job?: JobDefaults }) {
       <p className="text-center text-xs text-slate-500">
         {editing
           ? 'If a driver has already taken this job, their booking updates and they are notified.'
-          : 'Goes to every available driver on the business plan. The first to take it gets the job, and the customer becomes theirs.'}
+          : 'Goes to every available business driver. The first to take it gets the job, and the customer becomes theirs.'}
       </p>
     </form>
   )

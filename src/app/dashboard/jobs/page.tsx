@@ -44,7 +44,7 @@ export default async function JobsPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('plan, can_dispatch, is_admin')
+    .select('is_business, can_dispatch, is_admin')
     .eq('id', user.id)
     .maybeSingle()
 
@@ -64,13 +64,13 @@ export default async function JobsPage() {
 
   const sent = (sentRows as SentJob[] | null) ?? []
 
-  if (profile?.plan !== 'BUSINESS' && !mayDispatch) {
+  if (!profile?.is_business && !mayDispatch) {
     return (
       <div className="space-y-4">
         <h1 className="text-2xl font-semibold text-white">Jobs</h1>
         <p className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-300">
-          Jobs sent by the office go to drivers on the business plan. Get in
-          touch if you would like to be added.
+          Office jobs go to business drivers. Get in touch if you would like
+          your account switched on for them.
         </p>
       </div>
     )
@@ -86,13 +86,13 @@ export default async function JobsPage() {
       <div>
         <h1 className="text-2xl font-semibold text-white">Jobs</h1>
         <p className="mt-1 text-sm text-slate-400">
-          {profile?.plan === 'BUSINESS'
+          {profile?.is_business
             ? 'First to take it gets it, and the customer becomes yours.'
             : 'Jobs you have sent out to business drivers.'}
         </p>
       </div>
 
-      {profile?.plan === 'BUSINESS' ? (
+      {profile?.is_business ? (
       <section className="space-y-3">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
           Available to take

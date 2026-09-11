@@ -98,7 +98,7 @@ export default async function DispatchPage({
     supabase
       .from('profiles')
       .select('id', { count: 'exact', head: true })
-      .eq('plan', 'BUSINESS')
+      .eq('is_business', true)
       .eq('is_active', true)
       .then((r) => r.count ?? 0),
   ])

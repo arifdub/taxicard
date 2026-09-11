@@ -9,7 +9,8 @@ type Driver = {
   slug: string
   created_at: string
   is_active: boolean
-  plan: string
+  is_pro: boolean
+  is_business: boolean
 }
 
 export default async function AdminOverview() {
@@ -38,7 +39,7 @@ export default async function AdminOverview() {
         .gte('created_at', startOfDay.toISOString()),
       supabase
         .from('profiles')
-        .select('id, name, slug, created_at, is_active, plan')
+        .select('id, name, slug, created_at, is_active, is_pro, is_business')
         .order('created_at', { ascending: false })
         .limit(8),
     ])
@@ -106,9 +107,16 @@ export default async function AdminOverview() {
                       disabled
                     </span>
                   ) : null}
-                  <span className="rounded-full bg-white/10 px-2.5 py-1 text-xs font-semibold text-slate-300">
-                    {d.plan.toLowerCase()}
-                  </span>
+                  {d.is_business ? (
+                    <span className="rounded-full bg-emerald-400/20 px-2.5 py-1 text-xs font-bold text-emerald-200">
+                      business
+                    </span>
+                  ) : null}
+                  {d.is_pro ? (
+                    <span className="rounded-full bg-white/15 px-2.5 py-1 text-xs font-bold text-white">
+                      pro
+                    </span>
+                  ) : null}
                 </div>
               </Link>
             ))

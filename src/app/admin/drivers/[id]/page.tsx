@@ -22,7 +22,8 @@ type Driver = {
   is_available: boolean
   is_admin: boolean
   can_dispatch: boolean
-  plan: string
+  is_pro: boolean
+  is_business: boolean
   created_at: string
 }
 
@@ -146,7 +147,8 @@ export default async function AdminDriverPage({
         isAdmin={driver.is_admin}
         isSelf={driver.id === user.id}
         canDispatch={driver.can_dispatch}
-        plan={driver.plan}
+        isPro={driver.is_pro}
+        isBusiness={driver.is_business}
       />
 
       <p className="text-xs text-slate-500">

@@ -59,7 +59,7 @@ export default async function OfficeDispatchPage() {
   const { count: businessCount } = await supabase
     .from('profiles')
     .select('id', { count: 'exact', head: true })
-    .eq('plan', 'BUSINESS')
+    .eq('is_business', true)
     .eq('is_active', true)
 
   return (
