@@ -29,9 +29,8 @@ export default function NavMenu({
   const LINKS = [
     BASE_LINKS[0],
     BASE_LINKS[1],
-    ...(isBusiness ? [{ href: '/dashboard/jobs', label: 'Jobs' }] : []),
-    ...(canDispatch
-      ? [{ href: '/dashboard/dispatch', label: 'Send a job' }]
+    ...(isBusiness || canDispatch
+      ? [{ href: '/dashboard/jobs', label: 'Jobs' }]
       : []),
     ...BASE_LINKS.slice(2),
   ]
