@@ -39,7 +39,13 @@ export function whenLabel(b: BookingRow) {
   })
 }
 
-export default function BookingCard({ booking }: { booking: BookingRow }) {
+export default function BookingCard({
+  booking,
+  editHref,
+}: {
+  booking: BookingRow
+  editHref?: string
+}) {
   const [pending, start] = useTransition()
   const [error, setError] = useState<string | null>(null)
 
@@ -90,6 +96,15 @@ export default function BookingCard({ booking }: { booking: BookingRow }) {
         <p className="text-slate-400">{whenLabel(booking)}</p>
         {booking.customer_notes ? (
           <p className="text-slate-400">{booking.customer_notes}</p>
+        ) : null}
+
+        {editHref ? (
+          <a
+            href={editHref}
+            className="mt-1 mr-4 inline-block text-sm font-semibold text-yellow underline"
+          >
+            Edit job details
+          </a>
         ) : null}
 
         {booking.pickup_lat && booking.pickup_lng ? (

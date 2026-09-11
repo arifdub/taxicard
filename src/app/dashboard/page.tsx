@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { fetchBookings } from '@/lib/bookings'
+import { fetchBookings, fetchDispatchJobMap } from '@/lib/bookings'
 import { siteUrl, prettyLink } from '@/lib/site'
 import BookingCard from '@/components/booking-card'
 import { AvailabilitySwitch } from './card/card-tools'
@@ -19,9 +19,11 @@ export default async function DashboardPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('name, slug, phone, is_available')
+    .select('name, slug, phone, is_available, can_dispatch, is_admin')
     .eq('id', user.id)
     .single()
+
+  const mayEditJobs = Boolean(profile?.can_dispatch || profile?.is_admin)
 
   const startOfDay = new Date()
   startOfDay.setHours(0, 0, 0, 0)
@@ -88,7 +90,11 @@ export default async function DashboardPage() {
             Waiting for you
           </h2>
           {pending.map((b) => (
-            <BookingCard key={b.id} booking={b} />
+            <BookingCard
+              key={b.id}
+              booking={b}
+              editHref={jobMap[b.id] ? `/dashboard/dispatch/${jobMap[b.id]}` : undefined}
+            />
           ))}
         </section>
       ) : null}
@@ -106,7 +112,13 @@ export default async function DashboardPage() {
             will land here.
           </p>
         ) : (
-          today.map((b) => <BookingCard key={b.id} booking={b} />)
+          today.map((b) => (
+            <BookingCard
+              key={b.id}
+              booking={b}
+              editHref={jobMap[b.id] ? `/dashboard/dispatch/${jobMap[b.id]}` : undefined}
+            />
+          ))
         )}
       </section>
 

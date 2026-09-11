@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { fetchBookings } from '@/lib/bookings'
+import { fetchBookings, fetchDispatchJobMap } from '@/lib/bookings'
 import BookingCard from '@/components/booking-card'
 
 export const dynamic = 'force-dynamic'
@@ -25,6 +25,20 @@ export default async function BookingsPage() {
     }),
   ])
 
+  const { data: me } = await supabase
+    .from('profiles')
+    .select('can_dispatch, is_admin')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  const jobMap =
+    me?.can_dispatch || me?.is_admin
+      ? await fetchDispatchJobMap(
+          supabase,
+          [...pending, ...accepted, ...past].map((b) => b.id)
+        )
+      : {}
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold text-white">Bookings</h1>
@@ -33,13 +47,20 @@ export default async function BookingsPage() {
         title="Waiting for you"
         rows={pending}
         empty="No new requests."
+        jobMap={jobMap}
       />
       <Section
         title="Accepted"
         rows={accepted}
         empty="Nothing accepted right now."
+        jobMap={jobMap}
       />
-      <Section title="Past" rows={past} empty="No history yet." />
+      <Section
+        title="Past"
+        rows={past}
+        empty="No history yet."
+        jobMap={jobMap}
+      />
     </div>
   )
 }
@@ -48,10 +69,12 @@ function Section({
   title,
   rows,
   empty,
+  jobMap,
 }: {
   title: string
   rows: Awaited<ReturnType<typeof fetchBookings>>
   empty: string
+  jobMap: Record<string, string>
 }) {
   return (
     <section className="space-y-3">
@@ -61,7 +84,13 @@ function Section({
           {empty}
         </p>
       ) : (
-        rows.map((b) => <BookingCard key={b.id} booking={b} />)
+        rows.map((b) => (
+          <BookingCard
+            key={b.id}
+            booking={b}
+            editHref={jobMap[b.id] ? `/dashboard/dispatch/${jobMap[b.id]}` : undefined}
+          />
+        ))
       )}
     </section>
   )

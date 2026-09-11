@@ -63,3 +63,23 @@ export async function fetchBookings(
 
   return ((data as RawBooking[] | null) ?? []).map(flatten)
 }
+
+export async function fetchDispatchJobMap(
+  supabase: SupabaseClient,
+  bookingIds: string[]
+): Promise<Record<string, string>> {
+  if (bookingIds.length === 0) return {}
+
+  const { data } = await supabase
+    .from('dispatch_jobs')
+    .select('id, booking_id, status')
+    .in('booking_id', bookingIds)
+    .neq('status', 'CANCELLED')
+
+  const rows = (data as { id: string; booking_id: string | null }[] | null) ?? []
+  const map: Record<string, string> = {}
+  for (const r of rows) {
+    if (r.booking_id) map[r.booking_id] = r.id
+  }
+  return map
+}
