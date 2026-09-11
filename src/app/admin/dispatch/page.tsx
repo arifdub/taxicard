@@ -29,14 +29,15 @@ type Job = {
   taker: Person
 }
 
-const FILTERS = [
+const TABS = [
   { id: 'open', label: 'Waiting' },
   { id: 'assigned', label: 'Assigned' },
   { id: 'cancelled', label: 'Cancelled' },
   { id: 'all', label: 'All' },
+  { id: 'new', label: 'Create job' },
 ] as const
 
-type Filter = (typeof FILTERS)[number]['id']
+type Tab = (typeof TABS)[number]['id']
 
 function when(j: Job) {
   return j.booking_type === 'NOW' || !j.scheduled_at
@@ -66,19 +67,22 @@ export default async function DispatchPage({
 }) {
   const { supabase } = await requireAdmin()
   const params = await searchParams
-  const filter: Filter = (FILTERS.find((f) => f.id === params.status)?.id ??
-    'open') as Filter
+  const tab: Tab = (TABS.find((t) => t.id === params.status)?.id ?? 'open') as Tab
+  const creating = tab === 'new'
 
   const SELECT =
     '*, creator:created_by(name, licence_number, phone), taker:claimed_by(name, licence_number, phone)'
 
-  let q = supabase.from('dispatch_jobs').select(SELECT)
-  if (filter === 'open') q = q.eq('status', 'OPEN')
-  if (filter === 'assigned') q = q.eq('status', 'CLAIMED')
-  if (filter === 'cancelled') q = q.eq('status', 'CANCELLED')
+  let jobs: Job[] = []
+  if (!creating) {
+    let q = supabase.from('dispatch_jobs').select(SELECT)
+    if (tab === 'open') q = q.eq('status', 'OPEN')
+    if (tab === 'assigned') q = q.eq('status', 'CLAIMED')
+    if (tab === 'cancelled') q = q.eq('status', 'CANCELLED')
 
-  const { data } = await q.order('created_at', { ascending: false }).limit(60)
-  const jobs = (data as Job[] | null) ?? []
+    const { data } = await q.order('created_at', { ascending: false }).limit(60)
+    jobs = (data as Job[] | null) ?? []
+  }
 
   const [openCount, assignedCount, businessCount] = await Promise.all([
     supabase
@@ -115,32 +119,42 @@ export default async function DispatchPage({
         <Stat value={businessCount} label="Business drivers" />
       </div>
 
-      <section>
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
-          Send a new job
-        </h2>
-        <div className="mt-4">
-          <JobForm />
-        </div>
-      </section>
-
-      <section>
-        <div className="flex gap-2 overflow-x-auto pb-1">
-          {FILTERS.map((f) => (
-            <Link
-              key={f.id}
-              href={`/admin/dispatch?status=${f.id}`}
-              className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-semibold ${
-                filter === f.id
+      <nav className="flex gap-2 overflow-x-auto pb-1">
+        {TABS.map((t) => (
+          <Link
+            key={t.id}
+            href={`/admin/dispatch?status=${t.id}`}
+            className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-semibold ${
+              tab === t.id
+                ? t.id === 'new'
                   ? 'bg-yellow text-navy'
+                  : 'bg-white text-navy'
+                : t.id === 'new'
+                  ? 'border border-yellow/50 bg-yellow/10 text-yellow'
                   : 'border border-white/15 bg-white/5 text-slate-300'
-              }`}
-            >
-              {f.label}
-            </Link>
-          ))}
-        </div>
+            }`}
+          >
+            {t.id === 'new' ? `+ ${t.label}` : t.label}
+            {t.id === 'open' && openCount > 0 ? (
+              <span className="ml-1.5 opacity-70">{openCount}</span>
+            ) : null}
+          </Link>
+        ))}
+      </nav>
 
+      {creating ? (
+        <section>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+            Send a new job
+          </h2>
+          <p className="mb-4 mt-1 text-sm text-slate-400">
+            Goes to {businessCount} business driver
+            {businessCount === 1 ? '' : 's'}. First to take it gets it.
+          </p>
+          <JobForm />
+        </section>
+      ) : (
+      <section>
         {jobs.length === 0 ? (
           <p className="mt-4 rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-300">
             Nothing here.
@@ -260,6 +274,7 @@ export default async function DispatchPage({
           </ul>
         )}
       </section>
+      )}
     </div>
   )
 }
