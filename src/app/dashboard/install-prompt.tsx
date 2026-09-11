@@ -52,12 +52,20 @@ export default function InstallPrompt() {
           Tap the share button — bottom of the screen in Safari, beside the
           address bar in Chrome — then{' '}
           <span className="font-medium text-white">Add to Home Screen</span>.
-          Open it from that icon and you can turn on booking alerts.
+          Open it from that icon and you can turn on booking alerts.{' '}
+          <a href="/install" className="font-semibold text-yellow underline">
+            See pictures
+          </a>
+          .
         </p>
       ) : (
         <>
           <p className="mt-1.5 text-sm text-slate-300">
-            One tap and it opens like an app, with booking alerts.
+            One tap and it opens like an app, with booking alerts.{' '}
+            <a href="/install" className="font-semibold text-yellow underline">
+              See pictures
+            </a>
+            .
           </p>
           <button
             onClick={async () => {

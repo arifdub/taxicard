@@ -239,7 +239,11 @@ export default async function Home() {
                   <p>
                     There is nothing to download from an app store. Both the
                     driver dashboard and a driver&apos;s card can be saved to
-                    a home screen and then open like an app.
+                    a home screen and then open like an app.{' '}
+                    <Link href="/install" className="font-semibold text-yellow underline">
+                      See the step-by-step pictures
+                    </Link>
+                    .
                   </p>
 
                   <div>
@@ -367,6 +371,9 @@ export default async function Home() {
           <div className="flex flex-wrap items-center gap-4">
             <Link href="/privacy" className="text-slate-400 hover:text-white">
               Privacy
+            </Link>
+            <Link href="/install" className="text-slate-400 hover:text-white">
+              How to install
             </Link>
             <Link href="/terms" className="text-slate-400 hover:text-white">
               Terms

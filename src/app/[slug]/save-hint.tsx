@@ -37,7 +37,10 @@ export default function SaveHint({ name }: { name: string }) {
         <p className="mt-1.5 text-center text-[12px] leading-relaxed text-white/65">
           Tap the <span className="font-semibold text-white">share</span>{' '}
           button, then{' '}
-          <span className="font-semibold text-white">Add to Home Screen</span>.
+          <span className="font-semibold text-white">Add to Home Screen</span>.{' '}
+          <a href="/install" className="underline">
+            Show me
+          </a>
         </p>
       ) : (
         <p className="mt-1.5 text-center text-[12px] leading-relaxed text-white/65">
@@ -45,7 +48,10 @@ export default function SaveHint({ name }: { name: string }) {
           <span className="font-semibold text-white">three dots</span> at the
           top right, then{' '}
           <span className="font-semibold text-white">Install</span> or{' '}
-          <span className="font-semibold text-white">Add to Home screen</span>.
+          <span className="font-semibold text-white">Add to Home screen</span>.{' '}
+          <a href="/install" className="underline">
+            Show me
+          </a>
         </p>
       )}
     </div>
