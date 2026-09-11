@@ -122,6 +122,15 @@ export default async function DispatchPage() {
                   </p>
                 </div>
 
+                {j.status !== 'CANCELLED' ? (
+                  <Link
+                    href={`/dashboard/dispatch/${j.id}`}
+                    className="mt-3 block rounded-xl border border-white/15 px-4 py-2.5 text-center text-sm font-semibold text-white"
+                  >
+                    Edit job
+                  </Link>
+                ) : null}
+
                 <div className="mt-3 space-y-1.5 border-t border-white/10 pt-3 text-xs">
                   <p className="text-slate-400">
                     <span className="font-semibold text-slate-300">

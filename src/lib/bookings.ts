@@ -41,7 +41,13 @@ function flatten(row: RawBooking): BookingRow {
 
 export async function fetchBookings(
   supabase: SupabaseClient,
-  opts: { statuses?: string[]; since?: string; until?: string; limit?: number } = {}
+  opts: {
+    statuses?: string[]
+    since?: string
+    until?: string
+    limit?: number
+    newestFirst?: boolean
+  } = {}
 ): Promise<BookingRow[]> {
   let q = supabase.from('bookings').select(SELECT)
 
@@ -49,8 +55,10 @@ export async function fetchBookings(
   if (opts.since) q = q.gte('scheduled_at', opts.since)
   if (opts.until) q = q.lt('scheduled_at', opts.until)
 
+  // Past work reads best newest first; upcoming work reads best soonest
+  // first. The order also decides which rows the limit keeps.
   const { data } = await q
-    .order('scheduled_at', { ascending: true })
+    .order('scheduled_at', { ascending: !opts.newestFirst })
     .limit(opts.limit ?? 50)
 
   return ((data as RawBooking[] | null) ?? []).map(flatten)

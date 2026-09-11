@@ -1,18 +1,52 @@
 'use client'
 
 import { useActionState, useState } from 'react'
-import { createDispatchJob, type DispatchState } from './actions'
+import {
+  createDispatchJob,
+  updateDispatchJob,
+  type DispatchState,
+} from './actions'
 
 const initial: DispatchState = {}
 const field =
   'w-full rounded-xl border border-white/10 bg-navy-soft px-3 py-3.5 text-base text-white outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15'
 const label = 'mb-1 block text-xs font-semibold text-slate-400'
 
-export default function JobForm() {
-  const [state, action, pending] = useActionState(createDispatchJob, initial)
-  const [later, setLater] = useState(false)
-  const [date, setDate] = useState('')
-  const [time, setTime] = useState('')
+export type JobDefaults = {
+  id: string
+  customer_name: string
+  customer_phone: string
+  pickup_address: string
+  pickup_eircode: string | null
+  destination_address: string | null
+  booking_type: string
+  scheduled_at: string | null
+  notes: string | null
+  fare: number | null
+}
+
+export default function JobForm({ job }: { job?: JobDefaults }) {
+  const editing = Boolean(job)
+  const boundUpdate = job ? updateDispatchJob.bind(null, job.id) : null
+
+  const [state, action, pending] = useActionState(
+    boundUpdate ?? createDispatchJob,
+    initial
+  )
+
+  const startsLater = job?.booking_type === 'LATER'
+  const when = job?.scheduled_at ? new Date(job.scheduled_at) : null
+  const pad = (n: number) => String(n).padStart(2, '0')
+
+  const [later, setLater] = useState(startsLater)
+  const [date, setDate] = useState(
+    when && startsLater
+      ? `${when.getFullYear()}-${pad(when.getMonth() + 1)}-${pad(when.getDate())}`
+      : ''
+  )
+  const [time, setTime] = useState(
+    when && startsLater ? `${pad(when.getHours())}:${pad(when.getMinutes())}` : ''
+  )
 
   const scheduledAt =
     later && date && time ? new Date(`${date}T${time}`).toISOString() : ''
@@ -38,13 +72,14 @@ export default function JobForm() {
           <label htmlFor="name" className={label}>
             Customer name
           </label>
-          <input id="name" name="name" required className={field} />
+          <input defaultValue={job?.customer_name} id="name" name="name" required className={field} />
         </div>
         <div>
           <label htmlFor="phone" className={label}>
             Customer mobile
           </label>
           <input
+            defaultValue={job?.customer_phone}
             id="phone"
             name="phone"
             required
@@ -62,6 +97,7 @@ export default function JobForm() {
             Pickup
           </label>
           <input
+            defaultValue={job?.pickup_address}
             id="pickup"
             name="pickup"
             required
@@ -74,6 +110,7 @@ export default function JobForm() {
             Eircode (optional)
           </label>
           <input
+            defaultValue={job?.pickup_eircode ?? undefined}
             id="eircode"
             name="eircode"
             maxLength={8}
@@ -89,6 +126,7 @@ export default function JobForm() {
           Destination (optional)
         </label>
         <input
+          defaultValue={job?.destination_address ?? undefined}
           id="destination"
           name="destination"
           placeholder="Dublin Airport, T1"
@@ -152,6 +190,7 @@ export default function JobForm() {
         <div className="flex items-center gap-2">
           <span className="text-lg font-semibold text-slate-400">&euro;</span>
           <input
+            defaultValue={job?.fare != null ? String(job.fare) : undefined}
             id="fare"
             name="fare"
             inputMode="decimal"
@@ -169,6 +208,7 @@ export default function JobForm() {
           Notes (optional)
         </label>
         <input
+          defaultValue={job?.notes ?? undefined}
           id="notes"
           name="notes"
           maxLength={280}
@@ -182,12 +222,19 @@ export default function JobForm() {
         disabled={pending}
         className="w-full rounded-2xl bg-yellow px-4 py-4 text-lg font-semibold text-navy disabled:opacity-60"
       >
-        {pending ? 'Sending…' : 'Send to business drivers'}
+        {pending
+          ? editing
+            ? 'Saving…'
+            : 'Sending…'
+          : editing
+            ? 'Save changes'
+            : 'Send to business drivers'}
       </button>
 
       <p className="text-center text-xs text-slate-500">
-        Goes to every available driver on the business plan. The first to
-        take it gets the job, and the customer becomes theirs.
+        {editing
+          ? 'If a driver has already taken this job, their booking updates and they are notified.'
+          : 'Goes to every available driver on the business plan. The first to take it gets the job, and the customer becomes theirs.'}
       </p>
     </form>
   )

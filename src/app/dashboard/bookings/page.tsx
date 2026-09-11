@@ -21,6 +21,7 @@ export default async function BookingsPage() {
     fetchBookings(supabase, {
       statuses: ['COMPLETED', 'DECLINED', 'CANCELLED'],
       limit: 30,
+      newestFirst: true,
     }),
   ])
 
@@ -38,7 +39,7 @@ export default async function BookingsPage() {
         rows={accepted}
         empty="Nothing accepted right now."
       />
-      <Section title="Past" rows={past.reverse()} empty="No history yet." />
+      <Section title="Past" rows={past} empty="No history yet." />
     </div>
   )
 }

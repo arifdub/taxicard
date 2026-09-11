@@ -109,3 +109,62 @@ export async function cancelDispatchJob(id: string) {
   revalidatePath('/admin/dispatch')
   return { ok: true }
 }
+
+export async function updateDispatchJob(
+  jobId: string,
+  _prev: DispatchState,
+  formData: FormData
+): Promise<DispatchState> {
+  const parsed = schema.safeParse(Object.fromEntries(formData.entries()))
+  if (!parsed.success) return { error: parsed.error.issues[0].message }
+
+  const v = parsed.data
+  if (v.when === 'LATER' && !v.scheduled_at) {
+    return { error: 'Pick a date and time.' }
+  }
+
+  const supabase = await createClient()
+  const { data, error } = await supabase.rpc('update_dispatch_job', {
+    p_id: jobId,
+    p_customer_name: v.name,
+    p_customer_phone: v.phone,
+    p_pickup_address: v.pickup,
+    p_destination_address: v.destination || null,
+    p_booking_type: v.when,
+    p_scheduled_at: v.when === 'LATER' ? v.scheduled_at : null,
+    p_notes: v.notes || null,
+    p_pickup_eircode: v.eircode || null,
+    p_fare: v.fare ? Number(v.fare.replace(',', '.')) : null,
+  })
+
+  if (error) {
+    if (error.message.includes('not_allowed')) {
+      return { error: 'You do not have permission to edit jobs.' }
+    }
+    if (error.message.includes('job_not_found')) {
+      return { error: 'That job is gone or was cancelled.' }
+    }
+    const key = Object.keys(MESSAGES).find((k) => error.message.includes(k))
+    return { error: key ? MESSAGES[key] : 'Could not save those changes.' }
+  }
+
+  // Tell the driver who already took it that the details moved.
+  const row = data as { claimed_by: string | null; pickup: string; destination: string | null } | null
+  if (row?.claimed_by) {
+    try {
+      await pushToDriver(row.claimed_by, {
+        title: 'Job details changed',
+        body: `${row.pickup}${row.destination ? ` → ${row.destination}` : ''}`,
+        url: '/dashboard/bookings',
+        tag: `dispatch-edit-${jobId}`,
+      })
+    } catch {
+      // silent
+    }
+  }
+
+  revalidatePath('/admin/dispatch')
+  revalidatePath('/dashboard/dispatch')
+  revalidatePath('/dashboard', 'layout')
+  return { message: 'Saved. The driver has been told.' }
+}
