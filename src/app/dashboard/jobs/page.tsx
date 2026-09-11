@@ -1,23 +1,10 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import JobForm from '@/app/admin/dispatch/job-form'
 import ClaimButton from './claim-button'
 
 export const dynamic = 'force-dynamic'
-
-type SentJob = {
-  id: string
-  customer_name: string
-  customer_phone: string
-  pickup_address: string
-  destination_address: string | null
-  booking_type: string
-  scheduled_at: string | null
-  fare: number | null
-  status: string
-  created_at: string
-  taker: { name: string | null; phone: string | null } | null
-}
 
 type Job = {
   id: string
@@ -35,7 +22,40 @@ type Job = {
   created_at: string
 }
 
-export default async function JobsPage() {
+type SentJob = {
+  id: string
+  customer_name: string
+  customer_phone: string
+  pickup_address: string
+  pickup_eircode: string | null
+  destination_address: string | null
+  booking_type: string
+  scheduled_at: string | null
+  fare: number | null
+  status: string
+  created_at: string
+  taker: { name: string | null; phone: string | null } | null
+}
+
+function whenLabel(j: { booking_type: string; scheduled_at: string | null }) {
+  return j.booking_type === 'NOW' || !j.scheduled_at
+    ? 'As soon as possible'
+    : new Date(j.scheduled_at).toLocaleString(undefined, {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+}
+
+const DAY = 24 * 60 * 60 * 1000
+
+export default async function JobsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tab?: string }>
+}) {
   const supabase = await createClient()
   const {
     data: { user },
@@ -48,23 +68,10 @@ export default async function JobsPage() {
     .eq('id', user.id)
     .maybeSingle()
 
+  const isBusiness = Boolean(profile?.is_business)
   const mayDispatch = Boolean(profile?.can_dispatch || profile?.is_admin)
 
-  // Jobs this person sent out, whoever ends up taking them.
-  const { data: sentRows } = mayDispatch
-    ? await supabase
-        .from('dispatch_jobs')
-        .select(
-          'id, customer_name, customer_phone, pickup_address, destination_address, booking_type, scheduled_at, fare, status, created_at, taker:claimed_by(name, phone)'
-        )
-        .eq('created_by', user.id)
-        .order('created_at', { ascending: false })
-        .limit(20)
-    : { data: null }
-
-  const sent = (sentRows as SentJob[] | null) ?? []
-
-  if (!profile?.is_business && !mayDispatch) {
+  if (!isBusiness && !mayDispatch) {
     return (
       <div className="space-y-4">
         <h1 className="text-2xl font-semibold text-white">Jobs</h1>
@@ -76,66 +83,162 @@ export default async function JobsPage() {
     )
   }
 
-  const { data } = await supabase.rpc('list_dispatch_jobs')
-  const jobs = (data as Job[] | null) ?? []
-  const open = jobs.filter((j) => j.status === 'OPEN')
-  const mine = jobs.filter((j) => j.is_mine)
+  const { data: boardData } = isBusiness
+    ? await supabase.rpc('list_dispatch_jobs')
+    : { data: null }
+  const board = (boardData as Job[] | null) ?? []
+
+  const { data: sentData } = mayDispatch
+    ? await supabase
+        .from('dispatch_jobs')
+        .select(
+          'id, customer_name, customer_phone, pickup_address, pickup_eircode, destination_address, booking_type, scheduled_at, fare, status, created_at, taker:claimed_by(name, phone)'
+        )
+        .eq('created_by', user.id)
+        .order('created_at', { ascending: false })
+        .limit(40)
+    : { data: null }
+  const sentAll = (sentData as SentJob[] | null) ?? []
+
+  const fresh = (iso: string) => Date.now() - new Date(iso).getTime() < DAY
+
+  const open = board.filter((j) => j.status === 'OPEN')
+  const mine = board.filter((j) => j.is_mine && fresh(j.created_at))
+  const sent = sentAll.filter((j) => j.status !== 'CANCELLED' && fresh(j.created_at))
+  const past = [
+    ...board.filter((j) => j.is_mine && !fresh(j.created_at)),
+    ...sentAll.filter((j) => j.status === 'CANCELLED' || !fresh(j.created_at)),
+  ]
+
+  const TABS = [
+    ...(isBusiness
+      ? [
+          { id: 'open', label: 'Available', count: open.length },
+          { id: 'mine', label: 'Mine', count: mine.length },
+        ]
+      : []),
+    ...(mayDispatch ? [{ id: 'sent', label: 'Sent', count: sent.length }] : []),
+    { id: 'past', label: 'Past', count: 0 },
+    ...(mayDispatch ? [{ id: 'create', label: 'Create job', count: 0 }] : []),
+  ]
+
+  const params = await searchParams
+  const tab = TABS.find((t) => t.id === params.tab)?.id ?? TABS[0].id
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div>
         <h1 className="text-2xl font-semibold text-white">Jobs</h1>
         <p className="mt-1 text-sm text-slate-400">
-          {profile?.is_business
-            ? 'First to take it gets it, and the customer becomes yours.'
-            : 'Jobs you have sent out to business drivers.'}
+          {isBusiness
+            ? 'First to take a job gets it, and the customer becomes yours.'
+            : 'Jobs you have sent to business drivers.'}
         </p>
       </div>
 
-      {profile?.is_business ? (
-      <section className="space-y-3">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
-          Available to take
-        </h2>
-        {open.length === 0 ? (
-          <p className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-300">
-            Nothing available right now.
-          </p>
-        ) : (
-          open.map((j) => <JobCard key={j.id} job={j} claimable />)
-        )}
-      </section>
-      ) : null}
+      <nav className="flex gap-2 overflow-x-auto pb-1">
+        {TABS.map((t) => (
+          <Link
+            key={t.id}
+            href={`/dashboard/jobs?tab=${t.id}`}
+            className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-semibold ${
+              tab === t.id
+                ? t.id === 'create'
+                  ? 'bg-yellow text-navy'
+                  : 'bg-white text-navy'
+                : t.id === 'create'
+                  ? 'border border-yellow/50 bg-yellow/10 text-yellow'
+                  : 'border border-white/15 bg-white/5 text-slate-300'
+            }`}
+          >
+            {t.id === 'create' ? `+ ${t.label}` : t.label}
+            {t.count > 0 ? (
+              <span className="ml-1.5 opacity-70">{t.count}</span>
+            ) : null}
+          </Link>
+        ))}
+      </nav>
 
-      {mine.length > 0 ? (
-        <section className="space-y-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
-            Taken by you
-          </h2>
-          {mine.map((j) => (
-            <JobCard key={j.id} job={j} />
-          ))}
+      {tab === 'create' ? (
+        <section>
+          <p className="mb-4 text-sm text-slate-400">
+            Goes to every available business driver. The first to take it gets
+            the job.
+          </p>
+          <JobForm />
         </section>
       ) : null}
 
-      {mayDispatch ? (
-        <section className="space-y-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
-            Sent by you
-          </h2>
+      {tab === 'open' ? (
+        <Board
+          rows={open}
+          claimable
+          empty="Nothing available right now. You will get an alert when a job comes in."
+        />
+      ) : null}
+
+      {tab === 'mine' ? (
+        <Board rows={mine} empty="You have not taken any jobs today." />
+      ) : null}
+
+      {tab === 'sent' ? (
+        <div className="space-y-3">
           {sent.length === 0 ? (
-            <p className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-300">
-              You have not sent any jobs yet.
-            </p>
+            <Empty text="You have not sent any jobs recently." />
           ) : (
             sent.map((j) => <SentCard key={j.id} job={j} />)
           )}
-        </section>
+        </div>
       ) : null}
 
-      <p className="text-xs text-slate-500">
-        Numbers are hidden until you take the job.
-      </p>
+      {tab === 'past' ? (
+        <div className="space-y-3">
+          {past.length === 0 ? (
+            <Empty text="Nothing here yet." />
+          ) : (
+            past.map((j) =>
+              'is_mine' in j ? (
+                <JobCard key={j.id} job={j as Job} />
+              ) : (
+                <SentCard key={j.id} job={j as SentJob} />
+              )
+            )
+          )}
+        </div>
+      ) : null}
+
+      {tab === 'open' ? (
+        <p className="text-xs text-slate-500">
+          Numbers are hidden until you take the job.
+        </p>
+      ) : null}
+    </div>
+  )
+}
+
+function Empty({ text }: { text: string }) {
+  return (
+    <p className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-300">
+      {text}
+    </p>
+  )
+}
+
+function Board({
+  rows,
+  claimable,
+  empty,
+}: {
+  rows: Job[]
+  claimable?: boolean
+  empty: string
+}) {
+  if (rows.length === 0) return <Empty text={empty} />
+  return (
+    <div className="space-y-3">
+      {rows.map((j) => (
+        <JobCard key={j.id} job={j} claimable={claimable} />
+      ))}
     </div>
   )
 }
@@ -186,17 +289,7 @@ function JobCard({ job, claimable }: { job: Job; claimable?: boolean }) {
         {job.destination_address ? (
           <p className="text-slate-300">to {job.destination_address}</p>
         ) : null}
-        <p className="text-slate-400">
-          {job.booking_type === 'NOW' || !job.scheduled_at
-            ? 'As soon as possible'
-            : new Date(job.scheduled_at).toLocaleString(undefined, {
-                weekday: 'short',
-                day: 'numeric',
-                month: 'short',
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-        </p>
+        <p className="text-slate-400">{whenLabel(job)}</p>
         {job.notes ? <p className="text-slate-400">{job.notes}</p> : null}
       </div>
 
@@ -234,7 +327,7 @@ function SentCard({ job }: { job: SentJob }) {
                   : 'bg-white/10 text-slate-300'
             }`}
           >
-            {job.status.toLowerCase()}
+            {job.status === 'CLAIMED' ? 'assigned' : job.status.toLowerCase()}
           </span>
         </div>
       </div>
@@ -244,23 +337,13 @@ function SentCard({ job }: { job: SentJob }) {
         {job.destination_address ? (
           <p className="text-slate-300">to {job.destination_address}</p>
         ) : null}
-        <p className="text-slate-400">
-          {job.booking_type === 'NOW' || !job.scheduled_at
-            ? 'As soon as possible'
-            : new Date(job.scheduled_at).toLocaleString(undefined, {
-                weekday: 'short',
-                day: 'numeric',
-                month: 'short',
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-        </p>
+        <p className="text-slate-400">{whenLabel(job)}</p>
       </div>
 
       <p className="mt-2 text-xs">
         {job.taker?.name ? (
           <span className="text-emerald-300">
-            Accepted by {job.taker.name}
+            Taken by {job.taker.name}
             {job.taker.phone ? ` · ${job.taker.phone}` : ''}
           </span>
         ) : (
