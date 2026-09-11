@@ -29,6 +29,18 @@ const schema = z.object({
     ),
 })
 
+// Named exceptions from the database, turned into something an office
+// dispatcher can act on.
+const MESSAGES: Record<string, string> = {
+  name_required: 'Enter the customer name.',
+  invalid_phone: 'Enter a valid phone number.',
+  pickup_required: 'Enter a pickup address.',
+  invalid_eircode: 'That Eircode does not look right.',
+  invalid_scheduled_at: 'Pick a date and time.',
+  scheduled_too_far: 'That is too far ahead. Pick a nearer date.',
+  rate_limited: 'Too many jobs sent just now. Give it a minute.',
+}
+
 export async function createDispatchJob(
   _prev: DispatchState,
   formData: FormData

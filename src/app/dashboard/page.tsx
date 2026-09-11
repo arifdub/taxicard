@@ -47,6 +47,12 @@ export default async function DashboardPage() {
       .then((r) => r.count ?? 0),
   ])
 
+  // Only dispatchers and admins get a link back to the job behind a
+  // booking; the query returns nothing for anyone else.
+  const jobMap = mayEditJobs
+    ? await fetchDispatchJobMap(supabase, [...pending, ...today].map((b) => b.id))
+    : {}
+
   return (
     <div className="space-y-5">
       <h1 className="text-2xl font-semibold text-white">
