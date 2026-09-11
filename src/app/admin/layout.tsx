@@ -46,7 +46,7 @@ export default async function AdminLayout({
             href="/admin/dispatch"
             className="rounded-lg px-4 py-2 text-sm font-medium text-slate-300"
           >
-            Send a job
+            Dispatch
           </Link>
         </nav>
       </header>

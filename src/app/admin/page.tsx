@@ -69,6 +69,13 @@ export default async function AdminOverview() {
         />
       </div>
 
+      <Link
+        href="/admin/dispatch"
+        className="block rounded-2xl bg-yellow px-4 py-4 text-center text-base font-bold text-navy"
+      >
+        Open dispatch
+      </Link>
+
       <section>
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
