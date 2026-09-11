@@ -176,7 +176,7 @@ export async function updateDispatchJob(
   }
 
   revalidatePath('/admin/dispatch')
-  revalidatePath('/dashboard/dispatch')
+  revalidatePath('/dashboard/jobs')
   revalidatePath('/dashboard', 'layout')
   return { message: 'Saved. The driver has been told.' }
 }
