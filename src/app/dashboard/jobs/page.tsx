@@ -119,10 +119,10 @@ export default async function JobsPage({
       : []),
     ...(mayDispatch ? [{ id: 'sent', label: 'Sent', count: sent.length }] : []),
     { id: 'past', label: 'Past', count: 0 },
-    ...(mayDispatch ? [{ id: 'create', label: 'Create job', count: 0 }] : []),
   ]
 
   const params = await searchParams
+  const creating = mayDispatch && params.tab === 'create'
   const tab = TABS.find((t) => t.id === params.tab)?.id ?? TABS[0].id
 
   return (
@@ -136,38 +136,49 @@ export default async function JobsPage({
         </p>
       </div>
 
-      <nav className="flex gap-2 overflow-x-auto pb-1">
-        {TABS.map((t) => (
-          <Link
-            key={t.id}
-            href={`/dashboard/jobs?tab=${t.id}`}
-            className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-semibold ${
-              tab === t.id
-                ? t.id === 'create'
-                  ? 'bg-yellow text-navy'
-                  : 'bg-white text-navy'
-                : t.id === 'create'
-                  ? 'border border-yellow/50 bg-yellow/10 text-yellow'
-                  : 'border border-white/15 bg-white/5 text-slate-300'
-            }`}
-          >
-            {t.id === 'create' ? `+ ${t.label}` : t.label}
-            {t.count > 0 ? (
-              <span className="ml-1.5 opacity-70">{t.count}</span>
-            ) : null}
-          </Link>
-        ))}
-      </nav>
+      {mayDispatch && !creating ? (
+        <Link
+          href="/dashboard/jobs?tab=create"
+          className="block rounded-2xl bg-yellow px-4 py-4 text-center text-base font-bold text-navy"
+        >
+          + Create job
+        </Link>
+      ) : null}
 
-      {tab === 'create' ? (
-        <section>
-          <p className="mb-4 text-sm text-slate-400">
+      {creating ? (
+        <section className="space-y-4">
+          <Link
+            href="/dashboard/jobs"
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white"
+          >
+            Back to jobs
+          </Link>
+          <p className="text-sm text-slate-400">
             Goes to every available business driver. The first to take it gets
             the job.
           </p>
           <JobForm />
         </section>
-      ) : null}
+      ) : (
+        <>
+          <nav className="flex gap-2 overflow-x-auto pb-1">
+            {TABS.map((t) => (
+              <Link
+                key={t.id}
+                href={`/dashboard/jobs?tab=${t.id}`}
+                className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-semibold ${
+                  tab === t.id
+                    ? 'bg-white text-navy'
+                    : 'border border-white/15 bg-white/5 text-slate-300'
+                }`}
+              >
+                {t.label}
+                {t.count > 0 ? (
+                  <span className="ml-1.5 opacity-70">{t.count}</span>
+                ) : null}
+              </Link>
+            ))}
+          </nav>
 
       {tab === 'open' ? (
         <Board
@@ -207,11 +218,13 @@ export default async function JobsPage({
         </div>
       ) : null}
 
-      {tab === 'open' ? (
-        <p className="text-xs text-slate-500">
-          Numbers are hidden until you take the job.
-        </p>
-      ) : null}
+          {tab === 'open' ? (
+            <p className="text-xs text-slate-500">
+              Numbers are hidden until you take the job.
+            </p>
+          ) : null}
+        </>
+      )}
     </div>
   )
 }
