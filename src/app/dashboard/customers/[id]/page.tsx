@@ -43,6 +43,7 @@ export default async function CustomerPage({
     .from('customers')
     .select('id, name, phone, email, notes, favourite_pickup, bookings_count, last_booking_at')
     .eq('id', id)
+    .eq('driver_id', user.id)
     .maybeSingle()
 
   const customer = data as Customer | null
@@ -52,6 +53,7 @@ export default async function CustomerPage({
     .from('bookings')
     .select('id, status, pickup_address, destination_address, booking_type, scheduled_at, created_at')
     .eq('customer_id', id)
+    .eq('driver_id', user.id)
     .order('created_at', { ascending: false })
     .limit(50)
 

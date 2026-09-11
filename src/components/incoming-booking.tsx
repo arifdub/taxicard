@@ -91,6 +91,7 @@ export default function IncomingBooking({ driverId }: { driverId: string }) {
           'id, status, pickup_address, destination_address, booking_type, scheduled_at, customer_notes, customers(name, phone)'
         )
         .eq('id', id)
+        .eq('driver_id', driverId)
         .maybeSingle()
 
       if (!data || data.status !== 'PENDING') return
@@ -138,6 +139,7 @@ export default function IncomingBooking({ driverId }: { driverId: string }) {
       const { data } = await supabase
         .from('bookings')
         .select('id')
+        .eq('driver_id', driverId)
         .eq('status', 'PENDING')
         .order('created_at', { ascending: false })
         .limit(1)

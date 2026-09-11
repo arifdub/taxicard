@@ -16,9 +16,13 @@ export default async function BookingsPage() {
   // it is made, so filtering by a future time hid every job the moment it
   // was accepted — it was neither upcoming nor past.
   const [pending, accepted, past] = await Promise.all([
-    fetchBookings(supabase, { statuses: ['PENDING'] }),
-    fetchBookings(supabase, { statuses: ['CONFIRMED', 'ACCEPTED'] }),
+    fetchBookings(supabase, { driverId: user.id, statuses: ['PENDING'] }),
     fetchBookings(supabase, {
+      driverId: user.id,
+      statuses: ['CONFIRMED', 'ACCEPTED'],
+    }),
+    fetchBookings(supabase, {
+      driverId: user.id,
       statuses: ['COMPLETED', 'DECLINED', 'CANCELLED'],
       limit: 30,
       newestFirst: true,

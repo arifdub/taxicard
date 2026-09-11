@@ -42,6 +42,7 @@ function flatten(row: RawBooking): BookingRow {
 export async function fetchBookings(
   supabase: SupabaseClient,
   opts: {
+    driverId?: string
     statuses?: string[]
     since?: string
     until?: string
@@ -50,6 +51,10 @@ export async function fetchBookings(
   } = {}
 ): Promise<BookingRow[]> {
   let q = supabase.from('bookings').select(SELECT)
+
+  // Admins can read every booking at database level, which is right for
+  // the admin panel and wrong for their own dashboard. Always scope.
+  if (opts.driverId) q = q.eq('driver_id', opts.driverId)
 
   if (opts.statuses?.length) q = q.in('status', opts.statuses)
   if (opts.since) q = q.gte('scheduled_at', opts.since)

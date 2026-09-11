@@ -30,6 +30,7 @@ export default async function CustomersPage({
   let query = supabase
     .from('customers')
     .select('id, name, phone, bookings_count, last_booking_at, favourite_pickup')
+    .eq('driver_id', user.id)
 
   if (q && q.trim()) {
     const term = q.trim()

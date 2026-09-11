@@ -31,8 +31,9 @@ export default async function DashboardPage() {
   endOfDay.setDate(endOfDay.getDate() + 1)
 
   const [pending, today, customerCount, bookingCount] = await Promise.all([
-    fetchBookings(supabase, { statuses: ['PENDING'] }),
+    fetchBookings(supabase, { driverId: user.id, statuses: ['PENDING'] }),
     fetchBookings(supabase, {
+      driverId: user.id,
       statuses: ['CONFIRMED', 'ACCEPTED'],
       since: startOfDay.toISOString(),
       until: endOfDay.toISOString(),
@@ -40,10 +41,12 @@ export default async function DashboardPage() {
     supabase
       .from('customers')
       .select('id', { count: 'exact', head: true })
+      .eq('driver_id', user.id)
       .then((r) => r.count ?? 0),
     supabase
       .from('bookings')
       .select('id', { count: 'exact', head: true })
+      .eq('driver_id', user.id)
       .then((r) => r.count ?? 0),
   ])
 

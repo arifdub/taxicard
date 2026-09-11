@@ -122,12 +122,34 @@ export default async function DispatchPage() {
                   </p>
                 </div>
 
+                {j.taker ? (
+                  <div className="mt-3 rounded-xl border border-emerald-400/25 bg-emerald-500/10 p-3">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-emerald-300">
+                      Assigned to
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-white">
+                      {j.taker.name ?? 'Driver'}
+                      {j.taker.licence_number
+                        ? ` · licence ${j.taker.licence_number}`
+                        : ''}
+                    </p>
+                    {j.taker.phone ? (
+                      <a
+                        href={`tel:${j.taker.phone.replace(/\s/g, '')}`}
+                        className="text-sm text-brandblue"
+                      >
+                        {j.taker.phone}
+                      </a>
+                    ) : null}
+                  </div>
+                ) : null}
+
                 {j.status !== 'CANCELLED' ? (
                   <Link
                     href={`/dashboard/dispatch/${j.id}`}
-                    className="mt-3 block rounded-xl border border-white/15 px-4 py-2.5 text-center text-sm font-semibold text-white"
+                    className="mt-3 block rounded-xl bg-yellow px-4 py-3 text-center text-sm font-bold text-navy"
                   >
-                    Edit job
+                    Edit job{j.taker ? ' and tell the driver' : ''}
                   </Link>
                 ) : null}
 
