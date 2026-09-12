@@ -34,7 +34,6 @@ const TABS = [
   { id: 'assigned', label: 'Assigned' },
   { id: 'cancelled', label: 'Cancelled' },
   { id: 'all', label: 'All' },
-  { id: 'new', label: 'Create job' },
 ] as const
 
 type Tab = (typeof TABS)[number]['id']
@@ -67,8 +66,8 @@ export default async function DispatchPage({
 }) {
   const { supabase } = await requireAdmin()
   const params = await searchParams
+  const creating = params.status === 'new'
   const tab: Tab = (TABS.find((t) => t.id === params.status)?.id ?? 'open') as Tab
-  const creating = tab === 'new'
 
   const SELECT =
     '*, creator:created_by(name, licence_number, phone), taker:claimed_by(name, licence_number, phone)'
@@ -119,6 +118,34 @@ export default async function DispatchPage({
         <Stat value={businessCount} label="Business drivers" />
       </div>
 
+      {creating ? (
+        <section className="space-y-4">
+          <Link
+            href="/admin/dispatch"
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white"
+          >
+            Back to jobs
+          </Link>
+          <div>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+              Send a new job
+            </h2>
+            <p className="mt-1 text-sm text-slate-400">
+              Goes to {businessCount} business driver
+              {businessCount === 1 ? '' : 's'}. First to take it gets it.
+            </p>
+          </div>
+          <JobForm />
+        </section>
+      ) : (
+      <>
+      <Link
+        href="/admin/dispatch?status=new"
+        className="block rounded-2xl bg-yellow px-4 py-4 text-center text-base font-bold text-navy"
+      >
+        + Create job
+      </Link>
+
       <nav className="flex gap-2 overflow-x-auto pb-1">
         {TABS.map((t) => (
           <Link
@@ -126,15 +153,11 @@ export default async function DispatchPage({
             href={`/admin/dispatch?status=${t.id}`}
             className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-semibold ${
               tab === t.id
-                ? t.id === 'new'
-                  ? 'bg-yellow text-navy'
-                  : 'bg-white text-navy'
-                : t.id === 'new'
-                  ? 'border border-yellow/50 bg-yellow/10 text-yellow'
-                  : 'border border-white/15 bg-white/5 text-slate-300'
+                ? 'bg-white text-navy'
+                : 'border border-white/15 bg-white/5 text-slate-300'
             }`}
           >
-            {t.id === 'new' ? `+ ${t.label}` : t.label}
+            {t.label}
             {t.id === 'open' && openCount > 0 ? (
               <span className="ml-1.5 opacity-70">{openCount}</span>
             ) : null}
@@ -142,18 +165,6 @@ export default async function DispatchPage({
         ))}
       </nav>
 
-      {creating ? (
-        <section>
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
-            Send a new job
-          </h2>
-          <p className="mb-4 mt-1 text-sm text-slate-400">
-            Goes to {businessCount} business driver
-            {businessCount === 1 ? '' : 's'}. First to take it gets it.
-          </p>
-          <JobForm />
-        </section>
-      ) : (
       <section>
         {jobs.length === 0 ? (
           <p className="mt-4 rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-300">
@@ -274,6 +285,7 @@ export default async function DispatchPage({
           </ul>
         )}
       </section>
+      </>
       )}
     </div>
   )
