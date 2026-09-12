@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { updateBookingStatus } from '@/app/dashboard/bookings/actions'
+import DeleteBooking from '@/app/dashboard/bookings/delete-button'
 
 export type BookingRow = {
   id: string
