@@ -94,7 +94,7 @@ export async function createBooking(
       await pushToDriver(driver.id, {
         title: 'New booking request',
         body: `${v.name} — ${v.pickup} to ${v.destination}`,
-        url: '/dashboard',
+        url: '/dashboard/bookings',
         tag: token,
       })
     }

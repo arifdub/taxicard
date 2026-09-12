@@ -13,6 +13,8 @@ self.addEventListener('push', (event) => {
     payload = {}
   }
 
+  const url = payload.url || '/dashboard'
+
   event.waitUntil(
     self.registration.showNotification(payload.title || 'New booking request', {
       body: payload.body || 'Open TaxiCard to accept or decline.',
@@ -21,25 +23,52 @@ self.addEventListener('push', (event) => {
       tag: payload.tag || 'booking',
       renotify: true,
       requireInteraction: true,
-      data: { url: payload.url || '/dashboard' },
+      data: { url: url },
     })
   )
 })
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close()
-  const url = (event.notification.data && event.notification.data.url) || '/dashboard'
+
+  const raw =
+    (event.notification.data && event.notification.data.url) || '/dashboard'
+  const target = new URL(raw, self.location.origin)
 
   event.waitUntil(
-    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
+    (async () => {
+      const list = await self.clients.matchAll({
+        type: 'window',
+        includeUncontrolled: true,
+      })
+
       for (const client of list) {
-        if ('focus' in client) {
-          client.navigate(url)
-          return client.focus()
+        if (!('focus' in client)) continue
+
+        // Already on the right page: just bring it forward.
+        try {
+          const here = new URL(client.url)
+          if (here.pathname === target.pathname) {
+            return client.focus()
+          }
+        } catch (e) {}
+
+        // Navigate first and wait for it, otherwise focus resolves before
+        // the move and the driver lands wherever they already were.
+        if ('navigate' in client) {
+          try {
+            const moved = await client.navigate(target.href)
+            if (moved && 'focus' in moved) return moved.focus()
+            return client.focus()
+          } catch (e) {
+            // Some platforms refuse navigate on a standalone window.
+            break
+          }
         }
       }
-      return self.clients.openWindow(url)
-    })
+
+      return self.clients.openWindow(target.href)
+    })()
   )
 })
 `
