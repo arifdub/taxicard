@@ -3,12 +3,17 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 
-export async function markAllRead() {
+/**
+ * Both of these are used directly as <form action={...}>, so they must
+ * return nothing. React rejects a form action that resolves to a value.
+ */
+
+export async function markAllRead(): Promise<void> {
   const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
-  if (!user) return { error: 'Log in again.' }
+  if (!user) return
 
   await supabase
     .from('notifications')
@@ -17,15 +22,14 @@ export async function markAllRead() {
     .is('read_at', null)
 
   revalidatePath('/dashboard', 'layout')
-  return { ok: true }
 }
 
-export async function clearRead() {
+export async function clearRead(): Promise<void> {
   const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
-  if (!user) return { error: 'Log in again.' }
+  if (!user) return
 
   await supabase
     .from('notifications')
@@ -34,5 +38,4 @@ export async function clearRead() {
     .not('read_at', 'is', null)
 
   revalidatePath('/dashboard', 'layout')
-  return { ok: true }
 }
