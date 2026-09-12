@@ -42,10 +42,17 @@ export function whenLabel(b: BookingRow) {
 export default function BookingCard({
   booking,
   editHref,
+  deletable,
 }: {
   booking: BookingRow
   editHref?: string
+  deletable?: boolean
 }) {
+  const finished =
+    booking.status === 'COMPLETED' ||
+    booking.status === 'DECLINED' ||
+    booking.status === 'CANCELLED'
+
   const [pending, start] = useTransition()
   const [error, setError] = useState<string | null>(null)
 
@@ -158,6 +165,8 @@ export default function BookingCard({
           </button>
         </div>
       ) : null}
+      {deletable && finished ? <DeleteBooking id={booking.id} /> : null}
+
     </div>
   )
 }

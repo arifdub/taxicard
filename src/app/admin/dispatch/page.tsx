@@ -243,7 +243,7 @@ export default async function DispatchPage({
                   </p>
                 ) : null}
 
-                {j.status !== 'CANCELLED' ? (
+                {j.status === 'OPEN' || j.status === 'CLAIMED' ? (
                   <Link
                     href={`/dashboard/dispatch/${j.id}`}
                     className="mt-3 block rounded-xl bg-yellow px-4 py-3 text-center text-sm font-bold text-navy"

@@ -64,6 +64,7 @@ export default async function BookingsPage() {
         rows={past}
         empty="No history yet."
         jobMap={jobMap}
+        deletable
       />
     </div>
   )
@@ -74,11 +75,13 @@ function Section({
   rows,
   empty,
   jobMap,
+  deletable,
 }: {
   title: string
   rows: Awaited<ReturnType<typeof fetchBookings>>
   empty: string
   jobMap: Record<string, string>
+  deletable?: boolean
 }) {
   return (
     <section className="space-y-3">
@@ -93,6 +96,7 @@ function Section({
             key={b.id}
             booking={b}
             editHref={jobMap[b.id] ? `/dashboard/dispatch/${jobMap[b.id]}` : undefined}
+            deletable={deletable}
           />
         ))
       )}

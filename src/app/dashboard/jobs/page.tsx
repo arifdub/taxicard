@@ -211,7 +211,7 @@ export default async function JobsPage({
               'is_mine' in j ? (
                 <JobCard key={j.id} job={j as Job} />
               ) : (
-                <SentCard key={j.id} job={j as SentJob} />
+                <SentCard key={j.id} job={j as SentJob} readOnly />
               )
             )
           )}
@@ -315,7 +315,7 @@ function JobCard({ job, claimable }: { job: Job; claimable?: boolean }) {
   )
 }
 
-function SentCard({ job }: { job: SentJob }) {
+function SentCard({ job, readOnly }: { job: SentJob; readOnly?: boolean }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-navy-soft p-4">
       <div className="flex items-start justify-between gap-3">
@@ -364,7 +364,7 @@ function SentCard({ job }: { job: SentJob }) {
         )}
       </p>
 
-      {job.status !== 'CANCELLED' ? (
+      {!readOnly && job.status !== 'CANCELLED' ? (
         <Link
           href={`/dashboard/dispatch/${job.id}`}
           className="mt-3 block rounded-xl border border-white/15 px-4 py-2.5 text-center text-sm font-semibold text-white"

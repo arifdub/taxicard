@@ -48,6 +48,12 @@ export default async function AdminLayout({
           >
             Dispatch
           </Link>
+          <Link
+            href="/admin/messages"
+            className="rounded-lg px-4 py-2 text-sm font-medium text-slate-300"
+          >
+            Messages
+          </Link>
         </nav>
       </header>
 

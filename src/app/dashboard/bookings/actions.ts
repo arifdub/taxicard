@@ -63,3 +63,24 @@ export async function markNotificationsRead() {
 
   revalidatePath('/dashboard', 'layout')
 }
+
+export async function deleteBooking(bookingId: string) {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) return { error: 'Log in again.' }
+
+  // Only finished work can be removed, and only your own.
+  const { error } = await supabase
+    .from('bookings')
+    .delete()
+    .eq('id', bookingId)
+    .eq('driver_id', user.id)
+    .in('status', ['COMPLETED', 'DECLINED', 'CANCELLED'])
+
+  if (error) return { error: 'Could not delete that booking.' }
+
+  revalidatePath('/dashboard', 'layout')
+  return { ok: true }
+}

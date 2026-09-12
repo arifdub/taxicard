@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import NavMenu from './nav-menu'
+import NotificationBell from '@/components/notification-bell'
 import Wordmark from '@/components/wordmark'
 import IncomingBooking from '@/components/incoming-booking'
 import { createClient } from '@/lib/supabase/server'
@@ -17,6 +18,7 @@ export default async function DashboardLayout({
   let isAdmin = false
   let isBusiness = false
   let canDispatch = false
+  let unread = 0
   if (user) {
     const { data } = await supabase
       .from('profiles')
@@ -26,6 +28,9 @@ export default async function DashboardLayout({
     isAdmin = Boolean(data?.is_admin)
     isBusiness = Boolean(data?.is_business)
     canDispatch = Boolean(data?.can_dispatch)
+
+    const { data: count } = await supabase.rpc('unread_notification_count')
+    unread = typeof count === 'number' ? count : 0
   }
 
   return (
@@ -35,11 +40,14 @@ export default async function DashboardLayout({
           <Link href="/dashboard">
             <Wordmark size="sm" />
           </Link>
-          <NavMenu
-            isAdmin={isAdmin}
-            isBusiness={isBusiness}
-            canDispatch={canDispatch}
-          />
+          <div className="flex items-center gap-1">
+            <NotificationBell initial={unread} />
+            <NavMenu
+              isAdmin={isAdmin}
+              isBusiness={isBusiness}
+              canDispatch={canDispatch}
+            />
+          </div>
         </div>
       </header>
 
