@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { requireAdmin } from '@/lib/admin'
 import { prettyLink } from '@/lib/site'
 import DriverControls from './driver-controls'
+import MessageDriver from './message-driver'
 
 export const dynamic = 'force-dynamic'
 
@@ -133,6 +134,11 @@ export default async function AdminDriverPage({
           }
         />
       </div>
+
+      <MessageDriver
+        driverId={driver.id}
+        driverName={driver.name ?? 'this driver'}
+      />
 
       {driver.is_admin ? (
         <p className="rounded-2xl border border-yellow/30 bg-yellow/10 p-4 text-sm text-yellow">

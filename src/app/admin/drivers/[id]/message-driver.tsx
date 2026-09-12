@@ -22,8 +22,17 @@ export default function MessageDriver({
     return (
       <button
         onClick={() => setOpen(true)}
-        className="w-full rounded-2xl border border-white/10 bg-navy-soft px-4 py-3.5 text-sm font-medium text-white"
+        className="flex w-full items-center justify-center gap-2 rounded-2xl bg-yellow px-4 py-4 text-base font-bold text-navy transition active:scale-[0.99]"
       >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M3.4 5.6A1.6 1.6 0 0 1 5 4.4h14a1.6 1.6 0 0 1 1.6 1.2L12 12.4 3.4 5.6zM3.2 7.6 12 14.6l8.8-7v10.8a1.6 1.6 0 0 1-1.6 1.6H4.8a1.6 1.6 0 0 1-1.6-1.6z" />
+        </svg>
         Send {driverName.split(' ')[0]} a message
       </button>
     )

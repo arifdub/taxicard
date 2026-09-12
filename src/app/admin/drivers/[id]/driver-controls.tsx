@@ -3,7 +3,6 @@
 import { useState, useTransition } from 'react'
 import PasswordReset from './password-reset'
 import FlagSwitches from './flag-switches'
-import MessageDriver from './message-driver'
 import { setDriverActive, deleteDriver } from '@/app/admin/actions'
 
 export default function DriverControls({
