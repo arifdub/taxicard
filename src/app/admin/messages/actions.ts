@@ -33,7 +33,13 @@ export async function sendBroadcast(
     if (error.message.includes('not_allowed')) {
       return { error: 'Only administrators can send messages.' }
     }
-    return { error: 'Could not send that message.' }
+    if (error.message.includes('Could not find the function')) {
+      return {
+        error:
+          'The broadcast function is missing. Run 0017_notifications.sql in Supabase.',
+      }
+    }
+    return { error: `Could not send that message: ${error.message}` }
   }
 
   const sent = (data as { sent?: number } | null)?.sent ?? 0
@@ -102,7 +108,13 @@ export async function messageDriver(
     if (error.message.includes('driver_not_found')) {
       return { error: 'That driver no longer exists.' }
     }
-    return { error: 'Could not send that message.' }
+    if (error.message.includes('Could not find the function')) {
+      return {
+        error:
+          'The message function is missing. Run 0018_message_driver.sql in Supabase.',
+      }
+    }
+    return { error: `Could not send that message: ${error.message}` }
   }
 
   try {
