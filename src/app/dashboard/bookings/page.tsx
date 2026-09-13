@@ -29,6 +29,23 @@ export default async function BookingsPage() {
     }),
   ])
 
+  // "As soon as possible" first, then scheduled work in time order.
+  const orderAccepted = [...accepted].sort((a, b) => {
+    const aNow = a.booking_type === 'NOW' || !a.scheduled_at
+    const bNow = b.booking_type === 'NOW' || !b.scheduled_at
+    if (aNow !== bNow) return aNow ? -1 : 1
+    if (aNow && bNow) {
+      return (
+        new Date(b.scheduled_at ?? 0).getTime() -
+        new Date(a.scheduled_at ?? 0).getTime()
+      )
+    }
+    return (
+      new Date(a.scheduled_at ?? 0).getTime() -
+      new Date(b.scheduled_at ?? 0).getTime()
+    )
+  })
+
   const { data: me } = await supabase
     .from('profiles')
     .select('can_dispatch, is_admin')
@@ -39,7 +56,7 @@ export default async function BookingsPage() {
     me?.can_dispatch || me?.is_admin
       ? await fetchDispatchJobMap(
           supabase,
-          [...pending, ...accepted, ...past].map((b) => b.id)
+          [...pending, ...orderAccepted, ...past].map((b) => b.id)
         )
       : {}
 
@@ -55,7 +72,7 @@ export default async function BookingsPage() {
       />
       <Section
         title="Accepted"
-        rows={accepted}
+        rows={orderAccepted}
         empty="Nothing accepted right now."
         jobMap={jobMap}
       />

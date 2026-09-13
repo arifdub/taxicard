@@ -106,6 +106,15 @@ export default function BookingCard({
           <p className="text-slate-400">{booking.customer_notes}</p>
         ) : null}
 
+        {booking.booking_type === 'LATER' && booking.scheduled_at ? (
+          <a
+            href={`/api/booking-ics/${booking.id}`}
+            className="mt-1 mr-4 inline-block text-sm font-semibold text-brandblue underline"
+          >
+            Add to calendar
+          </a>
+        ) : null}
+
         {editHref ? (
           <a
             href={editHref}
