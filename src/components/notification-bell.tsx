@@ -10,9 +10,29 @@ export default function NotificationBell({ initial }: { initial: number }) {
   useEffect(() => {
     const supabase = createClient()
 
+    // The number on the home-screen icon. Supported on installed web
+    // apps; a no-op everywhere else.
+    function badge(n: number) {
+      const nav = navigator as Navigator & {
+        setAppBadge?: (n?: number) => Promise<void>
+        clearAppBadge?: () => Promise<void>
+      }
+      try {
+        if (n > 0) nav.setAppBadge?.(n)
+        else nav.clearAppBadge?.()
+      } catch {
+        // not supported
+      }
+    }
+
+    badge(initial)
+
     async function refresh() {
       const { data } = await supabase.rpc('unread_notification_count')
-      if (typeof data === 'number') setCount(data)
+      if (typeof data === 'number') {
+        setCount(data)
+        badge(data)
+      }
     }
 
     // Cheap poll; the push notification is what actually wakes a driver.
@@ -23,7 +43,7 @@ export default function NotificationBell({ initial }: { initial: number }) {
       clearInterval(id)
       window.removeEventListener('focus', onFocus)
     }
-  }, [])
+  }, [initial])
 
   return (
     <Link

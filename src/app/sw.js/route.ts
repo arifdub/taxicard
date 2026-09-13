@@ -15,6 +15,13 @@ self.addEventListener('push', (event) => {
 
   const url = payload.url || '/dashboard'
 
+  // Bump the icon badge if the platform supports it.
+  try {
+    if (self.navigator && self.navigator.setAppBadge) {
+      self.navigator.setAppBadge()
+    }
+  } catch (e) {}
+
   event.waitUntil(
     self.registration.showNotification(payload.title || 'New booking request', {
       body: payload.body || 'Open TaxiCard to accept or decline.',
@@ -30,6 +37,12 @@ self.addEventListener('push', (event) => {
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close()
+
+  try {
+    if (self.navigator && self.navigator.clearAppBadge) {
+      self.navigator.clearAppBadge()
+    }
+  } catch (e) {}
 
   const raw =
     (event.notification.data && event.notification.data.url) || '/dashboard'

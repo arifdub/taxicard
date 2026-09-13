@@ -94,6 +94,14 @@ export default async function NotificationsPage() {
               </>
             )
 
+            // Older rows predate stored links; send them somewhere useful
+            // rather than leaving a dead card.
+            const href =
+              n.url ??
+              (n.kind === 'JOB'
+                ? '/dashboard/bookings?view=pending'
+                : '/dashboard/notifications')
+
             const cls = `block rounded-2xl border p-4 ${
               n.read_at
                 ? 'border-white/10 bg-navy-soft'
@@ -102,13 +110,9 @@ export default async function NotificationsPage() {
 
             return (
               <li key={n.id}>
-                {n.url ? (
-                  <Link href={n.url} className={cls}>
-                    {inner}
-                  </Link>
-                ) : (
-                  <div className={cls}>{inner}</div>
-                )}
+                <Link href={href} className={cls}>
+                  {inner}
+                </Link>
               </li>
             )
           })}
