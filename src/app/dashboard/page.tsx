@@ -4,11 +4,39 @@ import { createClient } from '@/lib/supabase/server'
 import { fetchBookings, fetchDispatchJobMap } from '@/lib/bookings'
 import { siteUrl, prettyLink } from '@/lib/site'
 import BookingCard from '@/components/booking-card'
-import { AvailabilitySwitch } from './card/card-tools'
-import PushSetup from './push-setup'
+import { OnlineCard, NotificationsCard } from './status-cards'
 import InstallPrompt from './install-prompt'
 
 export const dynamic = 'force-dynamic'
+
+function Stat({
+  value,
+  label,
+  hint,
+  icon,
+  tone,
+}: {
+  value: number
+  label: string
+  hint: string
+  icon: React.ReactNode
+  tone: string
+}) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-navy-soft p-4">
+      <span
+        className={`flex h-11 w-11 items-center justify-center rounded-full ${tone}`}
+      >
+        {icon}
+      </span>
+      <p className="mt-3 text-[28px] font-bold leading-none text-yellow">
+        {value}
+      </p>
+      <p className="mt-1.5 text-[15px] font-semibold text-white">{label}</p>
+      <p className="mt-0.5 text-[12px] leading-snug text-slate-400">{hint}</p>
+    </div>
+  )
+}
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -50,52 +78,85 @@ export default async function DashboardPage() {
       .then((r) => r.count ?? 0),
   ])
 
-  // Only dispatchers and admins get a link back to the job behind a
-  // booking; the query returns nothing for anyone else.
   const jobMap = mayEditJobs
     ? await fetchDispatchJobMap(supabase, [...pending, ...today].map((b) => b.id))
     : {}
 
+  const first = (profile?.name ?? 'there').split(' ')[0]
+  const url = `${siteUrl()}/${profile?.slug ?? ''}`
+
   return (
     <div className="space-y-5">
-      <h1 className="text-2xl font-semibold text-white">
-        Hello, {profile?.name?.split(' ')[0] ?? 'driver'}
-      </h1>
+      <div>
+        <h1 className="text-[30px] font-bold leading-tight text-white">
+          Hello, <span className="text-yellow">{first}</span>
+        </h1>
+        <p className="mt-1 text-[15px] text-slate-400">
+          Have a safe and successful day.
+        </p>
+      </div>
 
-      <AvailabilitySwitch initial={profile?.is_available ?? true} />
-
+      <OnlineCard initial={Boolean(profile?.is_available)} />
+      <NotificationsCard />
       <InstallPrompt />
 
-      <PushSetup compact />
-
-      {!profile?.phone ? (
-        <div className="rounded-2xl border border-amber-400/30 bg-amber-500/10 p-4">
-          <p className="font-medium text-amber-100">Add your phone number</p>
-          <Link
-            href="/dashboard/settings"
-            className="mt-3 inline-block rounded-xl bg-yellow px-4 py-2.5 text-sm font-semibold text-white"
-          >
-            Finish setup
-          </Link>
-        </div>
-      ) : null}
-
       <div className="grid grid-cols-2 gap-3">
-        <Stat value={today.length} label="Today's bookings" />
+        <Stat
+          value={today.length}
+          label="Today's bookings"
+          hint="Accepted for today"
+          tone="bg-brandblue/15 text-brandblue"
+          icon={
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+              <rect x="3.2" y="5" width="17.6" height="16" rx="2.4" />
+              <path d="M3.2 9.6h17.6M8 3.2v3.4M16 3.2v3.4" strokeLinecap="round" />
+            </svg>
+          }
+        />
         <Stat
           value={pending.length}
           label="Pending requests"
-          tone={pending.length > 0 ? 'text-red-300' : undefined}
+          hint="Awaiting your response"
+          tone="bg-yellow/15 text-yellow"
+          icon={
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.6" />
+              <path d="M12 7.2V12l3.2 2" strokeLinecap="round" />
+            </svg>
+          }
         />
-        <Link href="/dashboard/customers" className="block">
-          <Stat value={customerCount} label="Customers" />
-        </Link>
-        <Stat value={bookingCount} label="Total bookings" />
+        <Stat
+          value={customerCount}
+          label="Customers"
+          hint="Your regular passengers"
+          tone="bg-emerald-500/15 text-emerald-300"
+          icon={
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <circle cx="9" cy="8.4" r="3.4" />
+              <path d="M2.8 20a6.2 6.2 0 0 1 12.4 0z" />
+              <circle cx="17" cy="9.4" r="2.6" />
+              <path d="M14.4 20a5 5 0 0 1 6.8-4.7V20z" />
+            </svg>
+          }
+        />
+        <Stat
+          value={bookingCount}
+          label="Total bookings"
+          hint="All time"
+          tone="bg-indigo-500/20 text-indigo-300"
+          icon={
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <rect x="4" y="12" width="3.6" height="8" rx="1" />
+              <rect x="10.2" y="8" width="3.6" height="12" rx="1" />
+              <rect x="16.4" y="4" width="3.6" height="16" rx="1" />
+            </svg>
+          }
+        />
       </div>
 
       {pending.length > 0 ? (
         <section className="space-y-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+          <h2 className="text-[15px] font-bold text-white">
             Waiting for you
           </h2>
           {pending.map((b) => (
@@ -110,16 +171,40 @@ export default async function DashboardPage() {
 
       <section className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">Today</h2>
-          <Link href="/dashboard/bookings" className="text-sm text-brandblue">
-            All bookings
+          <h2 className="text-[15px] font-bold text-white">Today</h2>
+          <Link
+            href="/dashboard/bookings"
+            className="flex items-center gap-1 text-sm font-semibold text-yellow"
+          >
+            View all bookings
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true">
+              <path d="M9 5.5 15.5 12 9 18.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </Link>
         </div>
+
         {today.length === 0 ? (
-          <p className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-300">
-            Nothing booked for today yet. Share your link and the first one
-            will land here.
-          </p>
+          <div className="rounded-2xl border border-white/10 bg-navy-soft px-5 py-8 text-center">
+            <svg
+              width="34"
+              height="34"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              className="mx-auto text-slate-500"
+              aria-hidden="true"
+            >
+              <rect x="3.2" y="5" width="17.6" height="16" rx="2.4" />
+              <path d="M3.2 9.6h17.6M8 3.2v3.4M16 3.2v3.4" strokeLinecap="round" />
+            </svg>
+            <p className="mt-3 text-[16px] font-semibold text-white">
+              No bookings for today yet
+            </p>
+            <p className="mt-1 text-sm text-slate-400">
+              When a booking arrives, it will appear here.
+            </p>
+          </div>
         ) : (
           today.map((b) => (
             <BookingCard
@@ -132,33 +217,17 @@ export default async function DashboardPage() {
       </section>
 
       <div className="rounded-2xl border border-white/10 bg-navy-soft p-4">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Your booking link</p>
-        <a
-          href={`${siteUrl()}/${profile?.slug}`}
-          target="_blank"
-          rel="noopener noreferrer"
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+          Your booking link
+        </p>
+        <Link
+          href={`/${profile?.slug ?? ''}`}
           className="mt-1 block break-all text-sm font-medium text-brandblue"
         >
           {prettyLink(profile?.slug ?? '')}
-        </a>
+        </Link>
+        <p className="mt-1 text-xs text-slate-500">{url}</p>
       </div>
-    </div>
-  )
-}
-
-function Stat({
-  value,
-  label,
-  tone,
-}: {
-  value: number
-  label: string
-  tone?: string
-}) {
-  return (
-    <div className="rounded-2xl border border-white/10 bg-navy-soft p-4">
-      <p className={`text-3xl font-semibold ${tone ?? 'text-yellow'}`}>{value}</p>
-      <p className="mt-0.5 text-xs font-medium text-slate-300">{label}</p>
     </div>
   )
 }
