@@ -18,7 +18,7 @@ export default function ClaimButton({ id }: { id: string }) {
         </p>
         <a
           href={`tel:${won.phone.replace(/\s/g, '')}`}
-          className="mt-3 block rounded-xl bg-yellow px-4 py-3 text-center text-sm font-semibold text-navy"
+          className="mt-3 block rounded-xl bg-yellow px-4 py-4 text-center text-base font-bold text-navy"
         >
           Call {won.name.split(' ')[0]} on {won.phone}
         </a>
@@ -43,7 +43,7 @@ export default function ClaimButton({ id }: { id: string }) {
             }
           })
         }
-        className="w-full rounded-2xl bg-[#16A34A] px-4 py-3.5 text-base font-semibold text-white disabled:opacity-60"
+        className="w-full rounded-2xl bg-[#16A34A] px-4 py-5 text-lg font-bold text-white shadow-[0_10px_24px_-12px_rgba(22,163,74,0.9)] transition active:scale-[0.99] disabled:opacity-60"
       >
         {pending ? 'Taking it…' : 'Take this job'}
       </button>

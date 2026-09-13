@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import JobForm from '@/app/admin/dispatch/job-form'
 import ClaimButton from './claim-button'
+import ReturnButton from './return-button'
 
 export const dynamic = 'force-dynamic'
 
@@ -189,7 +190,11 @@ export default async function JobsPage({
       ) : null}
 
       {tab === 'mine' ? (
-        <Board rows={mine} empty="You have not taken any jobs today." />
+        <Board
+          rows={mine}
+          returnable
+          empty="You have not taken any jobs today."
+        />
       ) : null}
 
       {tab === 'sent' ? (
@@ -240,23 +245,38 @@ function Empty({ text }: { text: string }) {
 function Board({
   rows,
   claimable,
+  returnable,
   empty,
 }: {
   rows: Job[]
   claimable?: boolean
+  returnable?: boolean
   empty: string
 }) {
   if (rows.length === 0) return <Empty text={empty} />
   return (
     <div className="space-y-3">
       {rows.map((j) => (
-        <JobCard key={j.id} job={j} claimable={claimable} />
+        <JobCard
+          key={j.id}
+          job={j}
+          claimable={claimable}
+          returnable={returnable}
+        />
       ))}
     </div>
   )
 }
 
-function JobCard({ job, claimable }: { job: Job; claimable?: boolean }) {
+function JobCard({
+  job,
+  claimable,
+  returnable,
+}: {
+  job: Job
+  claimable?: boolean
+  returnable?: boolean
+}) {
   return (
     <div className="rounded-2xl border border-white/10 bg-navy-soft p-4">
       <div className="flex items-start justify-between gap-3">
@@ -311,6 +331,8 @@ function JobCard({ job, claimable }: { job: Job; claimable?: boolean }) {
           <ClaimButton id={job.id} />
         </div>
       ) : null}
+
+      {returnable ? <ReturnButton id={job.id} /> : null}
     </div>
   )
 }

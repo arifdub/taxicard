@@ -134,7 +134,7 @@ export default function BookingCard({
           <button
             onClick={() => move('CONFIRMED')}
             disabled={pending}
-            className="rounded-xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
+            className="rounded-xl bg-emerald-600 px-4 py-4 text-base font-semibold text-white disabled:opacity-60"
           >
             Accept
           </button>
@@ -153,14 +153,14 @@ export default function BookingCard({
           <button
             onClick={() => move('COMPLETED')}
             disabled={pending}
-            className="rounded-xl bg-yellow px-4 py-3 text-sm font-semibold text-navy disabled:opacity-60"
+            className="rounded-xl bg-yellow px-4 py-4 text-base font-bold text-navy disabled:opacity-60"
           >
             Mark completed
           </button>
           <button
             onClick={() => move('CANCELLED')}
             disabled={pending}
-            className="rounded-xl border border-white/20 px-4 py-3 text-sm font-medium text-slate-200 disabled:opacity-60"
+            className="rounded-xl border border-white/20 px-4 py-4 text-base font-medium text-slate-200 disabled:opacity-60"
           >
             Cancel
           </button>
