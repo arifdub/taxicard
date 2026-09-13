@@ -72,7 +72,10 @@ export default function StatusView({
   // realtime cannot deliver to them. Polling the token RPC keeps the
   // security model intact at the cost of a request every few seconds.
   useEffect(() => {
-    if (['CONFIRMED', 'ACCEPTED', 'DECLINED', 'CANCELLED', 'COMPLETED'].includes(booking.status)) {
+    // Keep watching until the journey is genuinely over. A driver can
+    // cancel after confirming, and a passenger still reading "confirmed"
+    // would be standing on a kerb waiting for nobody.
+    if (['DECLINED', 'CANCELLED', 'COMPLETED'].includes(booking.status)) {
       return
     }
     const supabase = createClient()

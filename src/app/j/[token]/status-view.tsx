@@ -23,16 +23,35 @@ export default function JobStatusView({
   initial: JobStatus
 }) {
   const [job, setJob] = useState(initial)
+  const [wasTaken, setWasTaken] = useState(initial.status === 'CLAIMED')
+  const [handedBack, setHandedBack] = useState(false)
 
   useEffect(() => {
-    if (job.status !== 'OPEN') return
+    // Keep polling after a driver takes it. They can hand a job back, and
+    // a passenger left looking at the previous driver's name and number
+    // would ring the wrong person.
+    if (job.status === 'CANCELLED') return
+
     const supabase = createClient()
     const id = setInterval(async () => {
       const { data } = await supabase.rpc('get_dispatch_job_by_token', {
         p_token: token,
       })
-      if (data) setJob(data as JobStatus)
+      if (!data) return
+
+      const next = data as JobStatus
+      setJob((prev) => {
+        if (prev.status === 'CLAIMED' && next.status === 'OPEN') {
+          setHandedBack(true)
+        }
+        if (next.status === 'CLAIMED') {
+          setWasTaken(true)
+          setHandedBack(false)
+        }
+        return next
+      })
     }, 6000)
+
     return () => clearInterval(id)
   }, [token, job.status])
 
@@ -63,14 +82,18 @@ export default function JobStatusView({
           {claimed
             ? 'A driver has taken your job'
             : job.status === 'OPEN'
-              ? 'Looking for a driver'
+              ? handedBack
+                ? 'Finding you another driver'
+                : 'Looking for a driver'
               : 'This job is closed'}
         </h1>
         <p className="mt-2 text-sm">
           {claimed
             ? `${job.driver_name} is on the way. Their number is below.`
             : job.status === 'OPEN'
-              ? 'Sent to licensed drivers nearby. This page updates on its own.'
+              ? handedBack
+                ? 'The driver who accepted had to hand it back. Your job is with the other drivers now — hold on a moment.'
+                : 'Sent to licensed drivers nearby. This page updates on its own.'
               : 'Post a new one if you still need a taxi.'}
         </p>
       </div>
@@ -83,6 +106,8 @@ export default function JobStatusView({
         <Row label="When" value={when} />
         {claimed && job.driver_name ? (
           <Row label="Driver" value={job.business_name ?? job.driver_name} />
+        ) : wasTaken && !claimed ? (
+          <Row label="Driver" value="Being reassigned" />
         ) : null}
       </div>
 
