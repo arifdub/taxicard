@@ -6,6 +6,7 @@ import ProfileForm from './profile-form'
 import InstallPrompt from '../install-prompt'
 import PushSetup from '../push-setup'
 import PasswordForm from './password-form'
+import TestPush from './test-push'
 
 export default async function SettingsPage({
   searchParams,
@@ -79,6 +80,8 @@ export default async function SettingsPage({
         </h2>
         <InstallPrompt />
         <PushSetup />
+
+      <TestPush />
       </div>
     </div>
   )
