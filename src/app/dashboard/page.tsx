@@ -12,29 +12,35 @@ export const dynamic = 'force-dynamic'
 function Stat({
   value,
   label,
-  hint,
   icon,
   tone,
+  href,
 }: {
   value: number
   label: string
-  hint: string
   icon: React.ReactNode
   tone: string
+  href: string
 }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-navy-soft p-4">
-      <span
-        className={`flex h-11 w-11 items-center justify-center rounded-full ${tone}`}
-      >
-        {icon}
+    <Link
+      href={href}
+      className="rounded-2xl border border-white/10 bg-navy-soft px-4 py-3.5 transition active:scale-[0.99]"
+    >
+      <span className="flex items-center gap-3">
+        <span
+          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${tone}`}
+        >
+          {icon}
+        </span>
+        <span className="text-[26px] font-bold leading-none text-yellow">
+          {value}
+        </span>
       </span>
-      <p className="mt-3 text-[28px] font-bold leading-none text-yellow">
-        {value}
-      </p>
-      <p className="mt-1.5 text-[15px] font-semibold text-white">{label}</p>
-      <p className="mt-0.5 text-[12px] leading-snug text-slate-400">{hint}</p>
-    </div>
+      <span className="mt-2.5 block text-[14px] font-semibold leading-tight text-white">
+        {label}
+      </span>
+    </Link>
   )
 }
 
@@ -104,7 +110,7 @@ export default async function DashboardPage() {
         <Stat
           value={today.length}
           label="Today's bookings"
-          hint="Accepted for today"
+          href="/dashboard/bookings?view=today"
           tone="bg-brandblue/15 text-brandblue"
           icon={
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
@@ -116,7 +122,7 @@ export default async function DashboardPage() {
         <Stat
           value={pending.length}
           label="Pending requests"
-          hint="Awaiting your response"
+          href="/dashboard/bookings?view=pending"
           tone="bg-yellow/15 text-yellow"
           icon={
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
@@ -128,7 +134,7 @@ export default async function DashboardPage() {
         <Stat
           value={customerCount}
           label="Customers"
-          hint="Your regular passengers"
+          href="/dashboard/customers"
           tone="bg-emerald-500/15 text-emerald-300"
           icon={
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -141,8 +147,8 @@ export default async function DashboardPage() {
         />
         <Stat
           value={bookingCount}
-          label="Total bookings"
-          hint="All time"
+          label="All bookings"
+          href="/dashboard/bookings?view=all"
           tone="bg-indigo-500/20 text-indigo-300"
           icon={
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
