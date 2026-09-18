@@ -28,6 +28,15 @@ export const metadata: Metadata = {
 
   alternates: { canonical: '/' },
 
+  // Search engine ownership checks. Google is verified by DNS and needs
+  // nothing here; Bing's tag goes under `other` because Next has no
+  // named field for it.
+  verification: {
+    other: {
+      'msvalidate.01': '1E8FF22534CB4B71236D16BFBFB5A7C1',
+    },
+  },
+
   openGraph: {
     type: 'website',
     siteName: 'TaxiCard',
