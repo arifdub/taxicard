@@ -179,14 +179,7 @@ export default function DriverCardView({
   const first = card.name.split(' ')[0]
   const role = card.business_name ?? 'Professional taxi driver'
 
-  // "Safe • Reliable • Friendly" by default; a driver's own description
-  // splits on bullets or commas into up to three badges.
-  const traits = (card.description ?? 'Safe • Reliable • Friendly')
-    .split(/[•·|,]/)
-    .map((t) => t.trim())
-    .filter(Boolean)
-    .slice(0, 3)
-
+  const traits = ['Safe', 'Reliable', 'Friendly']
   const traitIcons = [<ShieldIcon key="s" />, <StarIcon key="r" />, <SmileIcon key="f" />]
 
   return (
@@ -261,6 +254,12 @@ export default function DriverCardView({
             </div>
           ))}
         </div>
+
+        {card.description ? (
+          <p className="tc-left tc-d2 mt-3 text-[13px] leading-snug text-white/70">
+            {card.description}
+          </p>
+        ) : null}
 
         {!card.is_available ? (
           <p className="mt-3 rounded-xl bg-white/5 px-4 py-2.5 text-sm text-white/70">
