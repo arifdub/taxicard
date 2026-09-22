@@ -53,6 +53,23 @@ export default async function PublicCardPage({
   const card = await getCard(slug)
   if (!card) notFound()
 
+  // The logo goes back to the driver's own dashboard when they are viewing
+  // their own card (e.g. they scanned their own QR code), and to the
+  // TaxiCard home page for everyone else, including passengers.
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  let logoHref = '/'
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('slug')
+      .eq('id', user.id)
+      .maybeSingle()
+    if (profile?.slug === slug) logoHref = '/dashboard'
+  }
+
   const shareUrl = `${siteUrl()}/${slug}`
   const qrSvg = await QRCode.toString(shareUrl, {
     type: 'svg',
@@ -68,6 +85,7 @@ export default async function PublicCardPage({
         bookHref={`/${slug}/book`}
         qrSvg={qrSvg}
         shareUrl={prettyLink(slug)}
+        logoHref={logoHref}
       />
         <SaveHint name={card.name.split(' ')[0]} />
 

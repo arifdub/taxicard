@@ -74,6 +74,7 @@ export default async function MyCardPage() {
         <DriverCardView
           card={card as DriverCard}
           bookHref={`/${profile.slug}/book`}
+          logoHref="/dashboard"
         />
       ) : null}
 

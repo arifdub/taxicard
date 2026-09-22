@@ -94,7 +94,7 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-[30px] font-bold leading-tight text-white light:text-navy">
+        <h1 className="text-xl font-bold leading-tight text-white light:text-navy">
           Hello, <span className="text-yellow">{first}</span>
         </h1>
         <p className="mt-1 text-[15px] text-slate-400 light:text-slate-500">

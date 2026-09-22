@@ -1,7 +1,32 @@
 /* eslint-disable @next/next/no-img-element */
+import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { whatsappNumber } from '@/lib/phone'
 import { LOGO_MARK } from '@/lib/brand'
+
+function LogoMark() {
+  return (
+    <>
+      <img
+        src={LOGO_MARK}
+        alt="TaxiCard"
+        width={44}
+        height={44}
+        style={{ width: 44, height: 44 }}
+        className="shrink-0"
+      />
+      <span className="leading-none">
+        <span className="block text-[20px] font-bold tracking-tight">
+          <span className="text-white">Taxi</span>
+          <span className="text-yellow">Card</span>
+        </span>
+        <span className="mt-1 block text-[9px] font-semibold tracking-[0.2em] text-white/55">
+          TAP. BOOK. RIDE.
+        </span>
+      </span>
+    </>
+  )
+}
 
 export type DriverCard = {
   slug: string
@@ -139,11 +164,16 @@ export default function DriverCardView({
   bookHref,
   qrSvg,
   shareUrl,
+  logoHref,
 }: {
   card: DriverCard
   bookHref?: string
   qrSvg?: string
   shareUrl?: string
+  // Where the TaxiCard logo goes when tapped: the driver's own dashboard
+  // when they are viewing their own card, the TaxiCard home page for
+  // everyone else.
+  logoHref?: string
 }) {
   const whatsapp = card.whatsapp_phone ?? null
   const first = card.name.split(' ')[0]
@@ -165,25 +195,15 @@ export default function DriverCardView({
       <div className="relative">
         <div className="absolute right-0 top-0 h-full w-[45%] rounded-bl-[44px] bg-yellow" />
         <div className="relative flex items-start justify-between gap-2 px-4 py-4">
-          <div className="flex items-center gap-2.5 pt-1">
-            <img
-              src={LOGO_MARK}
-              alt="TaxiCard"
-              width={44}
-              height={44}
-              style={{ width: 44, height: 44 }}
-              className="shrink-0"
-            />
-            <span className="leading-none">
-              <span className="block text-[20px] font-bold tracking-tight">
-                <span className="text-white">Taxi</span>
-                <span className="text-yellow">Card</span>
-              </span>
-              <span className="mt-1 block text-[9px] font-semibold tracking-[0.2em] text-white/55">
-                TAP. BOOK. RIDE.
-              </span>
-            </span>
-          </div>
+          {logoHref ? (
+            <Link href={logoHref} className="flex items-center gap-2.5 pt-1">
+              <LogoMark />
+            </Link>
+          ) : (
+            <div className="flex items-center gap-2.5 pt-1">
+              <LogoMark />
+            </div>
+          )}
 
           <div className="max-w-[44%] pt-0.5 text-right text-navy">
             <p className="flex items-start justify-end gap-1 text-[13px] font-bold leading-tight">
