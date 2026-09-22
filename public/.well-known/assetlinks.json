@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "ie.taxicard.twa",
+      "sha256_cert_fingerprints": [
+        "D6:E3:EC:00:E5:5E:C6:2A:7B:5C:AB:41:79:F7:F6:E6:21:2A:DA:8F:12:AF:C5:9C:1A:0B:F1:C9:61:C4:6C:A3"
+      ]
+    }
+  }
+]
