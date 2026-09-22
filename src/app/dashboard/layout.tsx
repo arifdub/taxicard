@@ -5,6 +5,7 @@ import TabBar from '@/components/tab-bar'
 import Wordmark from '@/components/wordmark'
 import IncomingBooking from '@/components/incoming-booking'
 import ThemeToggle from '@/components/theme-toggle'
+import UpdateBanner from '@/components/update-banner'
 import { createClient } from '@/lib/supabase/server'
 
 export default async function DashboardLayout({
@@ -73,6 +74,8 @@ export default async function DashboardLayout({
           </div>
         </div>
       </header>
+
+      <UpdateBanner />
 
       <main className="tc-dark mx-auto w-full max-w-md px-5 pt-6 pb-[calc(env(safe-area-inset-bottom)+6.5rem)]">
         {children}

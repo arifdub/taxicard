@@ -5,7 +5,11 @@ export default function manifest(): MetadataRoute.Manifest {
     name: 'TaxiCard Driver',
     short_name: 'TaxiCard',
     description: 'Your digital taxi card and booking page.',
-    start_url: '/dashboard',
+    // The ?shellv marker is how the installed Android app reports its own
+    // build to itself (see components/update-banner.tsx) — bump it, and
+    // public/downloads/versions.json's latestShellVersion, together
+    // whenever a new APK/AAB is packaged from this manifest.
+    start_url: '/dashboard?shellv=1',
     scope: '/',
     display: 'standalone',
     background_color: '#0B0B0C',
