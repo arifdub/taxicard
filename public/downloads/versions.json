@@ -1,5 +1,12 @@
 {
   "latestShellVersion": 1,
-  "latest": null,
-  "versions": []
+  "latest": "1.0.0",
+  "versions": [
+    {
+      "version": "1.0.0",
+      "file": "/downloads/taxicard-1.0.0.apk",
+      "date": "2026-09-22",
+      "notes": "First Android release."
+    }
+  ]
 }
