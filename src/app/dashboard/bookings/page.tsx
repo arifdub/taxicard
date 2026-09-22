@@ -90,7 +90,7 @@ export default async function BookingsPage({
 
   return (
     <div className="space-y-5">
-      <h1 className="text-2xl font-semibold text-white">Bookings</h1>
+      <h1 className="text-2xl font-semibold text-white light:text-navy">Bookings</h1>
 
       <nav className="flex gap-2 overflow-x-auto pb-1">
         {VIEWS.map((v) => (
@@ -100,7 +100,7 @@ export default async function BookingsPage({
             className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-semibold ${
               view === v.id
                 ? 'bg-white text-navy'
-                : 'border border-white/15 bg-white/5 text-slate-300'
+                : 'border border-white/15 light:border-slate-200 bg-white/5 light:bg-navy/5 text-slate-300 light:text-slate-600'
             }`}
           >
             {v.label}
@@ -190,11 +190,11 @@ function Section({
 }) {
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+      <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400 light:text-slate-500">
         {title}
       </h2>
       {rows.length === 0 ? (
-        <p className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-300">
+        <p className="rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-4 text-sm text-slate-300 light:text-slate-600">
           {empty}
         </p>
       ) : (

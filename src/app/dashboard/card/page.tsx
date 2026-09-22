@@ -48,8 +48,8 @@ export default async function MyCardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-white">My card</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <h1 className="text-2xl font-semibold text-white light:text-navy">My card</h1>
+        <p className="mt-1 text-sm text-slate-400 light:text-slate-500">
           This is what your customers see.
         </p>
       </div>
@@ -77,27 +77,27 @@ export default async function MyCardPage() {
         />
       ) : null}
 
-      <section className="space-y-3 rounded-2xl border border-white/10 bg-navy-soft p-4">
-        <h2 className="text-sm font-semibold text-slate-400">Your QR code</h2>
+      <section className="space-y-3 rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-4">
+        <h2 className="text-sm font-semibold text-slate-400 light:text-slate-500">Your QR code</h2>
         <div
           className="mx-auto w-48"
           dangerouslySetInnerHTML={{ __html: svg }}
         />
-        <p className="break-all text-center text-base font-semibold text-white">
+        <p className="break-all text-center text-base font-semibold text-white light:text-navy">
           {pretty}
         </p>
         <div className="grid grid-cols-2 gap-2">
           <a
             href={png}
             download={`taxicard-${profile.slug}.png`}
-            className="rounded-xl bg-yellow px-3 py-3 text-center text-sm font-semibold text-white"
+            className="rounded-xl bg-yellow px-3 py-3 text-center text-sm font-semibold text-white light:text-navy"
           >
             Download PNG
           </a>
           <a
             href={svgHref}
             download={`taxicard-${profile.slug}.svg`}
-            className="rounded-xl border border-white/10 px-3 py-3 text-center text-sm font-medium"
+            className="rounded-xl border border-white/10 light:border-slate-200 px-3 py-3 text-center text-sm font-medium"
           >
             Download SVG
           </a>
@@ -105,11 +105,11 @@ export default async function MyCardPage() {
         <CopyLink url={url} />
         <Link
           href="/dashboard/print"
-          className="block rounded-xl border border-white/10 bg-navy-soft px-4 py-3 text-center text-sm font-medium text-white"
+          className="block rounded-xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-4 py-3 text-center text-sm font-medium text-white light:text-navy"
         >
           Print a sign and business cards
         </Link>
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-slate-400 light:text-slate-500">
           Use the PNG for printing on business cards. The SVG stays sharp at
           any size, which suits large signs or window stickers.
         </p>
@@ -119,7 +119,7 @@ export default async function MyCardPage() {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="block rounded-xl border border-white/10 bg-navy-soft px-4 py-3 text-center text-sm font-medium text-brandblue"
+        className="block rounded-xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-4 py-3 text-center text-sm font-medium text-brandblue"
       >
         Open my public card
       </a>

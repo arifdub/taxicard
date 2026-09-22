@@ -75,8 +75,8 @@ export default async function JobsPage({
   if (!isBusiness && !mayDispatch) {
     return (
       <div className="space-y-4">
-        <h1 className="text-2xl font-semibold text-white">Jobs</h1>
-        <p className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-300">
+        <h1 className="text-2xl font-semibold text-white light:text-navy">Jobs</h1>
+        <p className="rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-4 text-sm text-slate-300 light:text-slate-600">
           Office jobs go to business drivers. Get in touch if you would like
           your account switched on for them.
         </p>
@@ -129,8 +129,8 @@ export default async function JobsPage({
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-semibold text-white">Jobs</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <h1 className="text-2xl font-semibold text-white light:text-navy">Jobs</h1>
+        <p className="mt-1 text-sm text-slate-400 light:text-slate-500">
           {isBusiness
             ? 'First to take a job gets it, and the customer becomes yours.'
             : 'Jobs you have sent to business drivers.'}
@@ -150,11 +150,11 @@ export default async function JobsPage({
         <section className="space-y-4">
           <Link
             href="/dashboard/jobs"
-            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white"
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 light:border-slate-200 bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white light:text-navy"
           >
             Back to jobs
           </Link>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-slate-400 light:text-slate-500">
             Goes to every available business driver. The first to take it gets
             the job.
           </p>
@@ -170,7 +170,7 @@ export default async function JobsPage({
                 className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-semibold ${
                   tab === t.id
                     ? 'bg-white text-navy'
-                    : 'border border-white/15 bg-white/5 text-slate-300'
+                    : 'border border-white/15 light:border-slate-200 bg-white/5 light:bg-navy/5 text-slate-300 light:text-slate-600'
                 }`}
               >
                 {t.label}
@@ -224,7 +224,7 @@ export default async function JobsPage({
       ) : null}
 
           {tab === 'open' ? (
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 light:text-slate-400">
               Numbers are hidden until you take the job.
             </p>
           ) : null}
@@ -236,7 +236,7 @@ export default async function JobsPage({
 
 function Empty({ text }: { text: string }) {
   return (
-    <p className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-300">
+    <p className="rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-4 text-sm text-slate-300 light:text-slate-600">
       {text}
     </p>
   )
@@ -278,10 +278,10 @@ function JobCard({
   returnable?: boolean
 }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-navy-soft p-4">
+    <div className="rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-base font-semibold text-white">
+          <p className="text-base font-semibold text-white light:text-navy">
             {job.customer_name}
           </p>
           {job.is_mine ? (
@@ -292,7 +292,7 @@ function JobCard({
               {job.customer_phone}
             </a>
           ) : (
-            <p className="text-sm text-slate-400">{job.customer_phone}</p>
+            <p className="text-sm text-slate-400 light:text-slate-500">{job.customer_phone}</p>
           )}
         </div>
         <div className="shrink-0 text-right">
@@ -301,7 +301,7 @@ function JobCard({
               &euro;{Number(job.fare).toFixed(2)}
             </span>
           ) : null}
-          <span className="mt-1 block text-xs text-slate-500">
+          <span className="mt-1 block text-xs text-slate-500 light:text-slate-400">
             {new Date(job.created_at).toLocaleTimeString(undefined, {
               hour: '2-digit',
               minute: '2-digit',
@@ -310,7 +310,7 @@ function JobCard({
         </div>
       </div>
 
-      <div className="mt-3 space-y-1 rounded-xl bg-white/5 p-3 text-sm text-slate-200">
+      <div className="mt-3 space-y-1 rounded-xl bg-white/5 light:bg-navy/5 p-3 text-sm text-slate-200 light:text-slate-700">
         <p>
           {job.pickup_address}
           {job.pickup_eircode ? (
@@ -320,10 +320,10 @@ function JobCard({
           ) : null}
         </p>
         {job.destination_address ? (
-          <p className="text-slate-300">to {job.destination_address}</p>
+          <p className="text-slate-300 light:text-slate-600">to {job.destination_address}</p>
         ) : null}
-        <p className="text-slate-400">{whenLabel(job)}</p>
-        {job.notes ? <p className="text-slate-400">{job.notes}</p> : null}
+        <p className="text-slate-400 light:text-slate-500">{whenLabel(job)}</p>
+        {job.notes ? <p className="text-slate-400 light:text-slate-500">{job.notes}</p> : null}
       </div>
 
       {claimable ? (
@@ -339,13 +339,13 @@ function JobCard({
 
 function SentCard({ job, readOnly }: { job: SentJob; readOnly?: boolean }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-navy-soft p-4">
+    <div className="rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-base font-semibold text-white">
+          <p className="text-base font-semibold text-white light:text-navy">
             {job.customer_name}
           </p>
-          <p className="text-sm text-slate-400">{job.customer_phone}</p>
+          <p className="text-sm text-slate-400 light:text-slate-500">{job.customer_phone}</p>
         </div>
         <div className="flex shrink-0 items-center gap-2">
           {job.fare != null ? (
@@ -359,7 +359,7 @@ function SentCard({ job, readOnly }: { job: SentJob; readOnly?: boolean }) {
                 ? 'bg-emerald-400/20 text-emerald-200'
                 : job.status === 'OPEN'
                   ? 'bg-amber-400/20 text-amber-200'
-                  : 'bg-white/10 text-slate-300'
+                  : 'bg-white/10 light:bg-navy/5 text-slate-300 light:text-slate-600'
             }`}
           >
             {job.status === 'CLAIMED' ? 'assigned' : job.status.toLowerCase()}
@@ -367,12 +367,12 @@ function SentCard({ job, readOnly }: { job: SentJob; readOnly?: boolean }) {
         </div>
       </div>
 
-      <div className="mt-3 space-y-1 rounded-xl bg-white/5 p-3 text-sm text-slate-200">
+      <div className="mt-3 space-y-1 rounded-xl bg-white/5 light:bg-navy/5 p-3 text-sm text-slate-200 light:text-slate-700">
         <p>{job.pickup_address}</p>
         {job.destination_address ? (
-          <p className="text-slate-300">to {job.destination_address}</p>
+          <p className="text-slate-300 light:text-slate-600">to {job.destination_address}</p>
         ) : null}
-        <p className="text-slate-400">{whenLabel(job)}</p>
+        <p className="text-slate-400 light:text-slate-500">{whenLabel(job)}</p>
       </div>
 
       <p className="mt-2 text-xs">
@@ -389,7 +389,7 @@ function SentCard({ job, readOnly }: { job: SentJob; readOnly?: boolean }) {
       {!readOnly && job.status !== 'CANCELLED' ? (
         <Link
           href={`/dashboard/dispatch/${job.id}`}
-          className="mt-3 block rounded-xl border border-white/15 px-4 py-2.5 text-center text-sm font-semibold text-white"
+          className="mt-3 block rounded-xl border border-white/15 light:border-slate-200 px-4 py-2.5 text-center text-sm font-semibold text-white light:text-navy"
         >
           Edit job
         </Link>

@@ -61,13 +61,13 @@ export default async function CustomerPage({
 
   return (
     <div className="space-y-5">
-      <Link href="/dashboard/customers" className="text-sm text-slate-400">
+      <Link href="/dashboard/customers" className="text-sm text-slate-400 light:text-slate-500">
         Back to customers
       </Link>
 
       <div>
-        <h1 className="text-2xl font-semibold text-white">{customer.name}</h1>
-        <p className="text-sm text-slate-400">
+        <h1 className="text-2xl font-semibold text-white light:text-navy">{customer.name}</h1>
+        <p className="text-sm text-slate-400 light:text-slate-500">
           {customer.bookings_count} booking
           {customer.bookings_count === 1 ? '' : 's'}
           {customer.last_booking_at
@@ -79,7 +79,7 @@ export default async function CustomerPage({
       <div className="grid grid-cols-2 gap-2">
         <a
           href={telHref(customer.phone)}
-          className="rounded-xl bg-yellow px-4 py-3.5 text-center font-semibold text-white"
+          className="rounded-xl bg-yellow px-4 py-3.5 text-center font-semibold text-white light:text-navy"
         >
           Call {customer.name.split(' ')[0]}
         </a>
@@ -87,13 +87,13 @@ export default async function CustomerPage({
           href={`https://wa.me/${whatsappNumber(customer.phone)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-xl border border-white/10 bg-navy-soft px-4 py-3.5 text-center font-medium text-emerald-300"
+          className="rounded-xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-4 py-3.5 text-center font-medium text-emerald-300"
         >
           WhatsApp
         </a>
       </div>
 
-      <div className="space-y-2 rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm">
+      <div className="space-y-2 rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-4 text-sm">
         <Row label="Phone" value={customer.phone} />
         {customer.email ? <Row label="Email" value={customer.email} /> : null}
         {customer.favourite_pickup ? (
@@ -101,7 +101,7 @@ export default async function CustomerPage({
         ) : null}
         {customer.notes ? (
           <div className="pt-2">
-            <p className="text-xs font-semibold text-slate-400">Private notes</p>
+            <p className="text-xs font-semibold text-slate-400 light:text-slate-500">Private notes</p>
             <p className="mt-1">{customer.notes}</p>
           </div>
         ) : null}
@@ -119,13 +119,13 @@ export default async function CustomerPage({
       />
 
       <section className="space-y-2">
-        <h2 className="text-sm font-semibold text-slate-400">Booking history</h2>
+        <h2 className="text-sm font-semibold text-slate-400 light:text-slate-500">Booking history</h2>
         {bookings.length === 0 ? (
-          <p className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-400">
+          <p className="rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-4 text-sm text-slate-400 light:text-slate-500">
             No bookings yet.
           </p>
         ) : (
-          <ul className="divide-y divide-white/10 overflow-hidden rounded-2xl border border-white/10 bg-navy-soft">
+          <ul className="divide-y divide-white/10 light:divide-slate-200 overflow-hidden rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white">
             {bookings.map((b) => (
               <li key={b.id} className="p-4 text-sm">
                 <div className="flex justify-between gap-3">
@@ -135,9 +135,9 @@ export default async function CustomerPage({
                       { day: 'numeric', month: 'short', year: 'numeric' }
                     )}
                   </span>
-                  <span className="text-slate-400">{b.status.toLowerCase()}</span>
+                  <span className="text-slate-400 light:text-slate-500">{b.status.toLowerCase()}</span>
                 </div>
-                <p className="mt-1 text-slate-300">
+                <p className="mt-1 text-slate-300 light:text-slate-600">
                   {b.pickup_address}
                   {b.destination_address ? ` to ${b.destination_address}` : ''}
                 </p>
@@ -155,7 +155,7 @@ export default async function CustomerPage({
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-4 py-1">
-      <span className="shrink-0 text-slate-400">{label}</span>
+      <span className="shrink-0 text-slate-400 light:text-slate-500">{label}</span>
       <span className="text-right">{value}</span>
     </div>
   )

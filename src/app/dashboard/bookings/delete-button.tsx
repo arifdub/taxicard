@@ -14,7 +14,7 @@ export default function DeleteBooking({ id }: { id: string }) {
     return (
       <button
         onClick={() => setConfirming(true)}
-        className="mt-3 text-sm text-slate-500 underline"
+        className="mt-3 text-sm text-slate-500 light:text-slate-400 underline"
       >
         Delete
       </button>
@@ -24,7 +24,7 @@ export default function DeleteBooking({ id }: { id: string }) {
   return (
     <div className="mt-3">
       {error ? <p className="mb-2 text-sm text-red-300">{error}</p> : null}
-      <p className="mb-2 text-sm text-slate-300">
+      <p className="mb-2 text-sm text-slate-300 light:text-slate-600">
         Delete this booking? The customer record stays.
       </p>
       <div className="grid grid-cols-2 gap-2">
@@ -37,13 +37,13 @@ export default function DeleteBooking({ id }: { id: string }) {
               else router.refresh()
             })
           }
-          className="rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
+          className="rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white light:text-navy disabled:opacity-50"
         >
           {pending ? 'Deleting…' : 'Delete'}
         </button>
         <button
           onClick={() => setConfirming(false)}
-          className="rounded-xl border border-white/20 px-4 py-2.5 text-sm font-medium text-white"
+          className="rounded-xl border border-white/20 light:border-slate-300 px-4 py-2.5 text-sm font-medium text-white light:text-navy"
         >
           Keep
         </button>

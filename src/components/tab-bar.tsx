@@ -59,7 +59,7 @@ export default function TabBar({
   ]
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#0B1425]/95 backdrop-blur">
+    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 light:border-slate-200 bg-[#0B1425]/95 light:bg-white/90 backdrop-blur">
       <div
         className="mx-auto flex max-w-md items-stretch"
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
@@ -72,13 +72,13 @@ export default function TabBar({
               href={href}
               aria-current={active ? 'page' : undefined}
               className={`relative flex flex-1 flex-col items-center gap-1 pb-2 pt-2.5 text-[12px] font-semibold ${
-                active ? 'text-yellow' : 'text-slate-400'
+                active ? 'text-yellow' : 'text-slate-400 light:text-slate-500'
               }`}
             >
               <span className="relative">
                 <Icon active={active} />
                 {badge > 0 ? (
-                  <span className="absolute -right-2.5 -top-1.5 min-w-[19px] rounded-full bg-red-500 px-1 text-center text-[11px] font-bold leading-[19px] text-white">
+                  <span className="absolute -right-2.5 -top-1.5 min-w-[19px] rounded-full bg-red-500 px-1 text-center text-[11px] font-bold leading-[19px] text-white light:text-navy">
                     {badge > 9 ? '9+' : badge}
                   </span>
                 ) : null}

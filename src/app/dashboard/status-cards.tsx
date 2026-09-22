@@ -19,17 +19,17 @@ function Card({
   control: React.ReactNode
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-navy-soft px-4 py-3.5">
+    <div className="flex items-center gap-3 rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-4 py-3.5">
       <span
         className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${iconClass}`}
       >
         {icon}
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block text-[17px] font-semibold text-white">
+        <span className="block text-[17px] font-semibold text-white light:text-navy">
           {title}
         </span>
-        <span className="mt-0.5 block text-[13px] leading-snug text-slate-400">
+        <span className="mt-0.5 block text-[13px] leading-snug text-slate-400 light:text-slate-500">
           {subtitle}
         </span>
       </span>
@@ -58,7 +58,7 @@ function Switch({
       disabled={disabled}
       onClick={onChange}
       className={`relative h-9 w-16 shrink-0 rounded-full transition-colors disabled:opacity-50 ${
-        on ? 'bg-emerald-500' : 'bg-white/25'
+        on ? 'bg-emerald-500' : 'bg-white/25 light:bg-slate-200'
       }`}
     >
       <span
@@ -78,7 +78,7 @@ export function OnlineCard({ initial }: { initial: boolean }) {
 
   return (
     <Card
-      iconClass={on ? 'bg-emerald-500/15' : 'bg-white/10'}
+      iconClass={on ? 'bg-emerald-500/15' : 'bg-white/10 light:bg-navy/5'}
       icon={
         <span
           className={`h-3.5 w-3.5 rounded-full ${
@@ -207,7 +207,7 @@ export function NotificationsCard() {
   if (state === 'needs-install' || state === 'unsupported') {
     return (
       <Card
-        iconClass="bg-white/10 text-slate-300"
+        iconClass="bg-white/10 light:bg-navy/5 text-slate-300 light:text-slate-600"
         icon={bell}
         title="Booking notifications"
         subtitle={
@@ -247,7 +247,7 @@ export function NotificationsCard() {
 
   return (
     <Card
-      iconClass={on ? 'bg-yellow/15 text-yellow' : 'bg-white/10 text-slate-300'}
+      iconClass={on ? 'bg-yellow/15 text-yellow' : 'bg-white/10 light:bg-navy/5 text-slate-300 light:text-slate-600'}
       icon={bell}
       title="Booking notifications"
       subtitle={

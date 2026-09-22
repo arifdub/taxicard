@@ -14,7 +14,7 @@ export default function ReturnButton({ id }: { id: string }) {
     return (
       <button
         onClick={() => setConfirming(true)}
-        className="mt-3 w-full rounded-2xl border border-white/20 px-4 py-4 text-base font-semibold text-slate-200 transition active:scale-[0.99]"
+        className="mt-3 w-full rounded-2xl border border-white/20 light:border-slate-300 px-4 py-4 text-base font-semibold text-slate-200 light:text-slate-700 transition active:scale-[0.99]"
       >
         Give this job back
       </button>
@@ -24,7 +24,7 @@ export default function ReturnButton({ id }: { id: string }) {
   return (
     <div className="mt-3">
       {error ? <p className="mb-2 text-sm text-red-300">{error}</p> : null}
-      <p className="mb-2 text-sm text-slate-300">
+      <p className="mb-2 text-sm text-slate-300 light:text-slate-600">
         It goes back to the other drivers, and leaves your bookings.
       </p>
       <div className="grid grid-cols-2 gap-2">
@@ -44,7 +44,7 @@ export default function ReturnButton({ id }: { id: string }) {
         </button>
         <button
           onClick={() => setConfirming(false)}
-          className="rounded-xl border border-white/20 px-4 py-4 text-base font-medium text-white"
+          className="rounded-xl border border-white/20 light:border-slate-300 px-4 py-4 text-base font-medium text-white light:text-navy"
         >
           Keep it
         </button>

@@ -10,16 +10,16 @@ export function Field({
 }: { label: string; name: string; hint?: string } & InputHTMLAttributes<HTMLInputElement>) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-semibold text-slate-400">
+      <span className="mb-1 block text-xs font-semibold text-slate-400 light:text-slate-500">
         {label}
       </span>
       <input
         name={name}
         id={name}
-        className="w-full rounded-xl border border-white/10 bg-navy-soft px-3 py-3 text-base text-white outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15"
+        className="w-full rounded-xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-3 py-3 text-base text-white light:text-navy outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15"
         {...props}
       />
-      {hint ? <span className="mt-1 block text-xs text-slate-500">{hint}</span> : null}
+      {hint ? <span className="mt-1 block text-xs text-slate-500 light:text-slate-400">{hint}</span> : null}
     </label>
   )
 }
@@ -31,14 +31,14 @@ export function TextArea({
 }: { label: string; name: string } & InputHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-semibold text-slate-400">
+      <span className="mb-1 block text-xs font-semibold text-slate-400 light:text-slate-500">
         {label}
       </span>
       <textarea
         name={name}
         id={name}
         rows={3}
-        className="w-full rounded-xl border border-white/10 bg-navy-soft px-3 py-3 text-base text-white outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15"
+        className="w-full rounded-xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-3 py-3 text-base text-white light:text-navy outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15"
         {...(props as object)}
       />
     </label>
@@ -62,7 +62,7 @@ export function Submit({ children, pending }: { children: ReactNode; pending?: b
     <button
       type="submit"
       disabled={pending}
-      className="w-full rounded-xl bg-yellow px-4 py-3.5 text-base font-semibold text-white disabled:opacity-60"
+      className="w-full rounded-xl bg-yellow px-4 py-3.5 text-base font-semibold text-white light:text-navy disabled:opacity-60"
     >
       {pending ? 'Working…' : children}
     </button>
@@ -103,7 +103,7 @@ export function PasswordField({
 
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-semibold text-slate-500">
+      <span className="mb-1 block text-xs font-semibold text-slate-500 light:text-slate-400">
         {label}
       </span>
       <span className="relative block">
@@ -119,12 +119,12 @@ export function PasswordField({
           onClick={() => setShown((v) => !v)}
           aria-label={shown ? 'Hide password' : 'Show password'}
           aria-pressed={shown}
-          className="absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400"
+          className="absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 light:text-slate-500"
         >
           <EyeIcon off={shown} />
         </button>
       </span>
-      {hint ? <span className="mt-1 block text-xs text-slate-400">{hint}</span> : null}
+      {hint ? <span className="mt-1 block text-xs text-slate-400 light:text-slate-500">{hint}</span> : null}
     </label>
   )
 }

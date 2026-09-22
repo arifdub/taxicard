@@ -18,7 +18,7 @@ export default function TestPush() {
             setState(await sendTestPush())
           })
         }
-        className="w-full rounded-2xl border border-white/10 bg-navy-soft px-4 py-3.5 text-sm font-medium text-white disabled:opacity-60"
+        className="w-full rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-4 py-3.5 text-sm font-medium text-white light:text-navy disabled:opacity-60"
       >
         {pending ? 'Sending…' : 'Send me a test notification'}
       </button>
@@ -34,7 +34,7 @@ export default function TestPush() {
         </p>
       ) : null}
 
-      <p className="text-xs text-slate-500">
+      <p className="text-xs text-slate-500 light:text-slate-400">
         Lock your phone first, then tap. A test that arrives only while the
         app is open means the phone is holding alerts back, not the server.
       </p>

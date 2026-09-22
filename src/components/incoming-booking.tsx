@@ -187,7 +187,7 @@ export default function IncomingBooking({ driverId }: { driverId: string }) {
     <div
       role="alertdialog"
       aria-label="New booking request"
-      className="fixed inset-0 z-[100] flex flex-col justify-between bg-[#0B1425] px-6 pb-10 pt-16 text-white"
+      className="fixed inset-0 z-[100] flex flex-col justify-between bg-[#0B1425] light:bg-white px-6 pb-10 pt-16 text-white light:text-navy"
     >
       <div className="text-center">
         <p className="text-sm font-semibold uppercase tracking-widest text-yellow">
@@ -211,16 +211,16 @@ export default function IncomingBooking({ driverId }: { driverId: string }) {
           {booking.customer_phone}
         </a>
 
-        <div className="mx-auto mt-7 max-w-sm space-y-2 rounded-2xl bg-white/5 p-5 text-left">
+        <div className="mx-auto mt-7 max-w-sm space-y-2 rounded-2xl bg-white/5 light:bg-navy/5 p-5 text-left">
           <p className="text-base">{booking.pickup_address}</p>
           {booking.destination_address ? (
-            <p className="text-base text-slate-300">
+            <p className="text-base text-slate-300 light:text-slate-600">
               to {booking.destination_address}
             </p>
           ) : null}
-          <p className="text-sm text-slate-400">{when}</p>
+          <p className="text-sm text-slate-400 light:text-slate-500">{when}</p>
           {booking.customer_notes ? (
-            <p className="text-sm text-slate-400">{booking.customer_notes}</p>
+            <p className="text-sm text-slate-400 light:text-slate-500">{booking.customer_notes}</p>
           ) : null}
         </div>
       </div>
@@ -231,7 +231,7 @@ export default function IncomingBooking({ driverId }: { driverId: string }) {
             setMuted(true)
             stopRinging()
           }}
-          className="mx-auto block text-sm text-slate-400"
+          className="mx-auto block text-sm text-slate-400 light:text-slate-500"
         >
           {muted ? 'Sound off' : 'Silence'}
         </button>
@@ -247,7 +247,7 @@ export default function IncomingBooking({ driverId }: { driverId: string }) {
           <button
             onClick={() => decide('CONFIRMED')}
             disabled={pending}
-            className="rounded-2xl bg-[#22C55E] px-4 py-5 text-lg font-semibold text-white disabled:opacity-60"
+            className="rounded-2xl bg-[#22C55E] px-4 py-5 text-lg font-semibold text-white light:text-navy disabled:opacity-60"
           >
             {pending ? 'Working…' : 'Accept'}
           </button>
@@ -255,7 +255,7 @@ export default function IncomingBooking({ driverId }: { driverId: string }) {
 
         <button
           onClick={dismiss}
-          className="w-full py-2 text-sm text-slate-400"
+          className="w-full py-2 text-sm text-slate-400 light:text-slate-500"
         >
           Decide later
         </button>

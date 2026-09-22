@@ -55,12 +55,12 @@ function Input({
 }: { label: string; name: string } & React.ComponentProps<'input'>) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-semibold text-slate-400">
+      <span className="mb-1 block text-xs font-semibold text-slate-400 light:text-slate-500">
         {label}
       </span>
       <input
         name={name}
-        className="w-full rounded-xl border border-white/10 bg-navy-soft px-3 py-3 text-base text-white outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15"
+        className="w-full rounded-xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-3 py-3 text-base text-white light:text-navy outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15"
         {...rest}
       />
     </label>
@@ -80,7 +80,7 @@ export function AddCustomer() {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="w-full rounded-xl border border-white/10 bg-navy-soft px-4 py-3.5 text-sm font-medium"
+        className="w-full rounded-xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-4 py-3.5 text-sm font-medium"
       >
         Add a customer
       </button>
@@ -88,10 +88,10 @@ export function AddCustomer() {
   }
 
   return (
-    <form action={action} className="space-y-3 rounded-2xl border border-white/10 bg-navy-soft p-4">
+    <form action={action} className="space-y-3 rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-4">
       <div className="flex items-center justify-between">
-        <h2 className="font-semibold text-white">New customer</h2>
-        <button type="button" onClick={() => setOpen(false)} className="text-sm text-slate-400">
+        <h2 className="font-semibold text-white light:text-navy">New customer</h2>
+        <button type="button" onClick={() => setOpen(false)} className="text-sm text-slate-400 light:text-slate-500">
           Cancel
         </button>
       </div>
@@ -103,7 +103,7 @@ export function AddCustomer() {
 
       <button
         disabled={pending}
-        className="w-full rounded-xl bg-yellow px-4 py-3.5 font-semibold text-white disabled:opacity-60"
+        className="w-full rounded-xl bg-yellow px-4 py-3.5 font-semibold text-white light:text-navy disabled:opacity-60"
       >
         {pending ? 'Saving…' : 'Save customer'}
       </button>
@@ -120,7 +120,7 @@ export function EditCustomer({ id, values }: { id: string; values: CustomerValue
     return (
       <button
         onClick={() => setOpen(true)}
-        className="w-full rounded-xl border border-white/10 bg-navy-soft px-4 py-3 text-sm font-medium"
+        className="w-full rounded-xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-4 py-3 text-sm font-medium"
       >
         Edit details
       </button>
@@ -128,10 +128,10 @@ export function EditCustomer({ id, values }: { id: string; values: CustomerValue
   }
 
   return (
-    <form action={action} className="space-y-3 rounded-2xl border border-white/10 bg-navy-soft p-4">
+    <form action={action} className="space-y-3 rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-4">
       <div className="flex items-center justify-between">
-        <h2 className="font-semibold text-white">Edit customer</h2>
-        <button type="button" onClick={() => setOpen(false)} className="text-sm text-slate-400">
+        <h2 className="font-semibold text-white light:text-navy">Edit customer</h2>
+        <button type="button" onClick={() => setOpen(false)} className="text-sm text-slate-400 light:text-slate-500">
           Close
         </button>
       </div>
@@ -143,7 +143,7 @@ export function EditCustomer({ id, values }: { id: string; values: CustomerValue
 
       <button
         disabled={pending}
-        className="w-full rounded-xl bg-yellow px-4 py-3.5 font-semibold text-white disabled:opacity-60"
+        className="w-full rounded-xl bg-yellow px-4 py-3.5 font-semibold text-white light:text-navy disabled:opacity-60"
       >
         {pending ? 'Saving…' : 'Save changes'}
       </button>
@@ -176,13 +176,13 @@ export function DeleteCustomer({ id, name }: { id: string; name: string }) {
         <button
           disabled={pending}
           onClick={() => start(() => void deleteCustomer(id))}
-          className="rounded-xl bg-red-700 px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
+          className="rounded-xl bg-red-700 px-4 py-3 text-sm font-semibold text-white light:text-navy disabled:opacity-60"
         >
           {pending ? 'Deleting…' : 'Yes, delete'}
         </button>
         <button
           onClick={() => setConfirming(false)}
-          className="rounded-xl border border-white/10 bg-navy-soft px-4 py-3 text-sm font-medium"
+          className="rounded-xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-4 py-3 text-sm font-medium"
         >
           Keep
         </button>

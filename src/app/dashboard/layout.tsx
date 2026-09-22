@@ -4,6 +4,7 @@ import NotificationBell from '@/components/notification-bell'
 import TabBar from '@/components/tab-bar'
 import Wordmark from '@/components/wordmark'
 import IncomingBooking from '@/components/incoming-booking'
+import ThemeToggle from '@/components/theme-toggle'
 import { createClient } from '@/lib/supabase/server'
 
 export default async function DashboardLayout({
@@ -44,16 +45,25 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="tc-dark-page text-white">
-      <header className="border-b border-white/10 px-5 pb-3 pt-[calc(env(safe-area-inset-top)+0.75rem)]">
+    <div id="tc-app-shell" className="tc-dark-page text-white light:text-navy">
+      {/* Applies a saved day-theme preference before paint, scoped to this
+          element only so the public site never inherits it. */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html:
+            "try{if(localStorage.getItem('tc-theme')==='light'){document.currentScript.parentElement.setAttribute('data-theme','light')}}catch(e){}",
+        }}
+      />
+      <header className="border-b border-white/10 light:border-slate-200 px-5 pb-3 pt-[calc(env(safe-area-inset-top)+0.75rem)]">
         <div className="mx-auto flex max-w-md items-center justify-between">
           <Link href="/dashboard" className="min-w-0">
             <Wordmark size="sm" />
-            <span className="mt-0.5 block text-[11px] font-medium text-slate-400">
+            <span className="mt-0.5 block text-[11px] font-medium text-slate-400 light:text-slate-500">
               Driver app
             </span>
           </Link>
           <div className="flex items-center gap-1">
+            <ThemeToggle />
             <NotificationBell initial={unread} />
             <NavMenu
               isAdmin={isAdmin}

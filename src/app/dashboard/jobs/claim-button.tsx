@@ -43,7 +43,7 @@ export default function ClaimButton({ id }: { id: string }) {
             }
           })
         }
-        className="w-full rounded-2xl bg-[#16A34A] px-4 py-5 text-lg font-bold text-white shadow-[0_10px_24px_-12px_rgba(22,163,74,0.9)] transition active:scale-[0.99] disabled:opacity-60"
+        className="w-full rounded-2xl bg-[#16A34A] px-4 py-5 text-lg font-bold text-white light:text-navy shadow-[0_10px_24px_-12px_rgba(22,163,74,0.9)] transition active:scale-[0.99] disabled:opacity-60"
       >
         {pending ? 'Taking it…' : 'Take this job'}
       </button>

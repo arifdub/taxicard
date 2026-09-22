@@ -43,15 +43,15 @@ export default function InstallPrompt() {
 
   return (
     <div className="rounded-2xl border border-yellow/25 bg-yellow/10 p-4">
-      <p className="text-sm font-semibold text-white">
+      <p className="text-sm font-semibold text-white light:text-navy">
         Install TaxiCard on this phone
       </p>
 
       {mode === 'ios' ? (
-        <p className="mt-1.5 text-sm text-slate-300">
+        <p className="mt-1.5 text-sm text-slate-300 light:text-slate-600">
           Tap the share button — bottom of the screen in Safari, beside the
           address bar in Chrome — then{' '}
-          <span className="font-medium text-white">Add to Home Screen</span>.
+          <span className="font-medium text-white light:text-navy">Add to Home Screen</span>.
           Open it from that icon and you can turn on booking alerts.{' '}
           <a href="/install" className="font-semibold text-yellow underline">
             See pictures
@@ -60,7 +60,7 @@ export default function InstallPrompt() {
         </p>
       ) : (
         <>
-          <p className="mt-1.5 text-sm text-slate-300">
+          <p className="mt-1.5 text-sm text-slate-300 light:text-slate-600">
             One tap and it opens like an app, with booking alerts.{' '}
             <a href="/install" className="font-semibold text-yellow underline">
               See pictures

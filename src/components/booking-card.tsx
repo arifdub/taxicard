@@ -24,9 +24,9 @@ const BADGE: Record<string, string> = {
   PENDING: 'bg-amber-400/20 text-amber-200 ring-1 ring-amber-400/30',
   CONFIRMED: 'bg-emerald-400/20 text-emerald-200 ring-1 ring-emerald-400/30',
   ACCEPTED: 'bg-emerald-400/20 text-emerald-200 ring-1 ring-emerald-400/30',
-  COMPLETED: 'bg-white/10 text-slate-300 ring-1 ring-white/15',
+  COMPLETED: 'bg-white/10 light:bg-navy/5 text-slate-300 light:text-slate-600 ring-1 ring-white/15 light:ring-navy/15',
   DECLINED: 'bg-red-500/20 text-red-200',
-  CANCELLED: 'bg-white/10 text-slate-300 ring-1 ring-white/15',
+  CANCELLED: 'bg-white/10 light:bg-navy/5 text-slate-300 light:text-slate-600 ring-1 ring-white/15 light:ring-navy/15',
 }
 
 export function whenLabel(b: BookingRow) {
@@ -69,10 +69,10 @@ export default function BookingCard({
   const isLive = booking.status === 'CONFIRMED' || booking.status === 'ACCEPTED'
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-navy-soft p-4">
+    <div className="rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-base font-semibold text-white">{booking.customer_name}</p>
+          <p className="text-base font-semibold text-white light:text-navy">{booking.customer_name}</p>
           <a
             href={`tel:${booking.customer_phone.replace(/\s/g, '')}`}
             className="text-sm font-medium text-brandblue"
@@ -82,14 +82,14 @@ export default function BookingCard({
         </div>
         <span
           className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${
-            BADGE[booking.status] ?? 'bg-white/10 text-slate-300'
+            BADGE[booking.status] ?? 'bg-white/10 light:bg-navy/5 text-slate-300 light:text-slate-600'
           }`}
         >
           {booking.status.toLowerCase()}
         </span>
       </div>
 
-      <div className="mt-3 space-y-1 rounded-xl bg-navy-soft/5 p-3 text-sm">
+      <div className="mt-3 space-y-1 rounded-xl bg-navy-soft/5 light:bg-slate-50 p-3 text-sm">
         <p>
           {booking.pickup_address}
           {booking.pickup_eircode ? (
@@ -99,11 +99,11 @@ export default function BookingCard({
           ) : null}
         </p>
         {booking.destination_address ? (
-          <p className="text-slate-300">to {booking.destination_address}</p>
+          <p className="text-slate-300 light:text-slate-600">to {booking.destination_address}</p>
         ) : null}
-        <p className="text-slate-400">{whenLabel(booking)}</p>
+        <p className="text-slate-400 light:text-slate-500">{whenLabel(booking)}</p>
         {booking.customer_notes ? (
-          <p className="text-slate-400">{booking.customer_notes}</p>
+          <p className="text-slate-400 light:text-slate-500">{booking.customer_notes}</p>
         ) : null}
 
         {booking.booking_type === 'LATER' && booking.scheduled_at ? (
@@ -143,7 +143,7 @@ export default function BookingCard({
           <button
             onClick={() => move('CONFIRMED')}
             disabled={pending}
-            className="rounded-xl bg-emerald-600 px-4 py-4 text-base font-semibold text-white disabled:opacity-60"
+            className="rounded-xl bg-emerald-600 px-4 py-4 text-base font-semibold text-white light:text-navy disabled:opacity-60"
           >
             Accept
           </button>
@@ -169,7 +169,7 @@ export default function BookingCard({
           <button
             onClick={() => move('CANCELLED')}
             disabled={pending}
-            className="rounded-xl border border-white/20 px-4 py-4 text-base font-medium text-slate-200 disabled:opacity-60"
+            className="rounded-xl border border-white/20 light:border-slate-300 px-4 py-4 text-base font-medium text-slate-200 light:text-slate-700 disabled:opacity-60"
           >
             Cancel
           </button>

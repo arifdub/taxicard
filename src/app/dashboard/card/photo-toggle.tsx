@@ -28,10 +28,10 @@ export default function CardToggle({
   const copy = COPY[kind]
 
   return (
-    <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-navy-soft px-4 py-3.5">
+    <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-4 py-3.5">
       <div>
-        <p className="text-sm font-medium text-white">{copy.label}</p>
-        <p className="mt-0.5 text-xs text-slate-400">{copy.hint}</p>
+        <p className="text-sm font-medium text-white light:text-navy">{copy.label}</p>
+        <p className="mt-0.5 text-xs text-slate-400 light:text-slate-500">{copy.hint}</p>
       </div>
       <button
         type="button"
@@ -51,7 +51,7 @@ export default function CardToggle({
           })
         }}
         className={`relative h-7 w-12 shrink-0 rounded-full transition-colors ${
-          on ? 'bg-emerald-600' : 'bg-white/25'
+          on ? 'bg-emerald-600' : 'bg-white/25 light:bg-slate-200'
         }`}
       >
         <span

@@ -36,15 +36,15 @@ export default async function NotificationsPage() {
     <div className="space-y-5">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold text-white">Notifications</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-2xl font-semibold text-white light:text-navy">Notifications</h1>
+          <p className="mt-1 text-sm text-slate-400 light:text-slate-500">
             {unread > 0 ? `${unread} unread` : 'All caught up'}
           </p>
         </div>
 
         {unread > 0 ? (
           <form action={markAllRead}>
-            <button className="shrink-0 rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white">
+            <button className="shrink-0 rounded-xl border border-white/15 light:border-slate-200 bg-white/5 light:bg-navy/5 px-4 py-2.5 text-sm font-semibold text-white light:text-navy">
               Mark all read
             </button>
           </form>
@@ -52,7 +52,7 @@ export default async function NotificationsPage() {
       </div>
 
       {notes.length === 0 ? (
-        <p className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-300">
+        <p className="rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-4 text-sm text-slate-300 light:text-slate-600">
           Nothing yet. Job alerts and messages from the office appear here.
         </p>
       ) : (
@@ -63,12 +63,12 @@ export default async function NotificationsPage() {
                 <div className="flex items-start justify-between gap-3">
                   <p
                     className={`text-base font-semibold ${
-                      n.read_at ? 'text-slate-300' : 'text-white'
+                      n.read_at ? 'text-slate-300 light:text-slate-600' : 'text-white light:text-navy'
                     }`}
                   >
                     {n.title}
                   </p>
-                  <span className="shrink-0 text-xs text-slate-500">
+                  <span className="shrink-0 text-xs text-slate-500 light:text-slate-400">
                     {new Date(n.created_at).toLocaleString(undefined, {
                       day: 'numeric',
                       month: 'short',
@@ -78,7 +78,7 @@ export default async function NotificationsPage() {
                   </span>
                 </div>
                 {n.body ? (
-                  <p className="mt-1 text-sm text-slate-400">{n.body}</p>
+                  <p className="mt-1 text-sm text-slate-400 light:text-slate-500">{n.body}</p>
                 ) : null}
                 <span
                   className={`mt-2 inline-block rounded-full px-2.5 py-1 text-xs font-semibold ${
@@ -86,7 +86,7 @@ export default async function NotificationsPage() {
                       ? 'bg-yellow/20 text-yellow'
                       : n.kind === 'MESSAGE'
                         ? 'bg-brandblue/20 text-brandblue'
-                        : 'bg-white/10 text-slate-300'
+                        : 'bg-white/10 light:bg-navy/5 text-slate-300 light:text-slate-600'
                   }`}
                 >
                   {n.kind === 'JOB' ? 'job' : n.kind.toLowerCase()}
@@ -104,7 +104,7 @@ export default async function NotificationsPage() {
 
             const cls = `block rounded-2xl border p-4 ${
               n.read_at
-                ? 'border-white/10 bg-navy-soft'
+                ? 'border-white/10 light:border-slate-200 bg-navy-soft light:bg-white'
                 : 'border-yellow/30 bg-yellow/[0.06]'
             }`
 
@@ -121,7 +121,7 @@ export default async function NotificationsPage() {
 
       {notes.some((n) => n.read_at) ? (
         <form action={clearRead}>
-          <button className="w-full rounded-xl border border-white/10 px-4 py-3 text-sm text-slate-400">
+          <button className="w-full rounded-xl border border-white/10 light:border-slate-200 px-4 py-3 text-sm text-slate-400 light:text-slate-500">
             Clear read notifications
           </button>
         </form>

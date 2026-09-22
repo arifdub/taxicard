@@ -25,7 +25,7 @@ function Stat({
   return (
     <Link
       href={href}
-      className="rounded-2xl border border-white/10 bg-navy-soft px-4 py-3.5 transition active:scale-[0.99]"
+      className="rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-4 py-3.5 transition active:scale-[0.99]"
     >
       <span className="flex items-center gap-3">
         <span
@@ -37,7 +37,7 @@ function Stat({
           {value}
         </span>
       </span>
-      <span className="mt-2.5 block text-[14px] font-semibold leading-tight text-white">
+      <span className="mt-2.5 block text-[14px] font-semibold leading-tight text-white light:text-navy">
         {label}
       </span>
     </Link>
@@ -94,10 +94,10 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-[30px] font-bold leading-tight text-white">
+        <h1 className="text-[30px] font-bold leading-tight text-white light:text-navy">
           Hello, <span className="text-yellow">{first}</span>
         </h1>
-        <p className="mt-1 text-[15px] text-slate-400">
+        <p className="mt-1 text-[15px] text-slate-400 light:text-slate-500">
           Have a safe and successful day.
         </p>
       </div>
@@ -162,7 +162,7 @@ export default async function DashboardPage() {
 
       {pending.length > 0 ? (
         <section className="space-y-3">
-          <h2 className="text-[15px] font-bold text-white">
+          <h2 className="text-[15px] font-bold text-white light:text-navy">
             Waiting for you
           </h2>
           {pending.map((b) => (
@@ -177,7 +177,7 @@ export default async function DashboardPage() {
 
       <section className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-[15px] font-bold text-white">Today</h2>
+          <h2 className="text-[15px] font-bold text-white light:text-navy">Today</h2>
           <Link
             href="/dashboard/bookings"
             className="flex items-center gap-1 text-sm font-semibold text-yellow"
@@ -190,7 +190,7 @@ export default async function DashboardPage() {
         </div>
 
         {today.length === 0 ? (
-          <div className="rounded-2xl border border-white/10 bg-navy-soft px-5 py-8 text-center">
+          <div className="rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-5 py-8 text-center">
             <svg
               width="34"
               height="34"
@@ -198,16 +198,16 @@ export default async function DashboardPage() {
               fill="none"
               stroke="currentColor"
               strokeWidth="1.6"
-              className="mx-auto text-slate-500"
+              className="mx-auto text-slate-500 light:text-slate-400"
               aria-hidden="true"
             >
               <rect x="3.2" y="5" width="17.6" height="16" rx="2.4" />
               <path d="M3.2 9.6h17.6M8 3.2v3.4M16 3.2v3.4" strokeLinecap="round" />
             </svg>
-            <p className="mt-3 text-[16px] font-semibold text-white">
+            <p className="mt-3 text-[16px] font-semibold text-white light:text-navy">
               No bookings for today yet
             </p>
-            <p className="mt-1 text-sm text-slate-400">
+            <p className="mt-1 text-sm text-slate-400 light:text-slate-500">
               When a booking arrives, it will appear here.
             </p>
           </div>
@@ -222,8 +222,8 @@ export default async function DashboardPage() {
         )}
       </section>
 
-      <div className="rounded-2xl border border-white/10 bg-navy-soft p-4">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+      <div className="rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-4">
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400 light:text-slate-500">
           Your booking link
         </p>
         <Link
@@ -232,7 +232,7 @@ export default async function DashboardPage() {
         >
           {prettyLink(profile?.slug ?? '')}
         </Link>
-        <p className="mt-1 text-xs text-slate-500">{url}</p>
+        <p className="mt-1 text-xs text-slate-500 light:text-slate-400">{url}</p>
       </div>
     </div>
   )

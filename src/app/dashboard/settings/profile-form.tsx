@@ -83,17 +83,17 @@ export default function ProfileForm({
           Your booking link
         </h2>
         <label className="block">
-          <span className="mb-1 block text-xs font-semibold text-slate-400">
+          <span className="mb-1 block text-xs font-semibold text-slate-400 light:text-slate-500">
             Link
           </span>
-          <div className="flex items-center rounded-xl border border-white/10 bg-navy-soft px-3 focus-within:border-yellow focus-within:ring-4 focus-within:ring-yellow/15">
-            <span className="shrink-0 text-sm text-slate-400">{siteUrl}/</span>
+          <div className="flex items-center rounded-xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-3 focus-within:border-yellow focus-within:ring-4 focus-within:ring-yellow/15">
+            <span className="shrink-0 text-sm text-slate-400 light:text-slate-500">{siteUrl}/</span>
             <input
               name="slug"
               value={slug}
               onChange={(e) => setSlug(e.target.value.toLowerCase())}
               required
-              className="w-full bg-transparent py-3 text-base text-white outline-none"
+              className="w-full bg-transparent py-3 text-base text-white light:text-navy outline-none"
             />
           </div>
         </label>
@@ -102,7 +102,7 @@ export default function ProfileForm({
             {slugState.reason}
           </p>
         ) : null}
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-slate-400 light:text-slate-500">
           This is what your QR code points at. Changing it breaks any QR
           codes you have already printed.
         </p>

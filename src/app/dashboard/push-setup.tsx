@@ -122,13 +122,13 @@ export default function PushSetup({ compact = false }: { compact?: boolean }) {
   }
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-navy-soft p-4">
-      <h2 className="text-sm font-semibold text-slate-400">
+    <div className="rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-4">
+      <h2 className="text-sm font-semibold text-slate-400 light:text-slate-500">
         Booking notifications
       </h2>
 
       {state === 'needs-install' ? (
-        <div className="mt-2 text-sm text-slate-300">
+        <div className="mt-2 text-sm text-slate-300 light:text-slate-600">
           <p>
             To get an alert on your phone, add TaxiCard to your Home Screen
             first. Apple only allows notifications for installed web apps.
@@ -142,14 +142,14 @@ export default function PushSetup({ compact = false }: { compact?: boolean }) {
       ) : null}
 
       {state === 'unsupported' ? (
-        <p className="mt-2 text-sm text-slate-300">
+        <p className="mt-2 text-sm text-slate-300 light:text-slate-600">
           This browser cannot do notifications. Try Chrome on Android, or add
           TaxiCard to your Home Screen on iPhone.
         </p>
       ) : null}
 
       {state === 'blocked' ? (
-        <p className="mt-2 text-sm text-slate-300">
+        <p className="mt-2 text-sm text-slate-300 light:text-slate-600">
           Notifications are blocked for this site. Turn them back on in your
           phone settings, then reload this page.
         </p>
@@ -157,14 +157,14 @@ export default function PushSetup({ compact = false }: { compact?: boolean }) {
 
       {state === 'off' ? (
         <>
-          <p className="mt-2 text-sm text-slate-300">
+          <p className="mt-2 text-sm text-slate-300 light:text-slate-600">
             Get an alert the moment a customer books, without watching the
             dashboard.
           </p>
           <button
             onClick={enable}
             disabled={busy}
-            className="mt-3 w-full rounded-xl bg-yellow px-4 py-3.5 font-semibold text-white disabled:opacity-60"
+            className="mt-3 w-full rounded-xl bg-yellow px-4 py-3.5 font-semibold text-white light:text-navy disabled:opacity-60"
           >
             {busy ? 'Turning on…' : 'Turn on notifications'}
           </button>
@@ -179,7 +179,7 @@ export default function PushSetup({ compact = false }: { compact?: boolean }) {
           <button
             onClick={disable}
             disabled={busy}
-            className="mt-3 w-full rounded-xl border border-white/20 px-4 py-3 text-sm font-medium text-slate-200 disabled:opacity-60"
+            className="mt-3 w-full rounded-xl border border-white/20 light:border-slate-300 px-4 py-3 text-sm font-medium text-slate-200 light:text-slate-700 disabled:opacity-60"
           >
             Turn off on this device
           </button>

@@ -40,8 +40,8 @@ export default async function PrintPage() {
   return (
     <>
       <div className="no-print">
-        <h1 className="text-2xl font-semibold text-white">Print</h1>
-        <p className="mb-4 mt-1 text-sm text-slate-400">
+        <h1 className="text-2xl font-semibold text-white light:text-navy">Print</h1>
+        <p className="mb-4 mt-1 text-sm text-slate-400 light:text-slate-500">
           One page with your QR code, for the back of a seat or a business
           card. This is exactly what comes out.
         </p>
@@ -74,9 +74,9 @@ export default async function PrintPage() {
       <div className="no-print space-y-4 pt-4">
         <PrintButton />
 
-        <div className="rounded-2xl border border-white/10 bg-navy-soft p-4 text-sm text-slate-300">
-          <p className="font-semibold text-white">Before you print</p>
-          <ul className="mt-2 space-y-1.5 text-slate-400">
+        <div className="rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-4 text-sm text-slate-300 light:text-slate-600">
+          <p className="font-semibold text-white light:text-navy">Before you print</p>
+          <ul className="mt-2 space-y-1.5 text-slate-400 light:text-slate-500">
             <li>One page. Any paper size works — the design scales.</li>
             <li>Turn on background graphics, or the yellow border vanishes.</li>
             <li>Card or photo paper holds up better in a car.</li>

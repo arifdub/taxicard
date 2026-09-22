@@ -31,7 +31,7 @@ export default function Wordmark({
       />
       {showText ? (
         <span className={`${text} font-semibold tracking-tight`}>
-          <span className="text-white">Taxi</span>
+          <span className="text-white light:text-navy">Taxi</span>
           <span className="text-yellow">Card</span>
         </span>
       ) : null}

@@ -49,12 +49,12 @@ export default function NotificationBell({ initial }: { initial: number }) {
     <Link
       href="/dashboard/notifications"
       aria-label={count > 0 ? `${count} unread notifications` : 'Notifications'}
-      className="relative flex h-10 items-center gap-1.5 rounded-xl px-2 text-white"
+      className="relative flex h-10 items-center gap-1.5 rounded-xl px-2 text-white light:text-navy"
     >
       <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M12 2.6a5.9 5.9 0 0 0-5.9 5.9v3.1L4.4 15a1 1 0 0 0 .9 1.5h13.4a1 1 0 0 0 .9-1.5l-1.7-3.4V8.5A5.9 5.9 0 0 0 12 2.6zM9.7 18a2.4 2.4 0 0 0 4.6 0z" />
       </svg>
-      <span className="hidden text-sm font-medium text-slate-300 min-[380px]:inline">
+      <span className="hidden text-sm font-medium text-slate-300 light:text-slate-600 min-[380px]:inline">
         Notifications
       </span>
       {count > 0 ? (

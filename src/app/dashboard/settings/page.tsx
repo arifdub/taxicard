@@ -43,38 +43,38 @@ export default async function SettingsPage({
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-white">
+        <h1 className="text-2xl font-semibold text-white light:text-navy">
           {welcome ? 'Welcome. Set up your card' : 'Profile'}
         </h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-slate-400 light:text-slate-500">
           {welcome
             ? 'Fill this in and your booking page goes live.'
             : 'Your details as your customers will see them.'}
         </p>
       </div>
 
-      <div className="rounded-2xl border border-white/10 bg-navy-soft p-5 text-center">
+      <div className="rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-5 text-center">
         <EditablePhoto
           userId={user.id}
           photoUrl={profile.photo_url}
           name={profile.name ?? 'Driver'}
           tone="dark"
         />
-        <p className="mt-3 text-xs text-slate-400">
+        <p className="mt-3 text-xs text-slate-400 light:text-slate-500">
           This is the photo your customers see on your card.
         </p>
       </div>
 
       <ProfileForm profile={profile} siteUrl={siteUrl} />
 
-      <div className="space-y-4 border-t border-white/10 pt-6">
+      <div className="space-y-4 border-t border-white/10 light:border-slate-200 pt-6">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-yellow">
           Account
         </h2>
         <PasswordForm />
       </div>
 
-      <div className="space-y-4 border-t border-white/10 pt-6">
+      <div className="space-y-4 border-t border-white/10 light:border-slate-200 pt-6">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-yellow">
           App and alerts
         </h2>

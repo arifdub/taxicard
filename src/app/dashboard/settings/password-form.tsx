@@ -14,7 +14,7 @@ export default function PasswordForm() {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="w-full rounded-2xl border border-white/10 bg-navy-soft px-4 py-3.5 text-sm font-medium text-white"
+        className="w-full rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-4 py-3.5 text-sm font-medium text-white light:text-navy"
       >
         Change my password
       </button>
@@ -24,14 +24,14 @@ export default function PasswordForm() {
   return (
     <form
       action={action}
-      className="space-y-3 rounded-2xl border border-white/10 bg-navy-soft p-4"
+      className="space-y-3 rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white p-4"
     >
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-white">Change password</h3>
+        <h3 className="font-semibold text-white light:text-navy">Change password</h3>
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="text-sm text-slate-400"
+          className="text-sm text-slate-400 light:text-slate-500"
         >
           Cancel
         </button>

@@ -20,8 +20,8 @@ export function AvailabilitySwitch({ initial }: { initial: boolean }) {
   }
 
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-navy-soft px-4 py-3.5">
-      <span className="text-sm font-medium text-white">
+    <div className="flex items-center justify-between rounded-2xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-4 py-3.5">
+      <span className="text-sm font-medium text-white light:text-navy">
         {on ? 'Online, available' : 'Offline, not taking bookings'}
       </span>
       <button
@@ -32,11 +32,11 @@ export function AvailabilitySwitch({ initial }: { initial: boolean }) {
         aria-checked={on}
         aria-label="Availability"
         className={`relative h-7 w-12 rounded-full transition-colors ${
-          on ? 'bg-emerald-600' : 'bg-white/25'
+          on ? 'bg-emerald-600' : 'bg-white/25 light:bg-slate-200'
         }`}
       >
         <span
-          className={`absolute top-1 h-5 w-5 rounded-full bg-navy-soft transition-all ${
+          className={`absolute top-1 h-5 w-5 rounded-full bg-navy-soft light:bg-white transition-all ${
             on ? 'left-6' : 'left-1'
           }`}
         />
@@ -133,7 +133,7 @@ export function EditablePhoto({
             className="h-[88px] w-[88px] rounded-full object-cover ring-[3px] ring-white"
           />
         ) : (
-          <span className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-yellow text-2xl font-semibold text-white">
+          <span className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-yellow text-2xl font-semibold text-white light:text-navy">
             {letters}
           </span>
         )}
@@ -142,7 +142,7 @@ export function EditablePhoto({
       <label
         htmlFor="photo-input"
         className={`mt-2 block cursor-pointer text-xs font-medium underline ${
-          tone === 'dark' ? 'text-slate-300' : 'text-brandblue'
+          tone === 'dark' ? 'text-slate-300 light:text-slate-600' : 'text-brandblue'
         }`}
       >
         {busy ? 'Uploading…' : preview ? 'Change photo' : 'Add a photo'}
@@ -176,7 +176,7 @@ export function CopyLink({ url }: { url: string }) {
           setCopied(false)
         }
       }}
-      className="w-full rounded-xl border border-white/10 bg-navy-soft px-4 py-3 text-sm font-medium"
+      className="w-full rounded-xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-4 py-3 text-sm font-medium"
     >
       {copied ? 'Link copied' : 'Copy my booking link'}
     </button>
