@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react'
 import { updateBookingStatus } from '@/app/dashboard/bookings/actions'
 import DeleteBooking from '@/app/dashboard/bookings/delete-button'
+import { directionsHref } from '@/lib/maps'
 
 export type BookingRow = {
   id: string
@@ -93,9 +94,14 @@ export default function BookingCard({
         <p>
           {booking.pickup_address}
           {booking.pickup_eircode ? (
-            <span className="ml-2 rounded-md bg-yellow/15 px-1.5 py-0.5 text-xs font-semibold text-yellow">
+            <a
+              href={directionsHref({ eircode: booking.pickup_eircode }) ?? undefined}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-2 inline-block rounded-md bg-yellow/15 px-1.5 py-0.5 text-xs font-semibold text-yellow"
+            >
               {booking.pickup_eircode}
-            </span>
+            </a>
           ) : null}
         </p>
         {booking.destination_address ? (
@@ -124,16 +130,24 @@ export default function BookingCard({
           </a>
         ) : null}
 
-        {booking.pickup_lat && booking.pickup_lng ? (
-          <a
-            href={`https://www.google.com/maps/dir/?api=1&destination=${booking.pickup_lat},${booking.pickup_lng}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-1 inline-block text-sm font-medium text-brandblue"
-          >
-            Directions to pickup
-          </a>
-        ) : null}
+        {(() => {
+          const href = directionsHref({
+            lat: booking.pickup_lat,
+            lng: booking.pickup_lng,
+            eircode: booking.pickup_eircode,
+            address: booking.pickup_address,
+          })
+          return href ? (
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-block text-sm font-medium text-brandblue"
+            >
+              Directions to pickup
+            </a>
+          ) : null
+        })()}
       </div>
 
       {error ? <p className="mt-2 text-sm text-red-300">{error}</p> : null}

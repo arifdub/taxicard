@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import JobForm from '@/app/admin/dispatch/job-form'
 import ClaimButton from './claim-button'
 import ReturnButton from './return-button'
+import { directionsHref } from '@/lib/maps'
 
 export const dynamic = 'force-dynamic'
 
@@ -314,9 +315,14 @@ function JobCard({
         <p>
           {job.pickup_address}
           {job.pickup_eircode ? (
-            <span className="ml-2 rounded-md bg-yellow/15 px-1.5 py-0.5 text-xs font-semibold text-yellow">
+            <a
+              href={directionsHref({ eircode: job.pickup_eircode }) ?? undefined}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-2 inline-block rounded-md bg-yellow/15 px-1.5 py-0.5 text-xs font-semibold text-yellow"
+            >
               {job.pickup_eircode}
-            </span>
+            </a>
           ) : null}
         </p>
         {job.destination_address ? (
@@ -324,6 +330,22 @@ function JobCard({
         ) : null}
         <p className="text-slate-400 light:text-slate-500">{whenLabel(job)}</p>
         {job.notes ? <p className="text-slate-400 light:text-slate-500">{job.notes}</p> : null}
+        {(() => {
+          const href = directionsHref({
+            eircode: job.pickup_eircode,
+            address: job.pickup_address,
+          })
+          return href ? (
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-block text-sm font-medium text-brandblue"
+            >
+              Directions to pickup
+            </a>
+          ) : null
+        })()}
       </div>
 
       {claimable ? (
@@ -368,11 +390,39 @@ function SentCard({ job, readOnly }: { job: SentJob; readOnly?: boolean }) {
       </div>
 
       <div className="mt-3 space-y-1 rounded-xl bg-white/5 light:bg-navy/5 p-3 text-sm text-slate-200 light:text-slate-700">
-        <p>{job.pickup_address}</p>
+        <p>
+          {job.pickup_address}
+          {job.pickup_eircode ? (
+            <a
+              href={directionsHref({ eircode: job.pickup_eircode }) ?? undefined}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-2 inline-block rounded-md bg-yellow/15 px-1.5 py-0.5 text-xs font-semibold text-yellow"
+            >
+              {job.pickup_eircode}
+            </a>
+          ) : null}
+        </p>
         {job.destination_address ? (
           <p className="text-slate-300 light:text-slate-600">to {job.destination_address}</p>
         ) : null}
         <p className="text-slate-400 light:text-slate-500">{whenLabel(job)}</p>
+        {(() => {
+          const href = directionsHref({
+            eircode: job.pickup_eircode,
+            address: job.pickup_address,
+          })
+          return href ? (
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-block text-sm font-medium text-brandblue"
+            >
+              Directions to pickup
+            </a>
+          ) : null
+        })()}
       </div>
 
       <p className="mt-2 text-xs">
