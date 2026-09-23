@@ -9,6 +9,7 @@ const BASE_LINKS = [
   { href: '/dashboard', label: 'Dashboard' },
   { href: '/dashboard/bookings', label: 'Bookings' },
   { href: '/dashboard/customers', label: 'Customers' },
+  { href: '/dashboard/fare-calculator', label: 'Fare calculator' },
   { href: '/dashboard/card', label: 'My card' },
   { href: '/dashboard/print', label: 'Print' },
   { href: '/dashboard/settings', label: 'Profile' },
