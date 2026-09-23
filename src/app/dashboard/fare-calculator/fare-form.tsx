@@ -129,12 +129,12 @@ export default function FareForm() {
               <span>&euro;{result.initial.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
-              <span>Tariff A</span>
+              <span>Tariff A ({result.bandLabel})</span>
               <span>&euro;{result.tariffA.toFixed(2)}</span>
             </div>
             {result.tariffB > 0 ? (
               <div className="flex justify-between">
-                <span>Tariff B</span>
+                <span>Tariff B ({result.bandLabel})</span>
                 <span>&euro;{result.tariffB.toFixed(2)}</span>
               </div>
             ) : null}
