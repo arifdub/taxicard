@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import FareForm from './fare-form'
+import FareForm from '@/components/fare-form'
 
 export const metadata: Metadata = {
   title: 'Fare calculator',

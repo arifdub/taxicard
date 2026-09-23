@@ -375,6 +375,9 @@ export default async function Home() {
             <Link href="/install" className="text-slate-400 hover:text-white">
               How to install
             </Link>
+            <Link href="/fare" className="text-slate-400 hover:text-white">
+              Fare calculator
+            </Link>
             <Link href="/terms" className="text-slate-400 hover:text-white">
               Terms
             </Link>
