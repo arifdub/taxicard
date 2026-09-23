@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { pushToDriver } from '@/lib/push'
+import { estimateTrip } from '@/lib/trip'
 
 export type BookingState = { error?: string }
 
@@ -57,6 +58,20 @@ export async function createBooking(
     return { error: 'Pick a date and time.' }
   }
 
+  // Best-effort: a geocoding hiccup should never cost the customer their
+  // booking, so this never throws past this point.
+  let distanceKm: number | null = null
+  let estimatedFare: number | null = null
+  try {
+    const trip = await estimateTrip(v.pickup, v.destination)
+    if (trip.ok) {
+      distanceKm = trip.estimate.distanceKm
+      estimatedFare = trip.estimate.total
+    }
+  } catch {
+    // leave both null
+  }
+
   const supabase = await createClient()
   const { data, error } = await supabase.rpc('create_public_booking', {
     p_slug: v.slug,
@@ -70,6 +85,8 @@ export async function createBooking(
     p_pickup_eircode: v.eircode || null,
     p_pickup_lat: v.pickup_lat ? Number(v.pickup_lat) : null,
     p_pickup_lng: v.pickup_lng ? Number(v.pickup_lng) : null,
+    p_distance_km: distanceKm,
+    p_estimated_fare: estimatedFare,
   })
 
   if (error) {
