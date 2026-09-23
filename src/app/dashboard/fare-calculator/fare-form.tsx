@@ -67,7 +67,7 @@ export default function FareForm() {
           name="pickup"
           value={pickup}
           onChange={(e) => setPickup(e.target.value)}
-          placeholder="12 Harcourt Street, Dublin, D02 AF30, or Cork City"
+          placeholder="Harcourt Street, Dublin, or Dublin Airport"
           hint="Full address, Eircode, or just a town — whatever's easiest."
           required
         />
@@ -76,7 +76,7 @@ export default function FareForm() {
           name="destination"
           value={destination}
           onChange={(e) => setDestination(e.target.value)}
-          placeholder="Dublin Airport"
+          placeholder="D02 AF30, or Dublin Airport"
           required
         />
         <Field
