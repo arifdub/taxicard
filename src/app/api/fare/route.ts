@@ -1,71 +1,84 @@
 import { NextResponse } from 'next/server'
 import { calculateFare, rateBandFor } from '@/lib/fare'
 
-type RouteResult = { distanceKm: number; durationMin: number; source: 'google' | 'osm' }
+type LatLng = { lat: number; lng: number }
+type Geocoded = LatLng & { source: 'google' | 'osm' }
 
-async function viaGoogle(pickup: string, destination: string): Promise<RouteResult | null> {
+/**
+ * "D02AF30" -> "D02 AF30". Google's geocoder is far more reliable at
+ * matching an Eircode when it's spaced like this; harmless no-op for a
+ * plain address or town name, since the pattern just won't match.
+ */
+function normalize(query: string): string {
+  const m = query.trim().match(/^([A-Za-z]\d{2})[\s-]?([A-Za-z0-9]{4})$/)
+  return m ? `${m[1].toUpperCase()} ${m[2].toUpperCase()}` : query
+}
+
+async function geocodeGoogle(query: string): Promise<LatLng | null> {
   const key = process.env.GOOGLE_MAPS_SERVER_KEY
   if (!key) return null
 
-  const url = new URL('https://maps.googleapis.com/maps/api/distancematrix/json')
-  url.searchParams.set('origins', pickup)
-  url.searchParams.set('destinations', destination)
-  url.searchParams.set('region', 'ie')
-  url.searchParams.set('units', 'metric')
+  const url = new URL('https://maps.googleapis.com/maps/api/geocode/json')
+  url.searchParams.set('address', query)
+  url.searchParams.set('components', 'country:IE')
   url.searchParams.set('key', key)
 
   const res = await fetch(url, { cache: 'no-store' })
   const data = await res.json()
-  const el = data?.rows?.[0]?.elements?.[0]
-  if (data.status !== 'OK' || !el || el.status !== 'OK') return null
+  const loc = data?.results?.[0]?.geometry?.location
+  if (data.status !== 'OK' || !loc) return null
 
-  return {
-    distanceKm: el.distance.value / 1000,
-    durationMin: el.duration.value / 60,
-    source: 'google',
-  }
+  return { lat: loc.lat, lng: loc.lng }
 }
 
 /**
- * Free fallback so the calculator works before a Google key with
- * Distance Matrix enabled is set up: Nominatim geocodes each address,
- * then OSRM's public demo router gets the driving distance/time between
- * them. Fine at low volume; swap to Google before this gets busy.
+ * Free fallback, used only when there's no Google key. It can't resolve
+ * Eircodes — that data is commercially licensed and OpenStreetMap doesn't
+ * have it — but it's fine for a plain address or town name.
  */
-async function viaOsm(pickup: string, destination: string): Promise<RouteResult | null> {
-  async function geocode(q: string): Promise<{ lat: number; lon: number } | null> {
-    const url = new URL('https://nominatim.openstreetmap.org/search')
-    url.searchParams.set('q', q)
-    url.searchParams.set('format', 'jsonv2')
-    url.searchParams.set('countrycodes', 'ie')
-    url.searchParams.set('limit', '1')
+async function geocodeOsm(query: string): Promise<LatLng | null> {
+  const url = new URL('https://nominatim.openstreetmap.org/search')
+  url.searchParams.set('q', query)
+  url.searchParams.set('format', 'jsonv2')
+  url.searchParams.set('countrycodes', 'ie')
+  url.searchParams.set('limit', '1')
 
-    const res = await fetch(url, {
-      cache: 'no-store',
-      headers: { 'User-Agent': 'TaxiCard/1.0 (https://taxicard.ie)', 'Accept-Language': 'en' },
-    })
-    if (!res.ok) return null
-    const data = await res.json()
-    const best = data?.[0]
-    if (!best) return null
-    return { lat: Number(best.lat), lon: Number(best.lon) }
-  }
+  const res = await fetch(url, {
+    cache: 'no-store',
+    headers: { 'User-Agent': 'TaxiCard/1.0 (https://taxicard.ie)', 'Accept-Language': 'en' },
+  })
+  if (!res.ok) return null
 
-  const [from, to] = await Promise.all([geocode(pickup), geocode(destination)])
-  if (!from || !to) return null
+  const data = await res.json()
+  const best = data?.[0]
+  if (!best) return null
 
+  return { lat: Number(best.lat), lng: Number(best.lon) }
+}
+
+async function geocode(rawQuery: string): Promise<Geocoded | null> {
+  const query = normalize(rawQuery)
+  const g = await geocodeGoogle(query)
+  if (g) return { ...g, source: 'google' }
+  const o = await geocodeOsm(query)
+  if (o) return { ...o, source: 'osm' }
+  return null
+}
+
+async function route(from: LatLng, to: LatLng): Promise<{ distanceKm: number; durationMin: number } | null> {
   const url = new URL(
-    `https://router.project-osrm.org/route/v1/driving/${from.lon},${from.lat};${to.lon},${to.lat}`
+    `https://router.project-osrm.org/route/v1/driving/${from.lng},${from.lat};${to.lng},${to.lat}`
   )
   url.searchParams.set('overview', 'false')
 
   const res = await fetch(url, { cache: 'no-store' })
   if (!res.ok) return null
-  const data = await res.json()
-  const route = data?.routes?.[0]
-  if (!route) return null
 
-  return { distanceKm: route.distance / 1000, durationMin: route.duration / 60, source: 'osm' }
+  const data = await res.json()
+  const best = data?.routes?.[0]
+  if (!best) return null
+
+  return { distanceKm: best.distance / 1000, durationMin: best.duration / 60 }
 }
 
 export async function POST(request: Request) {
@@ -79,22 +92,32 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Enter a pickup and a destination.' }, { status: 400 })
   }
 
-  let route: RouteResult | null = null
+  let from: Geocoded | null = null
+  let to: Geocoded | null = null
   try {
-    route = (await viaGoogle(pickup, destination)) ?? (await viaOsm(pickup, destination))
+    ;[from, to] = await Promise.all([geocode(pickup), geocode(destination)])
   } catch {
     // fall through
   }
 
-  if (!route) {
+  if (!from || !to) {
+    const which = !from && !to ? 'Both addresses' : !from ? 'The pickup address' : 'The destination address'
+    return NextResponse.json({ error: `${which} couldn't be found.` }, { status: 422 })
+  }
+
+  const distance = await route(from, to).catch(() => null)
+  if (!distance) {
     return NextResponse.json(
-      { error: "Couldn't find a route between those two addresses." },
+      { error: "Couldn't find a driving route between those two." },
       { status: 422 }
     )
   }
 
   const band = rateBandFor(when, publicHoliday)
-  const fare = calculateFare(route.distanceKm, route.durationMin, band)
+  const fare = calculateFare(distance.distanceKm, distance.durationMin, band)
 
-  return NextResponse.json({ ...fare, source: route.source })
+  return NextResponse.json({
+    ...fare,
+    source: from.source === 'google' && to.source === 'google' ? 'google' : 'osm',
+  })
 }

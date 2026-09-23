@@ -67,7 +67,8 @@ export default function FareForm() {
           name="pickup"
           value={pickup}
           onChange={(e) => setPickup(e.target.value)}
-          placeholder="12 Harcourt Street, Dublin"
+          placeholder="12 Harcourt Street, Dublin, D02 AF30, or Cork City"
+          hint="Full address, Eircode, or just a town — whatever's easiest."
           required
         />
         <Field
