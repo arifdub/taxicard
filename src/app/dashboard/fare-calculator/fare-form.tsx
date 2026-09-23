@@ -35,9 +35,58 @@ export default function FareForm() {
   const [pending, setPending] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [result, setResult] = useState<Result | null>(null)
+  const [locating, setLocating] = useState(false)
+  const [locNote, setLocNote] = useState<string | null>(null)
 
   const passengerExtra = (passengers - 1) * PASSENGER_EXTRA
   const extrasTotal = passengerExtra + (bookingFee ? BOOKING_FEE : 0)
+
+  function useMyLocation() {
+    if (!('geolocation' in navigator)) {
+      setLocNote('This browser cannot share a location. Type the address instead.')
+      return
+    }
+
+    setLocating(true)
+    setLocNote('Asking your phone for your location…')
+
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const lat = pos.coords.latitude
+        const lng = pos.coords.longitude
+        setLocNote('Got it. Looking up the address…')
+
+        try {
+          const res = await fetch(`/api/geocode/reverse?lat=${lat}&lng=${lng}`)
+          const data = await res.json()
+
+          if (data.address) {
+            setPickup(data.address)
+            setLocNote('Found you. Change it if that is not right.')
+          } else {
+            setLocNote('Could not name the street there. Please type it.')
+          }
+        } catch {
+          setLocNote('Could not look up that location. Type the address instead.')
+        }
+
+        setLocating(false)
+      },
+      (err) => {
+        setLocating(false)
+        if (err.code === err.PERMISSION_DENIED) {
+          setLocNote(
+            'Location is blocked for this site. Allow it in your phone settings, or just type the address.'
+          )
+        } else if (err.code === err.TIMEOUT) {
+          setLocNote('That took too long. Try again, or type the address.')
+        } else {
+          setLocNote('Could not get your location. Type the address instead.')
+        }
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+    )
+  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -71,15 +120,41 @@ export default function FareForm() {
   return (
     <div className="space-y-4">
       <form onSubmit={onSubmit} className="space-y-4">
-        <Field
-          label="Pickup address"
-          name="pickup"
-          value={pickup}
-          onChange={(e) => setPickup(e.target.value)}
-          placeholder="Harcourt Street, Dublin, or an Eircode"
-          hint="Full address, Eircode, or just a town — whatever's easiest."
-          required
-        />
+        <div>
+          <button
+            type="button"
+            onClick={useMyLocation}
+            disabled={locating}
+            className="mb-2 flex w-full items-center justify-center gap-2 rounded-2xl border border-yellow/40 bg-yellow/10 px-4 py-3 text-sm font-semibold text-yellow disabled:opacity-60"
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="3.4" stroke="currentColor" strokeWidth="1.8" />
+              <path
+                d="M12 3v3M12 18v3M3 12h3M18 12h3"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+              />
+            </svg>
+            {locating ? 'Finding you…' : 'Use my current location'}
+          </button>
+
+          {locNote ? (
+            <p className="mb-2 rounded-xl bg-white/5 light:bg-navy/5 px-3 py-2 text-xs text-slate-300 light:text-slate-600">
+              {locNote}
+            </p>
+          ) : null}
+
+          <Field
+            label="Pickup address"
+            name="pickup"
+            value={pickup}
+            onChange={(e) => setPickup(e.target.value)}
+            placeholder="Harcourt Street, Dublin, or an Eircode"
+            hint="Full address, Eircode, or just a town — whatever's easiest."
+            required
+          />
+        </div>
         <Field
           label="Destination address"
           name="destination"
