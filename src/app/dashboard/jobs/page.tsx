@@ -313,7 +313,19 @@ function JobCard({
 
       <div className="mt-3 space-y-1 rounded-xl bg-white/5 light:bg-navy/5 p-3 text-sm text-slate-200 light:text-slate-700">
         <p>
-          {job.pickup_address}
+          <a
+            href={
+              directionsHref({
+                eircode: job.pickup_eircode,
+                address: job.pickup_address,
+              }) ?? undefined
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-dotted underline-offset-2"
+          >
+            {job.pickup_address}
+          </a>
           {job.pickup_eircode ? (
             <a
               href={directionsHref({ eircode: job.pickup_eircode }) ?? undefined}
@@ -391,7 +403,19 @@ function SentCard({ job, readOnly }: { job: SentJob; readOnly?: boolean }) {
 
       <div className="mt-3 space-y-1 rounded-xl bg-white/5 light:bg-navy/5 p-3 text-sm text-slate-200 light:text-slate-700">
         <p>
-          {job.pickup_address}
+          <a
+            href={
+              directionsHref({
+                eircode: job.pickup_eircode,
+                address: job.pickup_address,
+              }) ?? undefined
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-dotted underline-offset-2"
+          >
+            {job.pickup_address}
+          </a>
           {job.pickup_eircode ? (
             <a
               href={directionsHref({ eircode: job.pickup_eircode }) ?? undefined}

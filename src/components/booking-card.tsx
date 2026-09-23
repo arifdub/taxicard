@@ -92,7 +92,21 @@ export default function BookingCard({
 
       <div className="mt-3 space-y-1 rounded-xl bg-navy-soft/5 light:bg-slate-50 p-3 text-sm">
         <p>
-          {booking.pickup_address}
+          <a
+            href={
+              directionsHref({
+                lat: booking.pickup_lat,
+                lng: booking.pickup_lng,
+                eircode: booking.pickup_eircode,
+                address: booking.pickup_address,
+              }) ?? undefined
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-dotted underline-offset-2"
+          >
+            {booking.pickup_address}
+          </a>
           {booking.pickup_eircode ? (
             <a
               href={directionsHref({ eircode: booking.pickup_eircode }) ?? undefined}
