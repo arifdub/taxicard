@@ -21,14 +21,23 @@ function toDatetimeLocal(d: Date) {
   )}:${pad(d.getMinutes())}`
 }
 
+const MAX_PASSENGERS = 8
+const PASSENGER_EXTRA = 1
+const BOOKING_FEE = 3
+
 export default function FareForm() {
   const [pickup, setPickup] = useState('')
   const [destination, setDestination] = useState('')
   const [when, setWhen] = useState(() => toDatetimeLocal(new Date()))
   const [publicHoliday, setPublicHoliday] = useState(false)
+  const [passengers, setPassengers] = useState(1)
+  const [bookingFee, setBookingFee] = useState(false)
   const [pending, setPending] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [result, setResult] = useState<Result | null>(null)
+
+  const passengerExtra = (passengers - 1) * PASSENGER_EXTRA
+  const extrasTotal = passengerExtra + (bookingFee ? BOOKING_FEE : 0)
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -97,6 +106,42 @@ export default function FareForm() {
           Public holiday
         </label>
 
+        <div>
+          <span className="mb-1.5 block text-xs font-semibold text-slate-400 light:text-slate-500">
+            Passengers
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {Array.from({ length: MAX_PASSENGERS }, (_, i) => i + 1).map((n) => (
+              <button
+                key={n}
+                type="button"
+                onClick={() => setPassengers(n)}
+                aria-pressed={passengers === n}
+                className={`flex h-10 w-10 items-center justify-center rounded-xl text-sm font-semibold ${
+                  passengers === n
+                    ? 'bg-yellow text-navy'
+                    : 'border border-white/15 light:border-slate-200 text-slate-300 light:text-slate-600'
+                }`}
+              >
+                {n}
+              </button>
+            ))}
+          </div>
+          <p className="mt-1.5 text-xs text-slate-500 light:text-slate-400">
+            First passenger free, then &euro;{PASSENGER_EXTRA.toFixed(2)} each extra.
+          </p>
+        </div>
+
+        <label className="flex items-center gap-2 text-sm text-slate-300 light:text-slate-600">
+          <input
+            type="checkbox"
+            checked={bookingFee}
+            onChange={(e) => setBookingFee(e.target.checked)}
+            className="h-4 w-4 rounded border-white/20 light:border-slate-300"
+          />
+          Pre-booked (&euro;{BOOKING_FEE.toFixed(2)} booking fee)
+        </label>
+
         <button
           type="submit"
           disabled={pending}
@@ -138,6 +183,18 @@ export default function FareForm() {
                 <span>&euro;{result.tariffB.toFixed(2)}</span>
               </div>
             ) : null}
+            {passengerExtra > 0 ? (
+              <div className="flex justify-between">
+                <span>Extra passengers ({passengers - 1})</span>
+                <span>&euro;{passengerExtra.toFixed(2)}</span>
+              </div>
+            ) : null}
+            {bookingFee ? (
+              <div className="flex justify-between">
+                <span>Booking fee</span>
+                <span>&euro;{BOOKING_FEE.toFixed(2)}</span>
+              </div>
+            ) : null}
           </div>
 
           <div className="flex items-center justify-between border-t border-white/10 light:border-slate-200 pt-3">
@@ -145,7 +202,7 @@ export default function FareForm() {
               Estimated fare
             </span>
             <span className="text-2xl font-bold text-yellow">
-              &euro;{result.total.toFixed(2)}
+              &euro;{(result.total + extrasTotal).toFixed(2)}
             </span>
           </div>
         </div>
