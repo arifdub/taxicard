@@ -112,9 +112,13 @@ export async function createBooking(
       .single()
 
     if (driver?.id) {
+      const estimate =
+        distanceKm != null && estimatedFare != null
+          ? `${distanceKm}km - €${estimatedFare.toFixed(0)} · `
+          : ''
       await pushToDriver(driver.id, {
         title: 'New booking request',
-        body: `${v.name} — ${v.pickup} to ${v.destination}`,
+        body: `${estimate}${v.name} — ${v.pickup} to ${v.destination}`,
         url: '/dashboard/bookings',
         tag: token,
       })

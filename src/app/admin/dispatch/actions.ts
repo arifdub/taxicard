@@ -110,11 +110,17 @@ export async function createDispatchJob(
       ? drivers.map((d) => (typeof d === 'string' ? d : d.business_driver_ids))
       : []
 
+    // Prefer the admin's own typed fare when given; fall back to the
+    // auto-estimated one so the banner still shows a price either way.
+    const price = v.fare ?? estimatedFare?.toFixed(0)
+    const km = distanceKm != null ? `${distanceKm}km - ` : ''
+    const estimate = price ? `${km}€${price} · ` : ''
+
     await Promise.all(
       list.filter(Boolean).map((id) =>
         pushToDriver(id, {
           title: 'New job available',
-          body: `${v.fare ? `€${v.fare} · ` : ''}${v.pickup}${
+          body: `${estimate}${v.pickup}${
             v.destination ? ` → ${v.destination}` : ''
           }`,
           url: '/dashboard/jobs',
