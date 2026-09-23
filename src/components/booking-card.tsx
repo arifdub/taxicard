@@ -17,6 +17,8 @@ export type BookingRow = {
   scheduled_at: string | null
   customer_notes: string | null
   created_at: string
+  distance_km: number | null
+  estimated_fare: number | null
   customer_name: string
   customer_phone: string
 }
@@ -120,6 +122,13 @@ export default function BookingCard({
         </p>
         {booking.destination_address ? (
           <p className="text-slate-300 light:text-slate-600">to {booking.destination_address}</p>
+        ) : null}
+        {booking.distance_km != null || booking.estimated_fare != null ? (
+          <p className="font-semibold text-yellow">
+            {booking.distance_km != null ? `${booking.distance_km} km` : null}
+            {booking.distance_km != null && booking.estimated_fare != null ? ' · ' : null}
+            {booking.estimated_fare != null ? `est. €${booking.estimated_fare.toFixed(2)}` : null}
+          </p>
         ) : null}
         <p className="text-slate-400 light:text-slate-500">{whenLabel(booking)}</p>
         {booking.customer_notes ? (

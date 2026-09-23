@@ -19,6 +19,8 @@ type Job = {
   scheduled_at: string | null
   notes: string | null
   fare: number | null
+  distance_km: number | null
+  estimated_fare: number | null
   status: string
   is_mine: boolean
   created_at: string
@@ -34,6 +36,8 @@ type SentJob = {
   booking_type: string
   scheduled_at: string | null
   fare: number | null
+  distance_km: number | null
+  estimated_fare: number | null
   status: string
   created_at: string
   taker: { name: string | null; phone: string | null } | null
@@ -94,7 +98,7 @@ export default async function JobsPage({
     ? await supabase
         .from('dispatch_jobs')
         .select(
-          'id, customer_name, customer_phone, pickup_address, pickup_eircode, destination_address, booking_type, scheduled_at, fare, status, created_at, taker:claimed_by(name, phone)'
+          'id, customer_name, customer_phone, pickup_address, pickup_eircode, destination_address, booking_type, scheduled_at, fare, distance_km, estimated_fare, status, created_at, taker:claimed_by(name, phone)'
         )
         .eq('created_by', user.id)
         .order('created_at', { ascending: false })
@@ -340,6 +344,13 @@ function JobCard({
         {job.destination_address ? (
           <p className="text-slate-300 light:text-slate-600">to {job.destination_address}</p>
         ) : null}
+        {job.distance_km != null || job.estimated_fare != null ? (
+          <p className="font-semibold text-yellow">
+            {job.distance_km != null ? `${job.distance_km} km` : null}
+            {job.distance_km != null && job.estimated_fare != null ? ' · ' : null}
+            {job.estimated_fare != null ? `est. €${job.estimated_fare.toFixed(2)}` : null}
+          </p>
+        ) : null}
         <p className="text-slate-400 light:text-slate-500">{whenLabel(job)}</p>
         {job.notes ? <p className="text-slate-400 light:text-slate-500">{job.notes}</p> : null}
         {(() => {
@@ -429,6 +440,13 @@ function SentCard({ job, readOnly }: { job: SentJob; readOnly?: boolean }) {
         </p>
         {job.destination_address ? (
           <p className="text-slate-300 light:text-slate-600">to {job.destination_address}</p>
+        ) : null}
+        {job.distance_km != null || job.estimated_fare != null ? (
+          <p className="font-semibold text-yellow">
+            {job.distance_km != null ? `${job.distance_km} km` : null}
+            {job.distance_km != null && job.estimated_fare != null ? ' · ' : null}
+            {job.estimated_fare != null ? `est. €${job.estimated_fare.toFixed(2)}` : null}
+          </p>
         ) : null}
         <p className="text-slate-400 light:text-slate-500">{whenLabel(job)}</p>
         {(() => {

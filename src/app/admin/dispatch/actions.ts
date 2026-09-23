@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { pushToDriver } from '@/lib/push'
+import { estimateTrip } from '@/lib/trip'
 
 export type DispatchState = { error?: string; message?: string }
 
@@ -64,6 +65,21 @@ export async function createDispatchJob(
     return { error: 'That Eircode does not look right.' }
   }
 
+  // Best-effort: a geocoding hiccup should never block sending the job.
+  let distanceKm: number | null = null
+  let estimatedFare: number | null = null
+  if (v.destination) {
+    try {
+      const trip = await estimateTrip(v.pickup, v.destination)
+      if (trip.ok) {
+        distanceKm = trip.estimate.distanceKm
+        estimatedFare = trip.estimate.total
+      }
+    } catch {
+      // leave both null
+    }
+  }
+
   const { error } = await supabase.from('dispatch_jobs').insert({
     created_by: user.id,
     customer_name: v.name,
@@ -75,6 +91,8 @@ export async function createDispatchJob(
     scheduled_at: v.when === 'LATER' ? v.scheduled_at : new Date().toISOString(),
     notes: v.notes || null,
     fare: v.fare ? Number(v.fare.replace(',', '.')) : null,
+    distance_km: distanceKm,
+    estimated_fare: estimatedFare,
   })
 
   if (error) return { error: 'Could not send that job. Try again.' }

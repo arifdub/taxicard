@@ -2,7 +2,7 @@ import { type SupabaseClient } from '@supabase/supabase-js'
 import { type BookingRow } from '@/components/booking-card'
 
 const SELECT =
-  'id, status, pickup_address, pickup_eircode, pickup_lat, pickup_lng, destination_address, booking_type, scheduled_at, customer_notes, created_at, customers(name, phone)'
+  'id, status, pickup_address, pickup_eircode, pickup_lat, pickup_lng, destination_address, booking_type, scheduled_at, customer_notes, created_at, distance_km, estimated_fare, customers(name, phone)'
 
 type RawCustomer = { name: string; phone: string }
 type RawBooking = {
@@ -17,6 +17,8 @@ type RawBooking = {
   scheduled_at: string | null
   customer_notes: string | null
   created_at: string
+  distance_km: number | null
+  estimated_fare: number | null
   customers: RawCustomer | RawCustomer[] | null
 }
 
@@ -34,6 +36,8 @@ function flatten(row: RawBooking): BookingRow {
     scheduled_at: row.scheduled_at,
     customer_notes: row.customer_notes,
     created_at: row.created_at,
+    distance_km: row.distance_km,
+    estimated_fare: row.estimated_fare,
     customer_name: c?.name ?? 'Customer',
     customer_phone: c?.phone ?? '',
   }
