@@ -1,5 +1,13 @@
 export type RateBand = 'standard' | 'premium' | 'special'
 
+// A pre-arranged booking (as opposed to a street hail) carries the NTA's
+// booking fee. Every booking created through the app — card, web, or
+// admin dispatch — is by definition pre-arranged, so this is added
+// automatically wherever a booking's fare is estimated. The standalone
+// fare calculator keeps it as an optional toggle instead, since it's
+// estimating a generic trip, not necessarily a booking.
+export const BOOKING_FEE = 3
+
 export const RATE_LABELS: Record<RateBand, string> = {
   standard: 'Standard Rate',
   premium: 'Premium Rate',

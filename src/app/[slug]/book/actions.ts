@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { pushToDriver } from '@/lib/push'
 import { estimateTrip } from '@/lib/trip'
+import { BOOKING_FEE } from '@/lib/fare'
 
 export type BookingState = { error?: string }
 
@@ -66,7 +67,10 @@ export async function createBooking(
     const trip = await estimateTrip(v.pickup, v.destination)
     if (trip.ok) {
       distanceKm = trip.estimate.distanceKm
-      estimatedFare = trip.estimate.total
+      // Every booking made through the app is pre-arranged, so the NTA
+      // booking fee always applies here (unlike the standalone
+      // calculator, where it's optional).
+      estimatedFare = trip.estimate.total + BOOKING_FEE
     }
   } catch {
     // leave both null

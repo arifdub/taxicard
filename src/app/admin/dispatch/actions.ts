@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { pushToDriver } from '@/lib/push'
 import { estimateTrip } from '@/lib/trip'
+import { BOOKING_FEE } from '@/lib/fare'
 
 export type DispatchState = { error?: string; message?: string }
 
@@ -73,7 +74,10 @@ export async function createDispatchJob(
       const trip = await estimateTrip(v.pickup, v.destination)
       if (trip.ok) {
         distanceKm = trip.estimate.distanceKm
-        estimatedFare = trip.estimate.total
+        // Every dispatch job is a pre-arranged booking, so the NTA
+        // booking fee always applies (unlike the standalone calculator,
+        // where it's optional).
+        estimatedFare = trip.estimate.total + BOOKING_FEE
       }
     } catch {
       // leave both null

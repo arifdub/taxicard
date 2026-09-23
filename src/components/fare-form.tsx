@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Field } from '@/components/ui'
+import { BOOKING_FEE } from '@/lib/fare'
 
 type Result = {
   band: string
@@ -23,7 +24,6 @@ function toDatetimeLocal(d: Date) {
 
 const MAX_PASSENGERS = 8
 const PASSENGER_EXTRA = 1
-const BOOKING_FEE = 3
 
 export default function FareForm() {
   const [pickup, setPickup] = useState('')

@@ -199,11 +199,18 @@ export default function IncomingBooking({ driverId }: { driverId: string }) {
         </p>
 
         {booking.distance_km != null || booking.estimated_fare != null ? (
-          <p className="mt-2 text-lg font-bold">
-            {booking.estimated_fare != null ? `est. €${booking.estimated_fare.toFixed(2)}` : null}
-            {booking.distance_km != null && booking.estimated_fare != null ? ' · ' : null}
-            {booking.distance_km != null ? `${booking.distance_km} km` : null}
-          </p>
+          <div className="mt-3">
+            {booking.estimated_fare != null ? (
+              <p className="text-5xl font-extrabold text-yellow">
+                &euro;{booking.estimated_fare.toFixed(2)}
+              </p>
+            ) : null}
+            {booking.distance_km != null ? (
+              <p className="mt-1 text-sm font-semibold text-slate-300 light:text-slate-600">
+                {booking.distance_km} km estimated
+              </p>
+            ) : null}
+          </div>
         ) : null}
 
         <div className="mx-auto mt-8 flex h-24 w-24 items-center justify-center rounded-full bg-yellow text-3xl font-bold text-navy">
