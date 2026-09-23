@@ -12,6 +12,8 @@ type Incoming = {
   booking_type: string
   scheduled_at: string | null
   customer_notes: string | null
+  distance_km: number | null
+  estimated_fare: number | null
   customer_name: string
   customer_phone: string
 }
@@ -88,7 +90,7 @@ export default function IncomingBooking({ driverId }: { driverId: string }) {
       const { data } = await supabase
         .from('bookings')
         .select(
-          'id, status, pickup_address, destination_address, booking_type, scheduled_at, customer_notes, customers(name, phone)'
+          'id, status, pickup_address, destination_address, booking_type, scheduled_at, customer_notes, distance_km, estimated_fare, customers(name, phone)'
         )
         .eq('id', id)
         .eq('driver_id', driverId)
@@ -105,6 +107,8 @@ export default function IncomingBooking({ driverId }: { driverId: string }) {
         booking_type: data.booking_type,
         scheduled_at: data.scheduled_at,
         customer_notes: data.customer_notes,
+        distance_km: data.distance_km,
+        estimated_fare: data.estimated_fare,
         customer_name: c?.name ?? 'Customer',
         customer_phone: c?.phone ?? '',
       })
@@ -193,6 +197,14 @@ export default function IncomingBooking({ driverId }: { driverId: string }) {
         <p className="text-sm font-semibold uppercase tracking-widest text-yellow">
           New booking
         </p>
+
+        {booking.distance_km != null || booking.estimated_fare != null ? (
+          <p className="mt-2 text-lg font-bold">
+            {booking.estimated_fare != null ? `est. €${booking.estimated_fare.toFixed(2)}` : null}
+            {booking.distance_km != null && booking.estimated_fare != null ? ' · ' : null}
+            {booking.distance_km != null ? `${booking.distance_km} km` : null}
+          </p>
+        ) : null}
 
         <div className="mx-auto mt-8 flex h-24 w-24 items-center justify-center rounded-full bg-yellow text-3xl font-bold text-navy">
           {booking.customer_name

@@ -55,12 +55,25 @@ async function geocodeOsm(query: string): Promise<LatLng | null> {
   return { lat: Number(best.lat), lng: Number(best.lon) }
 }
 
+/**
+ * A short, generic place name like "Airport" or "Cork City" is fine for a
+ * human but too vague for a geocoder built for structured addresses. If
+ * the plain query doesn't resolve, retry once with ", Ireland" appended —
+ * this is an Ireland-only app, so that's a safe, cheap way to disambiguate
+ * without touching addresses that already work.
+ */
 async function geocode(rawQuery: string): Promise<Geocoded | null> {
   const query = normalize(rawQuery)
-  const g = await geocodeGoogle(query)
-  if (g) return { ...g, source: 'google' }
-  const o = await geocodeOsm(query)
-  if (o) return { ...o, source: 'osm' }
+  const attempts = /ireland|éire\b/i.test(query) ? [query] : [query, `${query}, Ireland`]
+
+  for (const attempt of attempts) {
+    const g = await geocodeGoogle(attempt)
+    if (g) return { ...g, source: 'google' }
+  }
+  for (const attempt of attempts) {
+    const o = await geocodeOsm(attempt)
+    if (o) return { ...o, source: 'osm' }
+  }
   return null
 }
 
@@ -105,19 +118,22 @@ export async function estimateTrip(
   let to: Geocoded | null = null
   try {
     ;[from, to] = await Promise.all([geocode(pickup), geocode(destination)])
-  } catch {
+  } catch (err) {
+    console.error(`[estimateTrip] lookup_failed: pickup=${JSON.stringify(pickup)} destination=${JSON.stringify(destination)}`, err)
     return { ok: false, reason: 'lookup_failed' }
   }
 
   if (!from || !to) {
-    return {
-      ok: false,
-      reason: !from && !to ? 'both_not_found' : !from ? 'pickup_not_found' : 'destination_not_found',
-    }
+    const reason = !from && !to ? 'both_not_found' : !from ? 'pickup_not_found' : 'destination_not_found'
+    console.error(`[estimateTrip] ${reason}: pickup=${JSON.stringify(pickup)} destination=${JSON.stringify(destination)}`)
+    return { ok: false, reason }
   }
 
   const distance = await route(from, to).catch(() => null)
-  if (!distance) return { ok: false, reason: 'no_route' }
+  if (!distance) {
+    console.error(`[estimateTrip] no_route: pickup=${JSON.stringify(pickup)} destination=${JSON.stringify(destination)}`)
+    return { ok: false, reason: 'no_route' }
+  }
 
   const band = rateBandFor(when, publicHoliday)
   const fare = calculateFare(distance.distanceKm, distance.durationMin, band)
