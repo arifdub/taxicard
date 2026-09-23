@@ -33,16 +33,51 @@ const INITIAL_MIN = 85 / 60
 const TARIFF_A_KM = 15
 const TARIFF_A_MIN = 43
 
+const DUBLIN_WEEKDAY: Record<string, number> = {
+  Sun: 0,
+  Mon: 1,
+  Tue: 2,
+  Wed: 3,
+  Thu: 4,
+  Fri: 5,
+  Sat: 6,
+}
+
 /**
- * Which of the three NTA rate bands applies at a given moment.
+ * The day/hour/month in Ireland, regardless of what timezone the server
+ * this code runs on happens to be in — Date.getHours() etc. use the
+ * *server's* local clock, which on a US-hosted server would read a
+ * Dublin afternoon booking as the middle of the night and pick the
+ * wrong rate band entirely.
+ */
+function dublinParts(date: Date) {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Europe/Dublin',
+    weekday: 'short',
+    hourCycle: 'h23',
+    hour: '2-digit',
+    day: '2-digit',
+    month: '2-digit',
+  }).formatToParts(date)
+
+  const get = (type: string) => parts.find((p) => p.type === type)?.value ?? ''
+
+  return {
+    day: DUBLIN_WEEKDAY[get('weekday')] ?? date.getDay(),
+    hour: Number(get('hour')),
+    dom: Number(get('day')),
+    month: Number(get('month')) - 1, // 0-indexed, matching Date.getMonth()
+  }
+}
+
+/**
+ * Which of the three NTA rate bands applies at a given moment, always
+ * read against Ireland's clock and calendar.
  * Public holidays aren't auto-detected (that needs a full Irish bank
  * holiday calendar) — callers pass `publicHoliday` explicitly instead.
  */
 export function rateBandFor(date: Date, publicHoliday = false): RateBand {
-  const day = date.getDay() // 0 = Sunday, 6 = Saturday
-  const hour = date.getHours()
-  const month = date.getMonth() // 0-indexed, 11 = December
-  const dom = date.getDate()
+  const { day, hour, month, dom } = dublinParts(date)
 
   const weekendSmallHours = (day === 6 || day === 0) && hour < 4
   const christmasSpecial =
