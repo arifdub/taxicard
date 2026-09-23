@@ -6,6 +6,7 @@ import { siteUrl, prettyLink } from '@/lib/site'
 import BookingCard from '@/components/booking-card'
 import { OnlineCard, NotificationsCard } from './status-cards'
 import InstallPrompt from './install-prompt'
+import InstallModal from './install-modal'
 
 export const dynamic = 'force-dynamic'
 
@@ -101,6 +102,8 @@ export default async function DashboardPage() {
           Have a safe and successful day.
         </p>
       </div>
+
+      <InstallModal />
 
       <OnlineCard initial={Boolean(profile?.is_available)} />
       <NotificationsCard />
