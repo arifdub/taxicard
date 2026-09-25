@@ -12,7 +12,7 @@ export async function generateMetadata({
 }) {
   const { slug } = await params
   return {
-    title: 'Book a taxi',
+    title: 'Send trip details',
     manifest: `/api/manifest?slug=${encodeURIComponent(slug)}`,
   }
 }
@@ -33,7 +33,7 @@ export default async function BookPage({
       <main className="tc-dark-page w-full px-5 pb-10 text-center text-white pt-[calc(env(safe-area-inset-top)+1.5rem)]">
       <div className="mx-auto w-full max-w-md">
         <h1 className="text-xl font-semibold text-white">
-          {card.name} is not taking bookings right now
+          {card.name} is not taking trip requests right now
         </h1>
         <p className="mt-2 text-sm text-slate-300">
           You can still ring, or check back shortly.
@@ -81,7 +81,7 @@ export default async function BookPage({
           Back to card
         </a>
         <h1 className="tc-left mt-3 text-2xl font-semibold text-white">
-          Book {card.name.split(' ')[0]}
+          Send your trip details to {card.name.split(' ')[0]}
         </h1>
         <p className="tc-left tc-d1 mb-6 mt-1 text-sm text-slate-400">
           No account needed. Two minutes.

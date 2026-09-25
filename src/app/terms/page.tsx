@@ -29,9 +29,11 @@ export default function TermsPage() {
           <section>
             <h2 className="text-lg font-semibold text-white">What TaxiCard is</h2>
             <p className="mt-2">
-              TaxiCard gives an independent taxi driver a booking page and a
-              private customer list. We are not a taxi company and not a
-              dispatch service. We do not carry passengers, set fares, or
+              TaxiCard gives an independent taxi driver a digital business
+              card and a private customer list, so passengers can save their
+              contact details and reach them directly. We are not a taxi
+              company, a taxi marketplace, or a dispatch service. We do not
+              carry passengers, set fares, match passengers with drivers, or
               take any part in the journey. The contract for a journey is
               between the passenger and the driver.
             </p>
@@ -63,9 +65,10 @@ export default function TermsPage() {
           <section>
             <h2 className="text-lg font-semibold text-white">For passengers</h2>
             <p className="mt-2">
-              Sending a booking is a request, not a confirmed journey, until
-              the driver accepts it. Fares, punctuality and the journey itself
-              are matters between you and the driver.
+              Sending your trip details is a request to that one driver, not a
+              confirmed journey, until the driver accepts it. Fares,
+              punctuality and the journey itself are matters between you and
+              the driver.
             </p>
           </section>
 

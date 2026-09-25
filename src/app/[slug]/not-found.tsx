@@ -6,7 +6,7 @@ export default function NotFound() {
       <div className="mx-auto w-full max-w-md">
       <h1 className="text-2xl font-semibold text-white">No driver here</h1>
       <p className="mt-2 text-slate-300">
-        This booking link does not belong to anyone. Check the spelling, or
+        This card link does not belong to anyone. Check the spelling, or
         ask your driver for their QR code again.
       </p>
       <Link href="/" className="mt-6 inline-block text-sm font-medium text-brandblue">

@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     {
       name: title,
       short_name: title.length > 12 ? title.slice(0, 12) : title,
-      description: 'Book your taxi in a few taps.',
+      description: 'Contact your driver in a few taps.',
       start_url: start,
       scope: '/',
       display: 'standalone',

@@ -51,9 +51,9 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-lg font-semibold text-white">
-              If you book a taxi
+              If you send a trip request
             </h2>
-            <p className="mt-2">We collect, when you send a booking:</p>
+            <p className="mt-2">We collect, when you send a trip request:</p>
             <ul className="mt-3 space-y-1.5 pl-5">
               <li className="list-disc">Your name and mobile number</li>
               <li className="list-disc">
@@ -67,10 +67,10 @@ export default function PrivacyPage() {
             </ul>
             <p className="mt-3">
               This goes to the one driver whose card you opened. No other
-              driver can see it. We use it to pass the booking to that driver
+              driver can see it. We use it to pass the request to that driver
               and to let them recognise you next time, which is the point of
               the service. The lawful basis is performance of a contract with
-              you, and our legitimate interest in running the booking system.
+              you, and our legitimate interest in running the service.
             </p>
             <p className="mt-3">
               We do not sell data, we do not advertise, and we do not share
@@ -83,8 +83,8 @@ export default function PrivacyPage() {
             <p className="mt-2">
               We hold your name, email, phone, photo if you upload one,
               vehicle details, SPSV licence number if you enter it, your
-              chosen link, and your bookings and customers. We use it to run
-              your account and your public card.
+              chosen link, and your trip requests and customers. We use it to
+              run your account and your public card.
             </p>
           </section>
 
@@ -93,8 +93,8 @@ export default function PrivacyPage() {
               How long we keep it
             </h2>
             <p className="mt-2">
-              Bookings and passenger records are kept for two years after the
-              last booking, then deleted, unless the driver deletes them
+              Trip requests and passenger records are kept for two years after
+              the last one, then deleted, unless the driver deletes them
               sooner. Driver accounts are kept while the account is open and
               deleted within 30 days of closure. We keep nothing longer than
               we need it.
@@ -119,9 +119,9 @@ export default function PrivacyPage() {
               [privacy@taxicard.ie] and we will respond within one month.
             </p>
             <p className="mt-3">
-              If you booked a taxi and want your details removed, tell us the
-              driver and the number you used, and we will remove them. You can
-              also ask the driver directly.
+              If you sent a trip request and want your details removed, tell
+              us the driver and the number you used, and we will remove them.
+              You can also ask the driver directly.
             </p>
             <p className="mt-3">
               If you are unhappy with how we handle it, you can complain to
@@ -134,11 +134,11 @@ export default function PrivacyPage() {
               Details saved on your phone
             </h2>
             <p className="mt-2">
-              If you book, your name, number and recent addresses are stored
-              in your own browser so you do not have to retype them. This
-              stays on your device, is not sent to us, and you can wipe it
-              with the &quot;forget them&quot; link on the booking form or by
-              clearing your browser data.
+              If you send a trip request, your name, number and recent
+              addresses are stored in your own browser so you do not have to
+              retype them. This stays on your device, is not sent to us, and
+              you can wipe it with the &quot;forget them&quot; link on the
+              form or by clearing your browser data.
             </p>
           </section>
 

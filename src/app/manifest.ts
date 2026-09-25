@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'TaxiCard Driver',
     short_name: 'TaxiCard',
-    description: 'Your digital taxi card and booking page.',
+    description: 'Your digital taxi business card.',
     // The ?shellv marker is how the installed Android app reports its own
     // build to itself (see components/update-banner.tsx) — bump it, and
     // public/downloads/versions.json's latestShellVersion, together

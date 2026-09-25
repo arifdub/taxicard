@@ -18,15 +18,15 @@ export type BookingStatus = {
 const LOOKS = {
   PENDING: {
     tone: 'bg-amber-500/10 text-amber-100 border-amber-400/30',
-    head: 'Booking request sent',
+    head: 'Trip request sent',
   },
   CONFIRMED: {
     tone: 'bg-emerald-500/10 text-emerald-100 border-emerald-400/30',
-    head: 'Booking confirmed',
+    head: 'Trip confirmed',
   },
   ACCEPTED: {
     tone: 'bg-emerald-500/10 text-emerald-100 border-emerald-400/30',
-    head: 'Booking confirmed',
+    head: 'Trip confirmed',
   },
   COMPLETED: {
     tone: 'bg-white/5 text-slate-200 border-white/10',
@@ -38,7 +38,7 @@ const LOOKS = {
   },
   CANCELLED: {
     tone: 'bg-white/5 text-slate-200 border-white/10',
-    head: 'Booking cancelled',
+    head: 'Trip cancelled',
   },
 } as const
 
@@ -51,7 +51,7 @@ function subline(b: BookingStatus) {
     case 'ACCEPTED':
       return `${first} is expecting you.`
     case 'DECLINED':
-      return `${first} cannot take this booking. Try calling, or book another time.`
+      return `${first} cannot take this one. Try calling, or send a new request another time.`
     case 'COMPLETED':
       return 'Thanks for travelling.'
     default:
@@ -135,8 +135,8 @@ export default function StatusView({
       ) : null}
 
       <p className="text-center text-xs text-slate-500">
-        Save this page to check your booking later, or add the card to your
-        home screen to book again in one tap.
+        Save this page to check on your trip later, or add the card to your
+        home screen to send another request in one tap.
       </p>
     </div>
   )

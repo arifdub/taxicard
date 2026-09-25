@@ -30,9 +30,9 @@ const schema = z.object({
 // The database raises named exceptions. Translate them into something a
 // passenger can act on, and never leak the raw Postgres message.
 const MESSAGES: Record<string, string> = {
-  driver_not_found: 'This booking link is no longer active.',
+  driver_not_found: 'This card link is no longer active.',
   driver_unavailable:
-    'This driver is not taking bookings right now. Try calling instead.',
+    'This driver is not taking trip requests right now. Try calling instead.',
   invalid_phone: 'Enter a valid phone number.',
   name_required: 'Enter your name.',
   pickup_required: 'Enter a pickup address.',
@@ -40,8 +40,8 @@ const MESSAGES: Record<string, string> = {
   invalid_eircode: 'That Eircode does not look right. Leave it blank if unsure.',
   invalid_scheduled_at: 'Pick a date and time in the future.',
   scheduled_too_far: 'That is too far ahead. Pick a nearer date.',
-  now_booking_disabled: 'This driver only takes advance bookings.',
-  future_booking_disabled: 'This driver only takes immediate bookings.',
+  now_booking_disabled: 'This driver only takes advance requests.',
+  future_booking_disabled: 'This driver only takes immediate requests.',
   rate_limited:
     'You have sent several requests already. Give the driver a moment, or call.',
 }

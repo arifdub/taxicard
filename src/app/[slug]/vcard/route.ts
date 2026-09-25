@@ -49,7 +49,7 @@ export async function GET(
   }
   lines.push(`URL:${url}`)
   if (card.service_area) lines.push(`ADR;TYPE=WORK:;;;${escape(card.service_area)};;;`)
-  lines.push(`NOTE:Book a taxi any time at ${url}`)
+  lines.push(`NOTE:Contact me directly any time — ${url}`)
   lines.push('END:VCARD')
 
   const filename = card.slug.replace(/[^a-z0-9-]/g, '') || 'taxicard'

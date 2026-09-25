@@ -21,7 +21,7 @@ function LogoMark() {
           <span className="text-yellow">Card</span>
         </span>
         <span className="mt-1 block text-[9px] font-semibold tracking-[0.2em] text-white/55">
-          TAP. BOOK. RIDE.
+          TAP. SAVE. RIDE.
         </span>
       </span>
     </>
@@ -263,7 +263,7 @@ export default function DriverCardView({
 
         {!card.is_available ? (
           <p className="mt-3 rounded-xl bg-white/5 px-4 py-2.5 text-sm text-white/70">
-            Not taking bookings right now.
+            Not taking trip requests right now.
           </p>
         ) : null}
 
@@ -277,8 +277,8 @@ export default function DriverCardView({
         {card.is_available && bookHref ? (
           <ActionRow
             href={bookHref}
-            title="Book My Taxi"
-            subtitle="Quick and easy booking"
+            title="Send Trip Details"
+            subtitle="Pickup, destination and time"
             icon={<TaxiIcon />}
             className="bg-yellow text-navy"
           />

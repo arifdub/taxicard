@@ -5,7 +5,7 @@ import StatusView, { type BookingStatus } from './status-view'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Your booking',
+  title: 'Your trip request',
   // Keep this page out of search results. The token is unguessable, but
   // it should not end up in an index either.
   robots: { index: false, follow: false },

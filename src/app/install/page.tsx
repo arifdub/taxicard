@@ -34,7 +34,7 @@ export default function InstallPage() {
             <p className="mt-1">
               Install a driver&apos;s card, not this page. Open their link,
               for example taxicard.ie/john, then follow the same steps. The
-              icon takes their name, and booking them again is one tap.
+              icon takes their name, and contacting them again is one tap.
             </p>
           </div>
           <div>

@@ -32,7 +32,7 @@ export async function generateMetadata({
   return {
     title,
     description:
-      card.description ?? `Book ${card.name} directly. No app needed.`,
+      card.description ?? `Contact ${card.name} directly. No app needed.`,
     openGraph: { title, images: card.photo_url ? [card.photo_url] : [] },
     // Install this card as its own app, opening straight back to the card.
     manifest: `/api/manifest?slug=${encodeURIComponent(slug)}`,

@@ -141,7 +141,7 @@ export default function BookingForm({
       {saved && hasSavedDetails(saved) && saved.pickups[0] && saved.destinations[0] ? (
         <div className="rounded-2xl border border-yellow/30 bg-yellow/10 p-4">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-yellow">
-            One tap, book again
+            One tap, send again
           </p>
           <p className="mt-1.5 text-sm font-semibold text-white">
             Welcome back, {saved.name.split(' ')[0]}
@@ -168,7 +168,7 @@ export default function BookingForm({
             }}
             className="mt-3 w-full rounded-xl bg-yellow px-4 py-4 text-base font-bold text-navy"
           >
-            Book again in one tap
+            Send again in one tap
           </button>
 
           <p className="mt-2 text-center text-[11px] text-slate-400">
@@ -377,7 +377,7 @@ export default function BookingForm({
         disabled={pending}
         className="w-full rounded-2xl bg-yellow px-4 py-4 text-lg font-semibold text-navy shadow-[0_12px_30px_-14px_rgba(255,199,44,0.9)] disabled:opacity-60"
       >
-        {pending ? 'Sending…' : 'Send booking request'}
+        {pending ? 'Sending…' : 'Send trip details'}
       </button>
 
       {saved ? (

@@ -8,9 +8,9 @@ import DriverCardView, { type DriverCard } from '@/components/driver-card'
 import type { ReactNode } from 'react'
 
 export const metadata: Metadata = {
-  title: 'TaxiCard — your own digital taxi card and booking page',
+  title: 'TaxiCard — your own digital taxi business card',
   description:
-    'Independent taxi drivers in Ireland: give your regular customers a QR code they can scan to book you directly. Your customers, your business, no marketplace.',
+    'Independent taxi drivers in Ireland: give your regular customers a QR code so they can save your contact details and reach you directly. Your customers, your business — no marketplace, no dispatch.',
 }
 
 export default async function Home() {
@@ -43,12 +43,12 @@ export default async function Home() {
         </h1>
         <p className="tc-left tc-d2 mt-4 max-w-xl text-base text-slate-300 md:text-lg">
           Display your TaxiCard QR code behind the headrest, or anywhere in
-          your taxi. Passengers scan it to save your digital business card,
-          contact you, and book you again and again.
+          your taxi. Passengers scan it to save your contact details and
+          reach you directly, again and again.
         </p>
 
         <p className="tc-left tc-d3 mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-yellow">
-          Scan. Save. Book. Ride. Repeat.
+          Scan. Save. Contact. Ride. Repeat.
         </p>
 
         <div className="tc-in tc-d4 mt-6 flex flex-col gap-3 sm:flex-row">
@@ -93,7 +93,7 @@ export default async function Home() {
 
             <ul className="mt-6 space-y-3 text-sm text-slate-300">
               <li className="flex gap-3">
-                <span className="mt-0.5 font-semibold text-yellow">Book</span>
+                <span className="mt-0.5 font-semibold text-yellow">Details</span>
                 <span>
                   Pickup, destination, now or later, name and number. Four
                   fields, one screen.
@@ -133,7 +133,7 @@ export default async function Home() {
               How it works
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-slate-300">
-              From nothing to taking bookings in an evening.
+              From nothing to hearing from your first customer in an evening.
             </p>
           </Reveal>
 
@@ -158,7 +158,7 @@ export default async function Home() {
               <Step
                 n="3"
                 icon={<BellIcon />}
-                title="Take bookings directly"
+                title="Hear from passengers directly"
                 body="A request arrives with pickup, destination and time. You accept or decline. The customer sees the confirmation and your number."
               />
             </Reveal>
@@ -174,8 +174,10 @@ export default async function Home() {
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-slate-300">
               There is no pool of drivers and no matching. A customer who opens
-              your card books you, or nobody. The work you have built up stays
-              yours.
+              your card contacts you, or nobody. The work you have built up
+              stays yours. TaxiCard is a digital business card for individual
+              drivers, not a taxi marketplace or dispatch service — every
+              contact goes straight to you.
             </p>
           </Reveal>
 
@@ -184,28 +186,28 @@ export default async function Home() {
               <Point
                 icon={<UsersIcon />}
                 title="Your own customer list"
-                body="Every booking builds it. Sarah books you once and you have her number, her usual pickup and her history — recognised automatically the next time, even if she writes her number differently."
+                body="Every trip request builds it. Sarah contacts you once and you have her number, her usual pickup and her history — recognised automatically the next time, even if she writes her number differently."
               />
             </Reveal>
             <Reveal from="right" delay={90}>
               <Point
                 icon={<LockIcon />}
                 title="Nobody else can see it"
-                body="Every driver's customers and bookings are walled off at database level, not just hidden in the app. Another driver on TaxiCard cannot reach your list."
+                body="Every driver's customers and trip requests are walled off at database level, not just hidden in the app. Another driver on TaxiCard cannot reach your list."
               />
             </Reveal>
             <Reveal from="left" delay={60}>
               <Point
                 icon={<TapIcon />}
                 title="Easy for older customers"
-                body="Big buttons, no login, no download. If they can open a web page, they can book you. And the call button never goes away."
+                body="Big buttons, no login, no download. If they can open a web page, they can contact you. And the call button never goes away."
               />
             </Reveal>
             <Reveal from="right" delay={150}>
               <Point
                 icon={<SwitchIcon />}
                 title="You stay in control"
-                body="Mark yourself unavailable and your card says so, while still letting people ring you. Accept or decline every job yourself."
+                body="Mark yourself unavailable and your card says so, while still letting people ring you. Accept or decline every request yourself."
               />
             </Reveal>
           </div>
@@ -303,7 +305,7 @@ export default async function Home() {
 
             <Faq
               q="Do my customers need an app?"
-              a="No. They scan your QR code or tap your link and the booking page opens in their phone browser. They can add it to their home screen if they want it handy."
+              a="No. They scan your QR code or tap your link and your card opens in their phone browser. They can add it to their home screen if they want it handy."
             />
             <Faq
               q="What does it cost?"
@@ -311,7 +313,7 @@ export default async function Home() {
             />
             <Faq
               q="Do I need to be a licensed driver?"
-              a="TaxiCard is for drivers who already hold an SPSV licence. It is a booking page for the customers you already have, not a way to find new fares."
+              a="TaxiCard is for drivers who already hold an SPSV licence. It is a digital business card for the customers you already have, not a way to find new fares."
             />
             <Faq
               q="What happens to my customers' details?"
@@ -327,7 +329,7 @@ export default async function Home() {
             Set up your card today
           </h2>
           <p className="mt-3 text-slate-300">
-            A few minutes now, and your next regular can book you with two taps.
+            A few minutes now, and your next regular can contact you with two taps.
           </p>
           <Link
             href="/signup"

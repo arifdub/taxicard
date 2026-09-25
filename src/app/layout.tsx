@@ -14,16 +14,15 @@ export const metadata: Metadata = {
   },
 
   description:
-    'Independent Irish taxi drivers get a digital business card, a QR code for the car, and their own private customer list. Passengers book in a few taps, with no app to download.',
+    'Independent Irish taxi drivers get a digital business card, a QR code for the car, and their own private customer list. Passengers save your contact and reach you directly, with no app to download.',
 
   applicationName: 'TaxiCard',
   keywords: [
     'taxi Ireland',
-    'book a taxi',
     'taxi business card',
     'taxi QR code',
     'SPSV driver',
-    'private hire booking',
+    'digital business card for taxi drivers',
   ],
 
   alternates: { canonical: '/' },
@@ -44,14 +43,14 @@ export const metadata: Metadata = {
     url: SITE,
     title: 'TaxiCard — a digital business card for Irish taxi drivers',
     description:
-      'Turn every passenger into a regular customer. A digital taxi card with booking built in.',
+      'Turn every passenger into a regular customer. A digital taxi business card they can contact you through directly.',
   },
 
   twitter: {
     card: 'summary_large_image',
     title: 'TaxiCard — a digital business card for Irish taxi drivers',
     description:
-      'Turn every passenger into a regular customer. A digital taxi card with booking built in.',
+      'Turn every passenger into a regular customer. A digital taxi business card they can contact you through directly.',
   },
 
   robots: {
