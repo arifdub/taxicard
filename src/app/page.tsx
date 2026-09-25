@@ -34,18 +34,6 @@ export default async function Home() {
       </nav>
 
       <header className="mx-auto max-w-5xl px-5 pb-10 pt-3 md:pb-16 md:pt-6">
-        <div className="tc-in mb-5 flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2.5">
-          <p className="text-sm font-semibold text-white">
-            Passenger? Need a taxi
-          </p>
-          <Link
-            href="/find"
-            className="shrink-0 rounded-xl bg-yellow px-4 py-2.5 text-sm font-bold text-navy"
-          >
-            Find a driver
-          </Link>
-        </div>
-
         <p className="tc-left text-sm font-semibold uppercase tracking-wide text-yellow">
           For independent taxi drivers
         </p>
@@ -351,12 +339,6 @@ export default async function Home() {
             Already signed up?{' '}
             <Link href="/login" className="font-semibold text-brandblue">
               Log in here
-            </Link>
-          </p>
-          <p className="mt-2 text-sm text-slate-400">
-            Need a taxi instead?{' '}
-            <Link href="/find" className="font-semibold text-yellow">
-              Find a driver
             </Link>
           </p>
         </div>
