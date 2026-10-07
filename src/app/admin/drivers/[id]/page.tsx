@@ -4,6 +4,7 @@ import { requireAdmin } from '@/lib/admin'
 import { prettyLink } from '@/lib/site'
 import DriverControls from './driver-controls'
 import MessageDriver from './message-driver'
+import SendJob from './send-job'
 
 export const dynamic = 'force-dynamic'
 
@@ -135,10 +136,16 @@ export default async function AdminDriverPage({
         />
       </div>
 
-      <MessageDriver
-        driverId={driver.id}
-        driverName={driver.name ?? 'this driver'}
-      />
+      <div className="space-y-3">
+        <MessageDriver
+          driverId={driver.id}
+          driverName={driver.name ?? 'this driver'}
+        />
+        <SendJob
+          driverId={driver.id}
+          driverName={driver.name ?? 'this driver'}
+        />
+      </div>
 
       {driver.is_admin ? (
         <p className="rounded-2xl border border-yellow/30 bg-yellow/10 p-4 text-sm text-yellow">
