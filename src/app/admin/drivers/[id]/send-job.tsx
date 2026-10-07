@@ -188,6 +188,26 @@ export default function SendJob({
       ) : null}
 
       <div>
+        <label htmlFor="sj-fare" className={label}>
+          Set fare (optional)
+        </label>
+        <div className="flex items-center gap-2">
+          <span className="text-lg font-semibold text-slate-400">&euro;</span>
+          <input
+            id="sj-fare"
+            name="fare"
+            inputMode="decimal"
+            placeholder="30.00"
+            className={field}
+          />
+        </div>
+        <p className="mt-1 text-xs text-slate-500">
+          Leave blank to estimate it automatically. If set, this is the price
+          shown to {first}, in bold at the top of the job.
+        </p>
+      </div>
+
+      <div>
         <label htmlFor="sj-notes" className={label}>
           Notes (optional)
         </label>

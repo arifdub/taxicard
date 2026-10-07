@@ -21,6 +21,14 @@ const schema = z.object({
   when: z.enum(['NOW', 'LATER']),
   scheduled_at: z.string().trim().optional(),
   notes: z.string().trim().max(280).optional(),
+  fare: z
+    .string()
+    .trim()
+    .optional()
+    .refine(
+      (v) => !v || /^\d{1,5}([.,]\d{1,2})?$/.test(v),
+      'Enter a fare like 25 or 25.50'
+    ),
 })
 
 // Named exceptions from create_public_booking, same ones the public
@@ -80,6 +88,8 @@ export async function sendDriverJob(
   if (!driver?.slug) return { error: 'This driver no longer exists.' }
 
   // Best-effort: a geocoding hiccup should never block sending the job.
+  // Distance is always worth showing when it can be found, even when the
+  // admin has set a fixed fare below.
   let distanceKm: number | null = null
   let estimatedFare: number | null = null
   try {
@@ -90,6 +100,13 @@ export async function sendDriverJob(
     }
   } catch {
     // leave both null
+  }
+
+  // An admin-set fare is the final price, not an estimate on top of it —
+  // same as the dispatch job form, it replaces the calculated figure
+  // rather than adding the booking fee to it.
+  if (v.fare) {
+    estimatedFare = Number(v.fare.replace(',', '.'))
   }
 
   const { data, error } = await supabase.rpc('create_public_booking', {
