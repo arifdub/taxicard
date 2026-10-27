@@ -9,6 +9,7 @@ import {
   type SavedPassenger,
 } from '@/lib/passenger'
 import { createBooking, type BookingState } from './actions'
+import AddressAutocomplete from '@/components/address-autocomplete'
 
 const initial: BookingState = {}
 
@@ -208,12 +209,11 @@ export default function BookingForm({
           {locating ? 'Finding you…' : 'Use my current location'}
         </button>
 
-        <input
+        <AddressAutocomplete
           ref={pickupRef}
           id="pickup"
           name="pickup"
           required
-          autoComplete="street-address"
           placeholder="12 Main Street, Dublin"
           className="w-full rounded-xl border border-white/10 bg-navy-soft px-3 py-3.5 text-base text-white outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15"
         />
@@ -247,7 +247,7 @@ export default function BookingForm({
         <label htmlFor="destination" className="mb-1 block text-xs font-semibold text-slate-400">
           Where are you going?
         </label>
-        <input
+        <AddressAutocomplete
           ref={destRef}
           id="destination"
           name="destination"

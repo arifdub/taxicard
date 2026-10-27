@@ -6,6 +6,7 @@ import {
   updateDispatchJob,
   type DispatchState,
 } from './actions'
+import AddressAutocomplete from '@/components/address-autocomplete'
 
 const initial: DispatchState = {}
 const field =
@@ -96,7 +97,7 @@ export default function JobForm({ job }: { job?: JobDefaults }) {
           <label htmlFor="pickup" className={label}>
             Pickup
           </label>
-          <input
+          <AddressAutocomplete
             defaultValue={job?.pickup_address}
             id="pickup"
             name="pickup"
@@ -125,7 +126,7 @@ export default function JobForm({ job }: { job?: JobDefaults }) {
         <label htmlFor="destination" className={label}>
           Destination (optional)
         </label>
-        <input
+        <AddressAutocomplete
           defaultValue={job?.destination_address ?? undefined}
           id="destination"
           name="destination"

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { getGoogleMapsApiKey } from '@/lib/settings'
 
 type Result = {
   address: string | null
@@ -7,7 +8,7 @@ type Result = {
 }
 
 async function viaGoogle(lat: number, lng: number): Promise<Result | null> {
-  const key = process.env.GOOGLE_MAPS_SERVER_KEY
+  const key = await getGoogleMapsApiKey()
   if (!key) return null
 
   const url = new URL('https://maps.googleapis.com/maps/api/geocode/json')

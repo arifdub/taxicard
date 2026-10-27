@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from 'react'
 import { sendDriverJob, type SendJobState } from './send-job-actions'
+import AddressAutocomplete from '@/components/address-autocomplete'
 
 const initial: SendJobState = {}
 const field =
@@ -102,7 +103,7 @@ export default function SendJob({
           <label htmlFor="sj-pickup" className={label}>
             Pickup
           </label>
-          <input
+          <AddressAutocomplete
             id="sj-pickup"
             name="pickup"
             required
@@ -129,7 +130,7 @@ export default function SendJob({
         <label htmlFor="sj-destination" className={label}>
           Destination
         </label>
-        <input
+        <AddressAutocomplete
           id="sj-destination"
           name="destination"
           required

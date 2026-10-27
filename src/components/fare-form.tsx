@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Field } from '@/components/ui'
+import AddressAutocomplete from '@/components/address-autocomplete'
 import { BOOKING_FEE } from '@/lib/fare'
 
 type Result = {
@@ -145,24 +146,36 @@ export default function FareForm() {
             </p>
           ) : null}
 
-          <Field
-            label="Pickup address"
-            name="pickup"
-            value={pickup}
-            onChange={(e) => setPickup(e.target.value)}
-            placeholder="Harcourt Street, Dublin, or an Eircode"
-            hint="Full address, Eircode, or just a town — whatever's easiest."
-            required
-          />
+          <label className="block">
+            <span className="mb-1 block text-xs font-semibold text-slate-400 light:text-slate-500">
+              Pickup address
+            </span>
+            <AddressAutocomplete
+              name="pickup"
+              value={pickup}
+              onChange={(e) => setPickup(e.target.value)}
+              placeholder="Harcourt Street, Dublin, or an Eircode"
+              required
+              className="w-full rounded-xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-3 py-3 text-base text-white light:text-navy outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15"
+            />
+            <span className="mt-1 block text-xs text-slate-500 light:text-slate-400">
+              Full address, Eircode, or just a town — whatever&apos;s easiest.
+            </span>
+          </label>
         </div>
-        <Field
-          label="Destination address"
-          name="destination"
-          value={destination}
-          onChange={(e) => setDestination(e.target.value)}
-          placeholder="D02 AF30, or Dublin Airport"
-          required
-        />
+        <label className="block">
+          <span className="mb-1 block text-xs font-semibold text-slate-400 light:text-slate-500">
+            Destination address
+          </span>
+          <AddressAutocomplete
+            name="destination"
+            value={destination}
+            onChange={(e) => setDestination(e.target.value)}
+            placeholder="D02 AF30, or Dublin Airport"
+            required
+            className="w-full rounded-xl border border-white/10 light:border-slate-200 bg-navy-soft light:bg-white px-3 py-3 text-base text-white light:text-navy outline-none focus:border-yellow focus:ring-4 focus:ring-yellow/15"
+          />
+        </label>
         <Field
           label="Date and time"
           name="when"

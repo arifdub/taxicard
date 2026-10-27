@@ -1,4 +1,5 @@
 import { calculateFare, rateBandFor, type FareBreakdown } from '@/lib/fare'
+import { getGoogleMapsApiKey } from '@/lib/settings'
 
 type LatLng = { lat: number; lng: number }
 type Geocoded = LatLng & { source: 'google' | 'osm' }
@@ -14,7 +15,7 @@ function normalize(query: string): string {
 }
 
 async function geocodeGoogle(query: string): Promise<LatLng | null> {
-  const key = process.env.GOOGLE_MAPS_SERVER_KEY
+  const key = await getGoogleMapsApiKey()
   if (!key) return null
 
   const url = new URL('https://maps.googleapis.com/maps/api/geocode/json')
