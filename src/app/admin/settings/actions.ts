@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { getGoogleMapsApiKeyWithSource } from '@/lib/settings'
 
 export type SettingsState = { error?: string; message?: string }
 
@@ -47,4 +48,56 @@ export async function updateGoogleApiKey(
 
   revalidatePath('/admin/settings')
   return { message: key ? 'Key saved.' : 'Key cleared — falling back to the environment variable.' }
+}
+
+export type TestState = { error?: string; message?: string }
+
+/**
+ * Fires a real autocomplete request with whatever key is actually active
+ * right now, and surfaces Google's own status — so "it's not working"
+ * becomes a specific, fixable reason instead of a guess, without anyone
+ * needing to dig through Vercel function logs.
+ */
+export async function testGoogleApiKey(): Promise<TestState> {
+  const ctx = await assertAdmin()
+  if (!ctx) return { error: 'Not allowed.' }
+
+  const { key, source } = await getGoogleMapsApiKeyWithSource()
+  const sourceLabel =
+    source === 'database'
+      ? 'the key saved here'
+      : source === 'env'
+        ? 'the GOOGLE_MAPS_SERVER_KEY environment variable'
+        : 'no key at all'
+
+  if (!key) {
+    return { error: `Nothing to test — currently using ${sourceLabel}.` }
+  }
+
+  try {
+    const url = new URL('https://maps.googleapis.com/maps/api/place/autocomplete/json')
+    url.searchParams.set('input', 'Dublin Airport')
+    url.searchParams.set('components', 'country:ie')
+    url.searchParams.set('key', key)
+
+    const res = await fetch(url, { cache: 'no-store' })
+    const data = await res.json()
+
+    if (data.status === 'OK') {
+      const count = (data.predictions ?? []).length
+      return {
+        message: `Working, via ${sourceLabel}. Got ${count} suggestion${count === 1 ? '' : 's'} for "Dublin Airport".`,
+      }
+    }
+
+    return {
+      error: `Google rejected the request (via ${sourceLabel}): ${data.status}${
+        data.error_message ? ` — ${data.error_message}` : ''
+      }. In Google Cloud Console, make sure "Places API" (the classic one, not just "Places API (New)") is enabled for this key, billing is active, and any key restrictions allow server-side calls.`,
+    }
+  } catch (err) {
+    return {
+      error: `Could not reach Google: ${err instanceof Error ? err.message : 'unknown error'}.`,
+    }
+  }
 }

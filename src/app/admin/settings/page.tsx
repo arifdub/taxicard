@@ -1,4 +1,5 @@
 import { requireAdmin } from '@/lib/admin'
+import { getGoogleMapsApiKeyWithSource } from '@/lib/settings'
 import GoogleKeyForm from './google-key-form'
 
 export const dynamic = 'force-dynamic'
@@ -20,6 +21,11 @@ export default async function AdminSettingsPage() {
   const key = (data as { google_places_api_key: string | null } | null)
     ?.google_places_api_key
 
+  // Same helper the actual geocoding/autocomplete calls use, so this page
+  // shows what is genuinely active — not just what is saved in the row
+  // above, which can differ if the service role key is missing here.
+  const { source } = await getGoogleMapsApiKeyWithSource()
+
   return (
     <div className="space-y-8">
       <div>
@@ -29,7 +35,7 @@ export default async function AdminSettingsPage() {
         </p>
       </div>
 
-      <GoogleKeyForm masked={key ? mask(key) : null} />
+      <GoogleKeyForm masked={key ? mask(key) : null} source={source} />
     </div>
   )
 }

@@ -1,14 +1,29 @@
 'use client'
 
-import { useActionState } from 'react'
-import { updateGoogleApiKey, type SettingsState } from './actions'
+import { useActionState, useState, useTransition } from 'react'
+import { updateGoogleApiKey, testGoogleApiKey, type SettingsState, type TestState } from './actions'
 
 const initial: SettingsState = {}
 const field =
   'w-full rounded-xl border border-white/10 bg-navy-soft px-3 py-3 text-base text-white outline-none focus:border-yellow'
 
-export default function GoogleKeyForm({ masked }: { masked: string | null }) {
+export default function GoogleKeyForm({
+  masked,
+  source,
+}: {
+  masked: string | null
+  source: 'database' | 'env' | 'none'
+}) {
   const [state, action, pending] = useActionState(updateGoogleApiKey, initial)
+  const [test, setTest] = useState<TestState>({})
+  const [testing, startTest] = useTransition()
+
+  const sourceLabel =
+    source === 'database'
+      ? 'the key saved here'
+      : source === 'env'
+        ? 'the GOOGLE_MAPS_SERVER_KEY environment variable'
+        : 'no key — autocomplete is off'
 
   return (
     <form action={action} className="space-y-3 rounded-2xl border border-white/10 bg-navy-soft p-5">
@@ -51,6 +66,9 @@ export default function GoogleKeyForm({ masked }: { masked: string | null }) {
           'No key saved here yet — using the environment variable, if one is set.'
         )}
       </p>
+      <p className="text-xs text-slate-500">
+        Active right now: <span className="text-slate-300">{sourceLabel}</span>.
+      </p>
 
       <input
         name="google_places_api_key"
@@ -71,6 +89,36 @@ export default function GoogleKeyForm({ masked }: { masked: string | null }) {
       >
         {pending ? 'Saving…' : 'Save key'}
       </button>
+
+      <div className="border-t border-white/10 pt-3">
+        <button
+          type="button"
+          disabled={testing}
+          onClick={() =>
+            startTest(async () => {
+              setTest(await testGoogleApiKey())
+            })
+          }
+          className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm font-semibold text-slate-200 disabled:opacity-60"
+        >
+          {testing ? 'Testing…' : 'Test this key'}
+        </button>
+        <p className="mt-1.5 text-xs text-slate-500">
+          Sends a real autocomplete request for &quot;Dublin Airport&quot; and
+          shows exactly what Google says back.
+        </p>
+
+        {test.error ? (
+          <p className="mt-2 rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2.5 text-sm text-red-200">
+            {test.error}
+          </p>
+        ) : null}
+        {test.message ? (
+          <p className="mt-2 rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-3 py-2.5 text-sm text-emerald-200">
+            {test.message}
+          </p>
+        ) : null}
+      </div>
     </form>
   )
 }

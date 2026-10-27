@@ -8,6 +8,7 @@ import {
   type SavedPassenger,
 } from '@/lib/passenger'
 import { postPublicJob, type FindState } from './actions'
+import AddressAutocomplete from '@/components/address-autocomplete'
 
 const initial: FindState = {}
 const field =
@@ -117,12 +118,11 @@ export default function FindForm() {
         >
           {locating ? 'Finding you…' : 'Use my current location'}
         </button>
-        <input
+        <AddressAutocomplete
           ref={pickupRef}
           id="pickup"
           name="pickup"
           required
-          autoComplete="street-address"
           placeholder="12 Main Street, Dublin"
           className={field}
         />
@@ -169,7 +169,7 @@ export default function FindForm() {
         <label htmlFor="destination" className={label}>
           Where are you going? (optional)
         </label>
-        <input
+        <AddressAutocomplete
           ref={destRef}
           id="destination"
           name="destination"
