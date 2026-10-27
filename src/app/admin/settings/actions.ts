@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { getGoogleMapsApiKeyWithSource } from '@/lib/settings'
+import { placesAutocomplete } from '@/lib/places'
 
 export type SettingsState = { error?: string; message?: string }
 
@@ -74,30 +75,16 @@ export async function testGoogleApiKey(): Promise<TestState> {
     return { error: `Nothing to test — currently using ${sourceLabel}.` }
   }
 
-  try {
-    const url = new URL('https://maps.googleapis.com/maps/api/place/autocomplete/json')
-    url.searchParams.set('input', 'Dublin Airport')
-    url.searchParams.set('components', 'country:ie')
-    url.searchParams.set('key', key)
+  const result = await placesAutocomplete(key, 'Dublin Airport')
 
-    const res = await fetch(url, { cache: 'no-store' })
-    const data = await res.json()
-
-    if (data.status === 'OK') {
-      const count = (data.predictions ?? []).length
-      return {
-        message: `Working, via ${sourceLabel}. Got ${count} suggestion${count === 1 ? '' : 's'} for "Dublin Airport".`,
-      }
-    }
-
+  if (result.ok) {
+    const count = result.suggestions.length
     return {
-      error: `Google rejected the request (via ${sourceLabel}): ${data.status}${
-        data.error_message ? ` — ${data.error_message}` : ''
-      }. In Google Cloud Console, make sure "Places API" (the classic one, not just "Places API (New)") is enabled for this key, billing is active, and any key restrictions allow server-side calls.`,
+      message: `Working, via ${sourceLabel}. Got ${count} suggestion${count === 1 ? '' : 's'} for "Dublin Airport".`,
     }
-  } catch (err) {
-    return {
-      error: `Could not reach Google: ${err instanceof Error ? err.message : 'unknown error'}.`,
-    }
+  }
+
+  return {
+    error: `Google rejected the request (via ${sourceLabel}): ${result.message}. In Google Cloud Console, make sure "Places API (New)" is enabled for this key, billing is active, and any key restrictions allow server-side calls.`,
   }
 }

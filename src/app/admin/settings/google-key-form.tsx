@@ -42,7 +42,9 @@ export default function GoogleKeyForm({
           >
             Google Cloud Console
           </a>
-          , with the Geocoding API and Places API enabled.
+          , with the Geocoding API and Places API (New) enabled — the
+          classic &quot;Places API&quot; is a different, older product and
+          won&apos;t work here.
         </p>
       </div>
 
